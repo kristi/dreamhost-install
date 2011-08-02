@@ -174,7 +174,6 @@ DELIM
 
     fi
 
-    #source ~/.bashrc
     export PATH="$pH_install/bin:$PATH"
 
     # ###################
@@ -334,12 +333,15 @@ function ph_sqlite {
 function ph_bsddb {
     print "    installing bsddb $pH_bsddb..."
     cd $pH_DL
-    if [[ ! -e bsddb3-5.0.0 ]] ; then
-        wget -q http://pypi.python.org/packages/source/b/bsddb3/bsddb3-5.0.0.tar.gz
-        rm -rf bsddb3-5.0.0
-        tar -xzf bsddb3-5.0.0.tar.gz
+    if [[ ! -e bsddb3-$pH_bsddb ]] ; then
+        wget -q http://pypi.python.org/packages/source/b/bsddb3/bsddb3-$pH_bsddb.tar.gz
+        rm -rf bsddb3-$pH_bsddb
+        tar -xzf bsddb3-$pH_bsddb.tar.gz
     fi
-    # TODO why no install here?
+    ./configure --prefix=$pH_install --quiet
+    make --silent >/dev/null
+    make install --silent >/dev/null
+    cd $pH_DL
 }
 
 # Python
@@ -504,13 +506,14 @@ function ph_dulwich {
 function ph_hggit {
     print "    installing hg-git $pH_hggit..."
     cd $pH_DL
-    [ ! -e hg-git ] && mkdir hg-git
-    cd hg-git
-    wget -q http://github.com/schacon/hg-git/tarball/master
-    tar -xzf *
-    hg_git_dir=$(ls -dC */)
-    cd $hg_git_dir
-    python setup.py install
+    #[ ! -e hg-git ] && mkdir hg-git
+    #cd hg-git
+    #wget -q http://github.com/schacon/hg-git/tarball/master
+    #tar -xzf *
+    #hg_git_dir=$(ls -dC */)
+    #cd $hg_git_dir
+    #python setup.py install
+    pip install -q -U hg-git
     cd $pH_DL
     # Virtualenv to .bashrc
     cat >> ~/.hgrc <<DELIM
