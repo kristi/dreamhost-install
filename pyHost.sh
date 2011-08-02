@@ -55,12 +55,13 @@ verbose=true
 # First, set your variables here in case you
 # want different versions or directories:
 
+pH_PWD="$PWD"
 # Directory to store the source archives
 pH_DL="$PWD/downloads"
 
 # Directory to install these packages
-pH_install="$HOME/opt"
-pH_virtenv="$HOME/opt/local"
+pH_install="$HOME/opt/python"
+pH_virtualenv_dir="$HOME/opt/venv"
 
 # Ruby Gems dir with prefix ~/
 pH_Gem=.gem
@@ -100,11 +101,11 @@ pH_bsddb=5.2.0
 
 # Sets the correct version of Berkeley DB to use and download
 # by looking at the Python version number
-if [[ ${pH_Python:0:3} == "2.6" ]]; then
+if [[ "${pH_Python:0:3}" == "2.6" ]]; then
     pH_Berkeley=$pH_Berkeley_47x
-elif [[ ${pH_Python:0:3} == "2.7" ]]; then
+elif [[ "${pH_Python:0:3}" == "2.7" ]]; then
     pH_Berkeley=$pH_Berkeley_48x
-elif [[ ${pH_Python:0:1} == "3" ]]; then
+elif [[ "${pH_Python:0:1}" == "3" ]]; then
     pH_Berkeley=$pH_Berkeley_50x
 fi
 
@@ -119,15 +120,20 @@ function ph_install_setup {
     # Let's see how long it takes to finish;
     start_time=$(date +%s)
 
-    PH_OLD_PATH=$PATH
-    PH_OLD_PYTHONPATH=$PYTHONPATH
+    PH_OLD_PATH="$PATH"
+    PH_OLD_PYTHONPATH="$PYTHONPATH"
+    # DEBUG
+    echo "Original PATH:"
+    echo -e "  ${PATH//:/\\n  }"
+    echo "Original PYTHONPATH:"
+    echo -e "  ${PYTHONPATH//:/\\n  }"
     
     # Make a backup copy of the current $pH_install folder if it exists.
     if [[ -e $pH_install ]]; then
         cp --archive $pH_install $pH_install.backup
     fi
     mkdir --parents $pH_install $pH_DL
-    mkdir --parents --mode=775 $pH_install/local/lib
+    #mkdir --parents --mode=775 $pH_install/local/lib
     
     # Backup and modify .bashrc
     if [[ ! -e ~/.bashrc-pHbackup ]] ; then
@@ -141,14 +147,15 @@ function ph_install_setup {
 # on $(date -u)
 ######################################################################
 
-export PATH=$pH_install/local/bin:$pH_install/Python-$pH_Python/bin:$pH_install/db-$pH_Berkeley/bin:\$PATH
-export PYTHONPATH=$pH_install/local/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
+export PATH=$pH_install/bin:\$PATH
+#export PYTHONPATH=$pH_install/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
 
 DELIM
 
     fi
 
-    source ~/.bashrc
+    #source ~/.bashrc
+    export PATH="$pH_install/bin:$PATH"
 
     # ###################
     # Download and unpack
@@ -162,21 +169,18 @@ DELIM
     # below for DB install scripts.
     ####################################################################
     export LD_LIBRARY_PATH=\
-$pH_install/local/lib:\
-$pH_install/db-$pH_Berkeley/lib:\
+$pH_install/lib:\
 $LD_LIBRARY_PATH
     
     export LD_RUN_PATH=$LD_LIBRARY_PATH
     
     export LDFLAGS="\
-    -L$pH_install/db-$pH_Berkeley/lib \
-    -L$pH_install/local/lib"
+    -L$pH_install/lib"
     
     export CPPFLAGS="\
-    -I$pH_install/local/include \
-    -I$pH_install/local/include/openssl \
-    -I$pH_install/db-$pH_Berkeley/include \
-    -I$pH_install/local/include/readline"
+    -I$pH_install/include \
+    -I$pH_install/include/openssl \
+    -I$pH_install/include/readline"
     
     export CXXFLAGS=$CPPFLAGS
     export CFLAGS=$CPPFLAGS
@@ -197,7 +201,7 @@ function ph_openssl {
         rm -rf openssl-$pH_SSL
         tar -xzf openssl-$pH_SSL.tar.gz
         cd openssl-$pH_SSL
-        ./config --prefix=$pH_install/local --openssldir=$pH_install/local/openssl shared > /dev/null
+        ./config --prefix=$pH_install --openssldir=$pH_install/openssl shared > /dev/null
     else
         cd openssl-$pH_SSL
     fi
@@ -216,7 +220,7 @@ function ph_readline {
         tar -xzf readline-$pH_Readline.tar.gz
     fi
     cd readline-$pH_Readline
-    ./configure --prefix=$pH_install/local --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent
     make install --silent >/dev/null
     cd $pH_DL
@@ -232,14 +236,10 @@ function ph_tcl {
         tar -xzf tcl$pH_Tcl-src.tar.gz
     fi
     cd tcl$pH_Tcl/unix
-    ./configure --prefix=$pH_install/local --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
-    #rm -f $pH_install/local/lib/libtcl${pH_Tcl:0:1}.so
-    #rm -f $pH_install/local/lib/libtcl.so
-    #ln -s $pH_install/local/lib/libtcl${pH_Tcl:0:3}.so $pH_install/local/lib/libtcl${pH_Tcl:0:1}.so
-    #ln -s $pH_install/local/lib/libtcl${pH_Tcl:0:3}.so $pH_install/local/lib/libtcl.so
 }
 
 # Tk (WTF?!)
@@ -252,14 +252,10 @@ function ph_tk {
         tar -xzf tk$pH_Tk-src.tar.gz
     fi
     cd tk$pH_Tk/unix
-    ./configure --prefix=$pH_install/local --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
-    #rm -f $pH_install/local/lib/libtk${pH_Tk:0:1}.so
-    #rm -f $pH_install/local/lib/libtk.so
-    #ln -s $pH_install/local/lib/libtk${pH_Tk:0:3}.so $pH_install/local/lib/libtk${pH_Tk:0:1}.so
-    #ln -s $pH_install/local/lib/libtk${pH_Tk:0:3}.so $pH_install/local/lib/libtk.so
 }
 
 # Oracle Berkeley DB
@@ -273,9 +269,9 @@ function ph_berkeley {
     fi
     cd db-$pH_Berkeley/build_unix
     ../dist/configure  --quiet\
-    --prefix=$pH_install/db-$pH_Berkeley \
+    --prefix=$pH_install \
     --enable-tcl \
-    --with-tcl=$pH_install/local/lib
+    --with-tcl=$pH_install/lib
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -293,10 +289,7 @@ function ph_bzip {
     cd bzip2-$pH_BZip
     make -f Makefile-libbz2_so --silent >/dev/null
     make --silent >/dev/null
-    make install PREFIX=$pH_install/local --silent >/dev/null
-    #cp libbz2.so.${pH_BZip} $pH_install/local/lib
-    #rm -f $pH_install/local/lib/libbz2.so.${pH_BZip}
-    #ln -s $pH_install/local/lib/libbz2.so.${pH_BZip:0:3}.4 $pH_install/local/lib/libbz2.so.${pH_BZip:0:3}
+    make install PREFIX=$pH_install --silent >/dev/null
     cd $pH_DL
 }
 
@@ -310,7 +303,7 @@ function ph_sqlite {
         tar -xzf sqlite-autoconf-$pH_SQLite.tar.gz
     fi
     cd sqlite-autoconf-$pH_SQLite
-    ./configure --prefix=$pH_install/local --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -325,20 +318,21 @@ function ph_bsddb {
         rm -rf bsddb3-5.0.0
         tar -xzf bsddb3-5.0.0.tar.gz
     fi
+    # TODO why no install here?
 }
 
 # Python
 function ph_python {
     print "    installing Python $pH_Python..."
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
-    export EPREFIX=$pH_install/db-$pH_Berkeley/lib:$EPREFIX
+    export EPREFIX=$pH_install/lib:$EPREFIX
     cd $pH_DL
     wget -q http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz
     rm -rf Python-$pH_Python
     tar -xzf Python-$pH_Python.tgz
     cd Python-$pH_Python
     export CXX="g++" # disable warning message about using g++
-    ./configure --prefix=$pH_install/Python-$pH_Python --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent | tail
     make install --silent >/dev/null
     # Unset EPREFIX. Used by Python setup.py
@@ -346,7 +340,7 @@ function ph_python {
     cd $pH_DL
 
     #export PATH=$pH_install/Python-$pH_Python/bin:$PATH
-    #export PYTHONPATH=$pH_install/local/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
+    #export PYTHONPATH=$pH_install/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
 }
 
 # Python setuptools
@@ -370,7 +364,7 @@ function ph_mercurial {
     rm -rf mercurial-$pH_Mercurial
     tar -xzf mercurial-$pH_Mercurial.tar.gz
     cd mercurial-$pH_Mercurial
-    make install PREFIX=$pH_install/local --silent >/dev/null
+    make install PREFIX=$pH_install --silent >/dev/null
     cd $pH_DL
     cat >> ~/.hgrc <<DELIM
 
@@ -411,10 +405,10 @@ DELIM
 function ph_virtualenv {
     print "    installing VirtualEnv $pH_VirtualEnv..."
     cd $pH_DL
-    wget -q http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
-    rm -rf virtualenv-$pH_VirtualEnv
-    tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
-    cd virtualenv-$pH_VirtualEnv
+    #wget -q http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
+    #rm -rf virtualenv-$pH_VirtualEnv
+    #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
+    #cd virtualenv-$pH_VirtualEnv
 
     # DEBUG
     echo ===DEBUG=== >> debug.txt
@@ -426,7 +420,7 @@ function ph_virtualenv {
 
     # May need to use 'python2.5' instead of 'python' here
     # as the script may require a *system* installation of python
-    python virtualenv.py $pH_install/local --no-site-packages
+    #python virtualenv.py $pH_virtualenv_dir --no-site-packages
 
     # DEBUG
     echo ===DEBUG=== >> debug.txt
@@ -485,7 +479,7 @@ function ph_curl {
     rm -rf curl-$pH_cURL
     tar -xzf curl-$pH_cURL.tar.gz
     cd curl-$pH_cURL
-    ./configure --prefix=$pH_install/local --quiet
+    ./configure --prefix=$pH_install --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -500,7 +494,7 @@ function ph_git {
     rm -rf git-$pH_Git
     tar -xzf git-$pH_Git.tar.gz
     cd git-$pH_Git
-    ./configure --prefix=$pH_install/local NO_MMAP=1 --quiet
+    ./configure --prefix=$pH_install NO_MMAP=1 --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -603,7 +597,8 @@ function ph_install {
     echo "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
 }
 
-function ph_uninstall {
+function ph_create_uninstall {
+    cat > $pH_PWD/python_uninstall <<DELIM
     echo "Removing $pH_install"
     rm -rf $pH_install $pH_install.backup
 
@@ -647,14 +642,18 @@ function ph_uninstall {
     echo ""
     echo "You should log out and log back in so that environment variables will be reset."
     echo ""
+DELIM
+    chmod +x $pH_PWD/python_uninstall
+
 }
 
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
-    ph_uninstall
+    ./python_uninstall
 elif [ "$1" == "install" ] ; then
     {
         ph_install_setup
+        ph_create_uninstall
         ph_install
     } 2>&1 | tee $pH_log
 elif [ -z "$1" ] ; then
