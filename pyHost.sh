@@ -25,6 +25,7 @@
 # * Remove lesscss gem (repo old, and lesscss seems to be in js now)
 #
 # TODO: install into $pH_install instead of $pH_install/local so we don't taint the virtualenv at $pH_install/local
+# TODO: change script url in .bashrc
 # 
 # Ignore these errors:
 # * Openssl
@@ -44,14 +45,6 @@
 #
 # =================================================
 #
-
-#####################
-# Refresh .bashrc
-#
-# Let's make sure the variables are 
-# updated in case you didn't log out.
-#####################
-#source ~/.bashrc
 
 
 verbose=true
@@ -74,6 +67,8 @@ pH_Gem=.gem
 
 pH_log="log.txt"
 pH_error="error.txt"
+
+pH_script_url="http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh"
 
 # Package versions
 #
@@ -142,7 +137,7 @@ function ph_install_setup {
 
 ######################################################################
 # The following lines were added by the script pyHost.sh from:
-# http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh
+# $pH_script_url
 # on $(date -u)
 ######################################################################
 
