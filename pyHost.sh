@@ -49,6 +49,7 @@
 
 verbose=true
 
+function ph_init_vars {
 # ##################
 # Directory mangling
 ####################
@@ -108,6 +109,7 @@ elif [[ "${pH_Python:0:3}" == "2.7" ]]; then
 elif [[ "${pH_Python:0:1}" == "3" ]]; then
     pH_Berkeley=$pH_Berkeley_50x
 fi
+}
 
 function print {
     if [[ "$verbose" == "true" ]] || [[ "$verbose" -gt 0 ]]  ; then
@@ -116,17 +118,11 @@ function print {
 }
 
 function ph_install_setup {
-    print "Start installation"
     # Let's see how long it takes to finish;
     start_time=$(date +%s)
 
     PH_OLD_PATH="$PATH"
     PH_OLD_PYTHONPATH="$PYTHONPATH"
-    # DEBUG
-    echo "Original PATH:"
-    echo -e "  ${PATH//:/\\n  }"
-    echo "Original PYTHONPATH:"
-    echo -e "  ${PYTHONPATH//:/\\n  }"
     
     # Make a backup copy of the current $pH_install folder if it exists.
     if [[ -e $pH_install ]]; then
@@ -597,8 +593,7 @@ function ph_install {
     echo "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
 }
 
-function ph_create_uninstall {
-    cat > $pH_PWD/python_uninstall <<DELIM
+function ph_uninstall {
     echo "Removing $pH_install"
     rm -rf $pH_install $pH_install.backup
 
@@ -642,16 +637,26 @@ function ph_create_uninstall {
     echo ""
     echo "You should log out and log back in so that environment variables will be reset."
     echo ""
-DELIM
-    chmod +x $pH_PWD/python_uninstall
+}
 
+function ph_create_uninstall {
+    echo "    creating uninstall script at $pH_PWD/python_uninstall"
+    # Copy the ph_uninstall function
+    declare -f ph_init_vars > $pH_PWD/python_uninstall
+    declare -f ph_uninstall >> $pH_PWD/python_uninstall
+    echo "" >> $pH_PWD/python_uninstall
+    echo "ph_init_vars" >> $pH_PWD/python_uninstall
+    echo "ph_uninstall" >> $pH_PWD/python_uninstall
+    chmod +x $pH_PWD/python_uninstall
 }
 
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
-    ./python_uninstall
+    ph_uninstall
 elif [ "$1" == "install" ] ; then
+    echo "Start install"
     {
+        ph_init_vars
         ph_install_setup
         ph_create_uninstall
         ph_install
@@ -663,8 +668,8 @@ else
     # run individual install functions
     # Ex to run ph_python and ph_mercurial
     #    ./pyHost.sh python mercurial
-    ph_install_setup 
-    for x in $1 ; do
+    ph_init_vars
+    for x in "$@" ; do
         "ph_$x"
     done
 fi
