@@ -220,7 +220,7 @@ function ph_readline {
         tar -xzf readline-$pH_Readline.tar.gz
     fi
     cd readline-$pH_Readline
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix=$pH_install --quiet >/dev/null
     make --silent
     make install --silent >/dev/null
     cd $pH_DL
