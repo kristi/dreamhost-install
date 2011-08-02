@@ -22,6 +22,7 @@
 # * Add log files
 # * Download into the current directory
 # * Add uninstall
+# * Remove lesscss gem (repo old, and lesscss seems to be in js now)
 #
 # TODO: install into $pH_install instead of $pH_install/local so we don't taint the virtualenv at $pH_install/local
 # 
@@ -99,7 +100,6 @@ pH_SQLite=3070701 #3.7.7.1
 pH_cURL=7.21.7
 pH_Dulwich=0.7.1
 pH_bsddb=5.2.0
-#pH_LessCSS=1.3.0
 
 
 
@@ -548,33 +548,6 @@ hggit =
 DELIM
 }
 
-# Less CSS compiler
-function ph_lesscss {
-    print "    installing LessCSS $pH_LessCSSCSS..."
-    cat >> ~/.bashrc <<DELIM
-
-# Added by pyHost.sh from:
-# http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh
-# on $(date -u)
-
-export PATH="\$PATH:\$HOME/$pH_Gem/bin"
-export GEM_HOME=\$HOME/$pH_Gem
-GEM_PATH="\$GEM_HOME"
-
-# End added by pyHost.sh
-
-DELIM
-    source ~/.bashrc
-    mkdir --mode=775 ~/.gem
-    cd $pH_DL
-    mkdir less-css
-    cd less-css
-#    wget -q http://github.com/downloads/rc1/less/less-1.3.0-escapist.gem.zip
-#    unzip less-1.3.0-escapist.gem.zip
-#    gem install less-1.3.0.gem
-    gem install less
-    cd $pH_DL
-}
 
 
 function ph_install {
@@ -628,9 +601,6 @@ function ph_install {
     if test "${pH_Dulwich+set}" == set ; then
         ph_dulwich
         ph_hggit
-    fi
-    if test "${pH_LessCSS+set}" == set ; then
-        ph_lesscss
     fi
     
     cd ~
