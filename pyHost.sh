@@ -465,11 +465,12 @@ function ph_git {
 function ph_dulwich {
     print "    installing Dulwich $pH_Dulwich..."
     cd $pH_DL
-    wget -q http://samba.org/~jelmer/dulwich/dulwich-$pH_Dulwich.tar.gz
-    rm -rf dulwich-$pH_Dulwich
-    tar -xzf dulwich-$pH_Dulwich.tar.gz
-    cd dulwich-$pH_Dulwich
-    python setup.py --quiet install 
+    #wget -q http://samba.org/~jelmer/dulwich/dulwich-$pH_Dulwich.tar.gz
+    #rm -rf dulwich-$pH_Dulwich
+    #tar -xzf dulwich-$pH_Dulwich.tar.gz
+    #cd dulwich-$pH_Dulwich
+    #python setup.py --quiet install 
+    pip install -q -U dulwich
     cd $pH_DL
 }
 
