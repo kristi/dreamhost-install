@@ -135,7 +135,22 @@ function ph_install_setup {
     
     # Make a backup copy of the current $pH_install folder if it exists.
     if [[ -e $pH_install ]]; then
-        cp --archive $pH_install $pH_install.backup
+        echo "Warning: existing '$pH_install' directory found."
+        if [[ ! -e $pH_install.backup ]] ; then
+            read -n1 -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
+            case $choice in  
+              y|Y) echo "    ok" ;;
+              *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
+            esac
+            echo "    Creating a backup copy at '$pH_install.backup'"
+            cp --archive $pH_install $pH_install.backup
+        else
+            read -n1 -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
+            case $choice in  
+              y|Y) echo "    ok" ;;
+              *) echo "Exiting"; exit ;;
+            esac
+        fi
     fi
     mkdir --parents $pH_install $pH_DL
     #mkdir --parents --mode=775 $pH_install/local/lib
