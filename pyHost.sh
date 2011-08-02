@@ -405,45 +405,10 @@ function ph_virtualenv {
     #rm -rf virtualenv-$pH_VirtualEnv
     #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
     #cd virtualenv-$pH_VirtualEnv
-
-    # DEBUG
-    echo ===DEBUG=== >> debug.txt
-    echo "${PATH//:/$'\n'}" >> debug.txt
-    echo ===DEBUG=== >> debug.txt
-    which python >> debug.txt
-    which pip >> debug.txt
-    pip freeze >> debug.txt
-
-    # May need to use 'python2.5' instead of 'python' here
-    # as the script may require a *system* installation of python
-    #python virtualenv.py $pH_virtualenv_dir --no-site-packages
-
-    # DEBUG
-    echo ===DEBUG=== >> debug.txt
-    which python >> debug.txt
-    which pip >> debug.txt
-    pip freeze >> debug.txt
-
     pip install -q -U virtualenv 
+
     #pip install -q -U virtualenvwrapper
 
-    #DEBUG
-    echo ===DEBUG=== >> debug.txt
-    which python >> debug.txt
-    which pip >> debug.txt
-    pip freeze >> debug.txt
-    #easy_install virtualenv
-    #cd ..
-
-    ##wget -q http://www.doughellmann.com/downloads/virtualenvwrapper-$pH_VirtualEnvWrapper.tar.gz
-    #wget -q http://pypi.python.org/packages/source/v/virtualenvwrapper/virtualenvwrapper-$pH_VirtualEnvWrapper.tar.gz
-    #rm -rf virtualenvwrapper-$pH_VirtualEnvWrapper
-    #tar -xzf virtualenvwrapper-$pH_VirtualEnvWrapper.tar.gz
-    #cd virtualenvwrapper-$pH_VirtualEnvWrapper
-    #python setup.py install
-    #cp virtualenvwrapper.sh $pH_install/
-    #[[ -e $HOME/.virtualenvs ]] || mkdir $HOME/.virtualenvs
-    cd $pH_DL
     
     # Virtualenv to .bashrc
     #cat >> ~/.bashrc <<DELIM
@@ -451,7 +416,7 @@ function ph_virtualenv {
 #export WORKON_HOME=\$HOME/.virtualenvs
 #source virtualenvwrapper.sh
 #DELIM
-    source ~/.bashrc
+    #source ~/.bashrc
 }
 
 # Django framework
