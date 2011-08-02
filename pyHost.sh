@@ -2,16 +2,16 @@
 # =================================================
 # = pyHost version 1.5
 # = 
-# = Created by Tommaso Lanza, under the influence
-# = of the guide published by Andrew Watts at:
-# = http://andrew.io/weblog/2010/02/installing-python-2-6-virtualenv-and-VirtualEnvWrapper-on-dreamhost/
-# =
 # = This script automates the installation, download and
 # = compiling of Python, Mercurial, VirtualEnv in the home folder.
 # = It includes a number of dependencies needed by some Python modules.
 # = It has been tested on Dreamhost on a shared server running Debian.
 # = It should work with other hosts, but it hasn't been tested.
-#
+# =
+# = Created by Tommaso Lanza, under the influence
+# = of the guide published by Andrew Watts at:
+# = http://andrew.io/weblog/2010/02/installing-python-2-6-virtualenv-and-VirtualEnvWrapper-on-dreamhost/
+# 
 # Changelog
 #
 # Updated Aug 1 2011 - Kristi Tsukida <kristi.dev@gmail.com>
@@ -23,9 +23,17 @@
 # * Download into the current directory
 # * Add uninstall
 # * Remove lesscss gem (repo old, and lesscss seems to be in js now)
+# * Don't install into a virtualenv
+# * /usr/local style install instead of /opt style install (I prefer the simplerPATH manipulations)
+# * Default the install into ~/local
 #
-# TODO: install into $pH_install instead of $pH_install/local so we don't taint the virtualenv at $pH_install/local
 # TODO: change script url in .bashrc
+# TODO: add virtualenvwrapper?
+# TODO: change the version vars for pip-installed stuff to be "pip" or something (since pip will find the latest version, we don't need to specity a version)
+# TODO: auto-detect latest versions of stuff  (hard to do?)
+# TODO: add flag/option for /opt style install  (Put python, mercurial, and git into their own install directories)
+# TODO: more sophisticated argument parsing
+# TODO: add silent/verbose flag
 # 
 # Ignore these errors:
 # * Openssl
@@ -50,65 +58,66 @@
 verbose=true
 
 function ph_init_vars {
-# ##################
-# Directory mangling
-####################
-# First, set your variables here in case you
-# want different versions or directories:
+    # Current directory
+    pH_PWD="$PWD"
+    
+    # Directory to install these packages
+    pH_install="$HOME/local"
+    
+    # Directory to store the source archives
+    pH_DL="$PWD/downloads"
+    
+    # Uninstall script
+    pH_uninstall_script="$PWD/pyHost_uninstall"
+    
+    # Ruby Gems dir with prefix ~/
+    pH_Gem=.gem
+    
+    pH_log="log.txt"
+    pH_error="error.txt"
+    
+    # TODO: update this; this is the old script
+    pH_script_url="http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh"
+    
+    # Package versions
+    #
+    # Comment out anything you don't want to install...
+    # ...if you are really sure you have all 
+    # necessary libraries installed already.
+    
+    pH_Python=2.7.2
+    pH_setuptools="0.6c11" # for easy_install (need easy_install to install pip)
+    pH_Mercurial=1.9.1
+    pH_Git=1.7.6
+    pH_Django=1.3 # installed via pip
+    pH_VirtualEnv=1.6.4 # installed via pip
+    # === Python dependencies ===
+    pH_SSL=1.0.0d # for python
+    pH_Readline=6.2 # for python
+    pH_Tcl=8.5.10 # for python
+    pH_Tk=8.5.10 # for python
+    pH_Berkeley_47x=4.7.25 # for python 2.6
+    pH_Berkeley_48x=4.8.30 # for python 2.7
+    pH_Berkeley_50x=5.2.28 # for python 3
+    pH_BZip=1.0.6 # for python
+    pH_SQLite=3070701 #3.7.7.1  for python
+    pH_bsddb=5.2.0 # for python?
+    # === Git dependencies ===
+    pH_cURL=7.21.7 # for git?
+    # === git-hg dependencies ===
+    pH_Dulwich=0.7.1 # for git-hg, installed via pip now
 
-pH_PWD="$PWD"
-# Directory to store the source archives
-pH_DL="$PWD/downloads"
-
-# Directory to install these packages
-pH_install="$HOME/opt/python"
-pH_virtualenv_dir="$HOME/opt/venv"
-
-# Ruby Gems dir with prefix ~/
-pH_Gem=.gem
-
-pH_log="log.txt"
-pH_error="error.txt"
-
-pH_script_url="http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh"
-
-# Package versions
-#
-# Comment out anything you don't want to install...
-# ...if you are really sure you have all 
-# necessary libraries installed already.
-
-pH_Python=2.7.2
-pH_setuptools="0.6c11"
-pH_Mercurial=1.9
-pH_Git=1.7.6
-pH_Django=1.3
-pH_VirtualEnv=1.6.4
-pH_VirtualEnvWrapper=2.7.1
-pH_SSL=1.0.0d
-pH_Readline=6.2
-pH_Tcl=8.5.10
-pH_Tk=8.5.10
-pH_Berkeley_47x=4.7.25
-pH_Berkeley_48x=4.8.30
-pH_Berkeley_50x=5.2.28
-pH_BZip=1.0.6
-pH_SQLite=3070701 #3.7.7.1
-pH_cURL=7.21.7
-pH_Dulwich=0.7.1
-pH_bsddb=5.2.0
 
 
-
-# Sets the correct version of Berkeley DB to use and download
-# by looking at the Python version number
-if [[ "${pH_Python:0:3}" == "2.6" ]]; then
-    pH_Berkeley=$pH_Berkeley_47x
-elif [[ "${pH_Python:0:3}" == "2.7" ]]; then
-    pH_Berkeley=$pH_Berkeley_48x
-elif [[ "${pH_Python:0:1}" == "3" ]]; then
-    pH_Berkeley=$pH_Berkeley_50x
-fi
+    # Sets the correct version of Berkeley DB to use and download
+    # by looking at the Python version number
+    if [[ "${pH_Python:0:3}" == "2.6" ]]; then
+        pH_Berkeley=$pH_Berkeley_47x
+    elif [[ "${pH_Python:0:3}" == "2.7" ]]; then
+        pH_Berkeley=$pH_Berkeley_48x
+    elif [[ "${pH_Python:0:1}" == "3" ]]; then
+        pH_Berkeley=$pH_Berkeley_50x
+    fi
 }
 
 function print {
@@ -197,6 +206,7 @@ function ph_openssl {
         rm -rf openssl-$pH_SSL
         tar -xzf openssl-$pH_SSL.tar.gz
         cd openssl-$pH_SSL
+        # HACK: Avoid doing config again, since it's slow
         ./config --prefix=$pH_install --openssldir=$pH_install/openssl shared > /dev/null
     else
         cd openssl-$pH_SSL
@@ -405,12 +415,13 @@ function ph_virtualenv {
     #rm -rf virtualenv-$pH_VirtualEnv
     #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
     #cd virtualenv-$pH_VirtualEnv
+    ## Create a virtualenv
+    #python virtualenv.py $pH_virtualenv_dir
     pip install -q -U virtualenv 
 
     #pip install -q -U virtualenvwrapper
-
     
-    # Virtualenv to .bashrc
+    # Add Virtualenvwrapper settings to .bashrc
     #cat >> ~/.bashrc <<DELIM
 ## Virtualenv wrapper script
 #export WORKON_HOME=\$HOME/.virtualenvs
@@ -490,7 +501,7 @@ function ph_hggit {
     cat >> ~/.hgrc <<DELIM
     
 # Added by pyHost.sh from:
-# http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh
+# $pH_script_url
 # on $(date -u)
 [extensions]
 hggit =
@@ -606,14 +617,18 @@ function ph_uninstall {
 }
 
 function ph_create_uninstall {
-    echo "    creating uninstall script at $pH_PWD/python_uninstall"
+    if [[ -e "$pH_uninstall_script" ]] ; then
+        echo "Warning: not creating uninstall script because uninstall script already exists at '$pH_uninstall_script'"
+        return;
+    fi
+    echo "    creating uninstall script at $pH_uninstall_script"
     # Copy the ph_uninstall function
-    declare -f ph_init_vars > $pH_PWD/python_uninstall
-    declare -f ph_uninstall >> $pH_PWD/python_uninstall
-    echo "" >> $pH_PWD/python_uninstall
-    echo "ph_init_vars" >> $pH_PWD/python_uninstall
-    echo "ph_uninstall" >> $pH_PWD/python_uninstall
-    chmod +x $pH_PWD/python_uninstall
+    declare -f ph_init_vars > $pH_uninstall_script
+    declare -f ph_uninstall >> $pH_uninstall_script
+    echo "" >> $pH_uninstall_script
+    echo "ph_init_vars" >> $pH_uninstall_script
+    echo "ph_uninstall" >> $pH_uninstall_script
+    chmod +x $pH_uninstall_script
 }
 
 # Parse input arguments
