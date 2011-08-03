@@ -109,6 +109,9 @@
 # =================================================
 #
 
+# Set DEBUG=true to allow running individual install functions by
+# passing input arguments
+# e.g. ./pyHost mercurial django
 DEBUG=true
 #TODO implement verbose/quiet output (use the print func below)
 verbose=true
