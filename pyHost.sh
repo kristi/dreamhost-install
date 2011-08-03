@@ -1,16 +1,71 @@
 #!/bin/bash -e
 # =================================================
-# = pyHost version 1.5
-# = 
-# = This script automates the installation, download and
-# = compiling of Python, Mercurial, VirtualEnv in the home folder.
-# = It includes a number of dependencies needed by some Python modules.
-# = It has been tested on Dreamhost on a shared server running Debian.
-# = It should work with other hosts, but it hasn't been tested.
-# =
-# = Created by Tommaso Lanza, under the influence
-# = of the guide published by Andrew Watts at:
-# = http://andrew.io/weblog/2010/02/installing-python-2-6-virtualenv-and-VirtualEnvWrapper-on-dreamhost/
+# pyHost version 2.0 beta
+# 
+# This script automates a the download, compiling, and local 
+# installation of Python, Mercurial, Git in the home folder.
+# It includes a number of dependencies 
+# (berkeley db, bzip, curl, openssl, readline, sqlite, tcl, tk)
+# and installs some additional plugins 
+# (django, hg-git, pip, setuptools/easy_install, virtualenv).
+# It has been tested on Dreamhost on a shared server running Debian.
+# It should work with other hosts, but it hasn't been tested.
+#
+# Usage:
+#
+#   ./pyHost.sh
+# 
+# With default settings, this command will install 
+# Python, Mercurial, and Git (with dependencies and some plugins)
+# into ~/local.  It will add ~/local/bin to your PATH
+# in your ~/.bashrc file. (If you use a different shell, you
+# will need to add ~/local/bin to your PATH in your shell's
+# init script.)
+#
+# You may delete the downloads directory after installation is complete.
+#
+# After installing, source .bashrc 
+#     source ~/.bashrc
+# or log out and log back in.  Then test that
+#     which python
+# returns "~/local/bin/python" and verify the python version
+#     python --version
+#
+# *** Important environment setup info ***
+# Make sure you source ~/.bashrc in your ~/.bash_profile
+#   source ~/.bashrc
+# OR
+#   . .bashrc
+# or else .bashrc will not be read when you log in, so your 
+# PATH may not be setup correctly for your newly installed tools.
+# http://wiki.dreamhost.com/Environment_Setup
+#
+# Uninstallation:
+#
+# Pass the uninstall flag
+#
+#   ./pyHost.sh uninstall
+#
+# OR run the uninstall script which the installation generated
+#
+#   ./pyHost_uninstall
+#
+# This will remove the ~/local directory and attempt to revert
+# changes made by this script.
+#
+# Note you can manually uninstall by deleting the ~/local directory
+# and delete the pyHost generated entries in ~/.bashrc and ~/.hgrc.
+#
+# Originally created by Tommaso Lanza, under the influence
+# of the guide published by Andrew Watts at:
+# http://andrew.io/weblog/2010/02/installing-python-2-6-virtualenv-and-VirtualEnvWrapper-on-dreamhost/
+# Updated and modified by Kristi Tsukida
+# Thanks to Kelvin Wong's guide at
+# http://www.kelvinwong.ca/2010/08/02/python-2-7-on-dreamhost/
+# 
+# Use this script at your own risk.
+#
+# =================================================
 # 
 # Changelog
 #
@@ -54,7 +109,8 @@
 # =================================================
 #
 
-
+DEBUG=true
+#TODO implement verbose/quiet output (use the print func below)
 verbose=true
 
 function ph_init_vars {
@@ -70,11 +126,7 @@ function ph_init_vars {
     # Uninstall script
     pH_uninstall_script="$PWD/pyHost_uninstall"
     
-    # Ruby Gems dir with prefix ~/
-    pH_Gem=.gem
-    
     pH_log="log.txt"
-    pH_error="error.txt"
     
     # TODO: update this; this is the old script
     pH_script_url="http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh"
@@ -87,10 +139,11 @@ function ph_init_vars {
     
     pH_Python=2.7.2
     pH_setuptools="0.6c11" # for easy_install (need easy_install to install pip)
-    pH_Mercurial=1.9.1
+    pH_Mercurial=1.9.1 # Don't use pip to install Mercurial since it might not be updated
     pH_Git=1.7.6
-    pH_Django=1.3 # installed via pip
-    pH_VirtualEnv=1.6.4 # installed via pip
+    pH_Django="(via pip)" #1.3 # installed via pip
+    pH_VirtualEnv="(via pip)" #1.6.4 # installed via pip
+    pH_HgGit="(via pip)" # installed via pip
     # === Python dependencies ===
     pH_SSL=1.0.0d # for python
     pH_Readline=6.2 # for python
@@ -101,11 +154,8 @@ function ph_init_vars {
     pH_Berkeley_50x=5.2.28 # for python 3
     pH_BZip=1.0.6 # for python
     pH_SQLite=3070701 #3.7.7.1  for python
-    pH_bsddb=5.2.0 # for python?
     # === Git dependencies ===
-    pH_cURL=7.21.7 # for git?
-    # === git-hg dependencies ===
-    pH_Dulwich=0.7.1 # for git-hg, installed via pip now
+    pH_cURL=7.21.7 # for git
 
 
 
@@ -137,23 +187,23 @@ function ph_install_setup {
     if [[ -e $pH_install ]]; then
         echo "Warning: existing '$pH_install' directory found."
         if [[ ! -e $pH_install.backup ]] ; then
-            read -n1 -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
-            case $choice in  
+            read -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
+            case ${choice:0:1} in  
               y|Y) echo "    ok" ;;
               *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
             esac
             echo "    Creating a backup copy at '$pH_install.backup'"
             cp --archive $pH_install $pH_install.backup
         else
-            read -n1 -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
-            case $choice in  
+            read -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
+            case ${choice:0:1} in  
               y|Y) echo "    ok" ;;
               *) echo "Exiting"; exit ;;
             esac
         fi
     fi
     mkdir --parents $pH_install $pH_DL
-    #mkdir --parents --mode=775 $pH_install/local/lib
+    mkdir --parents --mode=775 $pH_install/lib
     
     # Backup and modify .bashrc
     if [[ ! -e ~/.bashrc-pHbackup ]] ; then
@@ -168,7 +218,6 @@ function ph_install_setup {
 ######################################################################
 
 export PATH=$pH_install/bin:\$PATH
-#export PYTHONPATH=$pH_install/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
 
 DELIM
 
@@ -176,12 +225,12 @@ DELIM
 
     export PATH="$pH_install/bin:$PATH"
 
-    # ###################
+    #####################
     # Download and unpack
     #####################
     
     # GCC
-    # ##################################################################
+    ####################################################################
     # Set temporary session paths for and variables for the GCC compiler
     # 
     # Specify the right version of Berkeley DB you want to use, see
@@ -207,7 +256,7 @@ $LD_LIBRARY_PATH
 }
 
 
-# ############################
+##############################
 # Download Compile and Install
 ##############################
 
@@ -297,7 +346,7 @@ function ph_berkeley {
     cd $pH_DL
 }
 
-# Bzip (required by hgweb)
+# Bzip
 function ph_bzip {
     print "    installing BZip $pH_BZip..."
     cd $pH_DL
@@ -307,7 +356,11 @@ function ph_bzip {
         tar -xzf bzip2-$pH_BZip.tar.gz
     fi
     cd bzip2-$pH_BZip
-    make -f Makefile-libbz2_so --silent >/dev/null
+    # Bz2 README claims that the shared library is 10-20% slower than
+    # statically linking, so don't bother with the shared lib.
+    #make -f Makefile-libbz2_so --silent >/dev/null
+    #cp libbzip2.so.$pH_BZip $pH_install/lib
+    #ln -s $pH_install/lib/libbzip2.so.$pH_BZip $pH_install/lib/libbz2.so.1.0
     make --silent >/dev/null
     make install PREFIX=$pH_install --silent >/dev/null
     cd $pH_DL
@@ -329,20 +382,6 @@ function ph_sqlite {
     cd $pH_DL
 }
 
-# bsddb
-function ph_bsddb {
-    print "    installing bsddb $pH_bsddb..."
-    cd $pH_DL
-    if [[ ! -e bsddb3-$pH_bsddb ]] ; then
-        wget -q http://pypi.python.org/packages/source/b/bsddb3/bsddb3-$pH_bsddb.tar.gz
-        rm -rf bsddb3-$pH_bsddb
-        tar -xzf bsddb3-$pH_bsddb.tar.gz
-    fi
-    ./configure --prefix=$pH_install --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd $pH_DL
-}
 
 # Python
 function ph_python {
@@ -361,9 +400,6 @@ function ph_python {
     # Unset EPREFIX. Used by Python setup.py
     export EPREFIX=
     cd $pH_DL
-
-    #export PATH=$pH_install/Python-$pH_Python/bin:$PATH
-    #export PYTHONPATH=$pH_install/lib/python${pH_Python:0:3}/site-packages:\$PYTHONPATH
 }
 
 # Python setuptools
@@ -489,23 +525,14 @@ function ph_git {
     cd $pH_DL
 }
 
-# Dulwich
-function ph_dulwich {
-    print "    installing Dulwich $pH_Dulwich..."
-    cd $pH_DL
-    #wget -q http://samba.org/~jelmer/dulwich/dulwich-$pH_Dulwich.tar.gz
-    #rm -rf dulwich-$pH_Dulwich
-    #tar -xzf dulwich-$pH_Dulwich.tar.gz
-    #cd dulwich-$pH_Dulwich
-    #python setup.py --quiet install 
-    pip install -q -U dulwich
-    cd $pH_DL
-}
-
 # Hg-Git
 function ph_hggit {
-    print "    installing hg-git $pH_hggit..."
+    print "    installing hg-git $pH_HgGit..."
     cd $pH_DL
+
+    # dulwich required by hg-git
+    pip install -q -U dulwich
+
     #[ ! -e hg-git ] && mkdir hg-git
     #cd hg-git
     #wget -q http://github.com/schacon/hg-git/tarball/master
@@ -554,9 +581,6 @@ function ph_install {
     if test "${pH_SQLite+set}" == set ; then
         ph_sqlite
     fi
-    if test "${pH_bsddb+set}" == set ; then
-        ph_bsddb
-    fi
     if test "${pH_Python+set}" == set ; then
         ph_python
     fi
@@ -578,27 +602,35 @@ function ph_install {
     if test "${pH_Git+set}" == set ; then
         ph_git
     fi
-    if test "${pH_Dulwich+set}" == set ; then
-        ph_dulwich
+    if test "${pH_HgGit+set}" == set ; then
         ph_hggit
     fi
     
     cd ~
     finish_time=$(date +%s)
     echo "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
+    echo ""
+    echo "Log out and log back in for the changes in your .bashrc file to take affect."
+    echo "If you don't use bash, setup your shel so that your PATH includes your new $pH_install/bin directory."
+    echo ""
 }
 
 function ph_uninstall {
     echo "Removing $pH_install"
-    rm -rf $pH_install $pH_install.backup
+    rm -rf "$pH_install" 
 
-    echo "Removing $pH_error and $pH_log"
-    rm -f $pH_error $pH_log
+    if [[ -e "pH_install.backup" ]] ; then
+        echo "Restoring $pH_install.backup"
+        mv "$pH_install.backup" "$pH_install"
+    fi
+
+    echo "Removing $pH_log"
+    rm -f "$pH_log"
 
     echo ""
     read -n1 -p "Delete $pH_DL? [y,n]" choice 
     case $choice in  
-      y|Y) rm -rf $pH_DL ;;
+      y|Y) echo "    ok"; echo "Removing $pH_DL"; rm -rf $pH_DL ;;
     esac
     echo ""
 
@@ -607,30 +639,30 @@ function ph_uninstall {
         mv $HOME/.bashrc-pHbackup $HOME/.bashrc
     fi
 
+
+    echo ""
+    choice='n'
+    [[ -e $HOME/.virtualenvs ]] && read -p "Delete $HOME/.virtualenvs? [y,n]" choice 
+    case ${choice:0:1} in  
+      y|Y) echo "    ok"; echo "Removing $HOME/.virtualenvs"; rm -rf $HOME/.virtualenvs ;;
+    esac
+    echo ""
+
+    echo ""
+    choice='n'
+    [[ -e $HOME/.hgrc ]] && read -p "Delete $HOME/.hgrc? [y,n]" choice 
+    case ${choice:0:1} in  
+      y|Y) echo "    ok"; echo "Removing $HOME/.hgrc"; rm -rf $HOME/.hgrc ;;
+    esac
+    echo ""
+
     echo ""
     echo "There may also be entries in your ~/.bashrc and ~/.hgrc which need removing."
-    echo "You may want delete $pH_Gem and ~/.virtualenvs too"
-
-    echo ""
-    choice='n'
-    [[ -e $HOME/.virtualenvs ]] && read -n1 -p "Delete $HOME/.virtualenvs? [y,n]" choice 
-    case $choice in  
-      y|Y) rm -rf $HOME/.virtualenvs ;;
-    esac
-    echo ""
-
-    echo ""
-    choice='n'
-    [[ -e $HOME/.hgrc ]] && read -n1 -p "Delete $HOME/.hgrc? [y,n]" choice 
-    case $choice in  
-      y|Y) rm -rf $HOME/.hgrc ;;
-    esac
-    echo ""
-
     echo ""
     echo "Done."
     echo ""
     echo "You should log out and log back in so that environment variables will be reset."
+    echo "Make sure that $pH_install/bin is in your PATH before /usr/bin"
     echo ""
 }
 
@@ -640,7 +672,7 @@ function ph_create_uninstall {
         return;
     fi
     echo "    creating uninstall script at $pH_uninstall_script"
-    # Copy the ph_uninstall function
+    # Copy the ph_init_vars and ph_uninstall function definitions
     declare -f ph_init_vars > $pH_uninstall_script
     declare -f ph_uninstall >> $pH_uninstall_script
     echo "" >> $pH_uninstall_script
@@ -652,17 +684,15 @@ function ph_create_uninstall {
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
     ph_uninstall
-elif [ "$1" == "install" ] ; then
+elif [ -z "$1" ] || [ "$1" == "install" ] ; then
     echo "Start install"
+    ph_init_vars
     {
-        ph_init_vars
-        ph_install_setup
         ph_create_uninstall
+        ph_install_setup
         ph_install
     } 2>&1 | tee $pH_log
-elif [ -z "$1" ] ; then
-    echo "did you mean to install?  run '$0 install'"
-else
+elif [ "$DEBUG" == "true" ] || [ "$DEBUG" -gt 0 ] ; then
     # DEBUG HACK
     # run individual install functions
     # Ex to run ph_python and ph_mercurial
@@ -671,6 +701,8 @@ else
     for x in "$@" ; do
         "ph_$x"
     done
+else
+    echo "Unrecognized option '$1'"
 fi
 
 
