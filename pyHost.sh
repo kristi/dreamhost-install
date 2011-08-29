@@ -190,19 +190,20 @@ function ph_install_setup {
     if [[ -e $pH_install ]]; then
         echo "Warning: existing '$pH_install' directory found."
         if [[ ! -e $pH_install.backup ]] ; then
-            read -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
-            case ${choice:0:1} in  
-              y|Y) echo "    ok" ;;
-              *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
-            esac
+            #read -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
+            #case ${choice:0:1} in  
+            #  y|Y) echo "    ok" ;;
+            #  *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
+            #esac
             echo "    Creating a backup copy at '$pH_install.backup'"
             cp --archive $pH_install $pH_install.backup
         else
-            read -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
-            case ${choice:0:1} in  
-              y|Y) echo "    ok" ;;
-              *) echo "Exiting"; exit ;;
-            esac
+            echo "    Existing backup copy found at $pH_install.backup.  No new backup will be created."
+            #read -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
+            #case ${choice:0:1} in  
+            #  y|Y) echo "    ok" ;;
+            #  *) echo "Exiting"; exit ;;
+            #esac
         fi
     fi
     mkdir --parents $pH_install $pH_DL
@@ -239,19 +240,17 @@ DELIM
     # Specify the right version of Berkeley DB you want to use, see
     # below for DB install scripts.
     ####################################################################
-    export LD_LIBRARY_PATH=\
-$pH_install/lib:\
-$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH="$pH_install/lib"
     
     export LD_RUN_PATH=$LD_LIBRARY_PATH
     
     export LDFLAGS="\
-    -L$pH_install/lib"
+-L$pH_install/lib"
     
     export CPPFLAGS="\
-    -I$pH_install/include \
-    -I$pH_install/include/openssl \
-    -I$pH_install/include/readline"
+-I$pH_install/include \
+-I$pH_install/include/openssl \
+-I$pH_install/include/readline"
     
     export CXXFLAGS=$CPPFLAGS
     export CFLAGS=$CPPFLAGS
@@ -265,7 +264,7 @@ $LD_LIBRARY_PATH
 
 # OpenSSL (required by haslib)
 function ph_openssl {
-    print "    installing OpenSSL $pH_SSL..."
+    print "    Installing OpenSSL $pH_SSL..."
     cd $pH_DL
     if [[ ! -e openssl-$pH_SSL ]] ; then
         wget -q http://www.openssl.org/source/openssl-$pH_SSL.tar.gz
@@ -273,7 +272,7 @@ function ph_openssl {
         tar -xzf openssl-$pH_SSL.tar.gz
         cd openssl-$pH_SSL
         # HACK: Avoid doing config again, since it's slow
-        ./config --prefix=$pH_install --openssldir=$pH_install/openssl shared > /dev/null
+        ./config --prefix="$pH_install" --openssldir="$pH_install/openssl" shared > /dev/null
     else
         cd openssl-$pH_SSL
     fi
@@ -284,15 +283,21 @@ function ph_openssl {
 
 # Readline
 function ph_readline {
-    print "    installing Readline $pH_Readline..."
+    print "    Installing Readline $pH_Readline..."
     cd $pH_DL
     if [[ ! -e readline-$pH_Readline ]] ; then
         wget -q ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz
         rm -rf readline-$pH_Readline
         tar -xzf readline-$pH_Readline.tar.gz
+    else
+        cd "$pH_DL/readline-$pH_Readline"
+	# Directory exists, clean up after old build
+	rm -f "$pH_install/lib/libreadline.so.$pH_Readline"
+	rm -f "$pH_install/lib/libreadline.so.6"
+	rm -f "$pH_install/lib/libreadline.so"
     fi
     cd readline-$pH_Readline
-    ./configure --prefix=$pH_install --quiet >/dev/null
+    ./configure --prefix="$pH_install" --quiet >/dev/null
     make --silent
     make install --silent >/dev/null
     cd $pH_DL
@@ -300,7 +305,7 @@ function ph_readline {
 
 # Tcl
 function ph_tcl {
-    print "    installing Tcl $pH_Tcl..."
+    print "    Installing Tcl $pH_Tcl..."
     cd $pH_DL
     if [[ ! -e tcl$pH_Tcl-src ]] ; then
         wget -q http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz
@@ -308,15 +313,15 @@ function ph_tcl {
         tar -xzf tcl$pH_Tcl-src.tar.gz
     fi
     cd tcl$pH_Tcl/unix
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
 }
 
-# Tk (WTF?!)
+# Tk
 function ph_tk {
-    print "    installing Tk $pH_Tk..."
+    print "    Installing Tk $pH_Tk..."
     cd $pH_DL
     if [[ ! -e tk$pH_Tcl-src ]] ; then
         wget -q http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz
@@ -324,7 +329,7 @@ function ph_tk {
         tar -xzf tk$pH_Tk-src.tar.gz
     fi
     cd tk$pH_Tk/unix
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -332,7 +337,7 @@ function ph_tk {
 
 # Oracle Berkeley DB
 function ph_berkeley {
-    print "    installing Berkeley DB $pH_Berkeley..."
+    print "    Installing Berkeley DB $pH_Berkeley..."
     cd $pH_DL
     if [[ ! -e db-$pH_Berkeley ]] ; then
         wget -q http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz
@@ -341,9 +346,9 @@ function ph_berkeley {
     fi
     cd db-$pH_Berkeley/build_unix
     ../dist/configure  --quiet\
-    --prefix=$pH_install \
+    --prefix="$pH_install" \
     --enable-tcl \
-    --with-tcl=$pH_install/lib
+    --with-tcl="$pH_install/lib"
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -351,27 +356,34 @@ function ph_berkeley {
 
 # Bzip
 function ph_bzip {
-    print "    installing BZip $pH_BZip..."
+    print "    Installing BZip $pH_BZip..."
     cd $pH_DL
     if [[ ! -e bzip2-$pH_BZip ]] ; then
         wget -q http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz
         rm -rf bzip2-$pH_BZip
         tar -xzf bzip2-$pH_BZip.tar.gz
+    else
+        cd "$pH_DL/bzip2-$pH_BZip"
+	# Directory exists, clean up after old build
+        make clean
+	rm -f "$pH_install/lib/libbz2.so.$pH_BZip"
+	rm -f "$pH_install/lib/libbz2.so.1.0"
     fi
-    cd bzip2-$pH_BZip
-    # Bz2 README claims that the shared library is 10-20% slower than
-    # statically linking, so don't bother with the shared lib.
-    #make -f Makefile-libbz2_so --silent >/dev/null
-    #cp libbzip2.so.$pH_BZip $pH_install/lib
-    #ln -s $pH_install/lib/libbzip2.so.$pH_BZip $pH_install/lib/libbz2.so.1.0
+    cd "$pH_DL/bzip2-$pH_BZip"
+    # Shared library
+    make -f Makefile-libbz2_so --silent >/dev/null
+    # Static library
     make --silent >/dev/null
-    make install PREFIX=$pH_install --silent >/dev/null
+    make install PREFIX="$pH_install" --silent >/dev/null
+    cp "libbz2.so.$pH_BZip" "$pH_install/lib"
+    ln -s "$pH_install/lib/libbz2.so.$pH_BZip" "$pH_install/lib/libbz2.so.1.0"
+    
     cd $pH_DL
 }
 
 # SQLite
 function ph_sqlite {
-    print "    installing SQLite $pH_SQLite..."
+    print "    Installing SQLite $pH_SQLite..."
     cd $pH_DL
     if [[ ! -e sqlite-autoconf-$pH_SQLite ]] ; then
         wget -q http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz
@@ -379,7 +391,7 @@ function ph_sqlite {
         tar -xzf sqlite-autoconf-$pH_SQLite.tar.gz
     fi
     cd sqlite-autoconf-$pH_SQLite
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -388,16 +400,16 @@ function ph_sqlite {
 
 # Python
 function ph_python {
-    print "    installing Python $pH_Python..."
+    print "    Installing Python $pH_Python..."
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
-    export EPREFIX=$pH_install/lib:$EPREFIX
+    export EPREFIX="$pH_install/lib:$EPREFIX"
     cd $pH_DL
     wget -q http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz
     rm -rf Python-$pH_Python
     tar -xzf Python-$pH_Python.tgz
     cd Python-$pH_Python
     export CXX="g++" # disable warning message about using g++
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix="$pH_install" --quiet
     make --silent | tail
     make install --silent >/dev/null
     # Unset EPREFIX. Used by Python setup.py
@@ -407,7 +419,7 @@ function ph_python {
 
 # Python setuptools
 function ph_setuptools {
-    print "    installing Python setuptools $pH_setuptools..."
+    print "    Installing Python setuptools $pH_setuptools..."
     cd $pH_DL
     wget http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg
     sh setuptools-$pH_setuptools-py${pH_Python:0:3}.egg
@@ -416,7 +428,7 @@ function ph_setuptools {
 
 # Mercurial
 function ph_mercurial {
-    print "    installing Mercurial $pH_Mercurial..."
+    print "    Installing Mercurial $pH_Mercurial..."
     cd $pH_DL
     
     # docutils required by mercurial
@@ -426,7 +438,7 @@ function ph_mercurial {
     rm -rf mercurial-$pH_Mercurial
     tar -xzf mercurial-$pH_Mercurial.tar.gz
     cd mercurial-$pH_Mercurial
-    make install PREFIX=$pH_install --silent >/dev/null
+    make install PREFIX="$pH_install" --silent >/dev/null
     cd $pH_DL
     cat >> ~/.hgrc <<DELIM
 
@@ -465,7 +477,7 @@ DELIM
 
 # VirtualEnv
 function ph_virtualenv {
-    print "    installing VirtualEnv $pH_VirtualEnv..."
+    print "    Installing VirtualEnv $pH_VirtualEnv..."
     cd $pH_DL
     #wget -q http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
     #rm -rf virtualenv-$pH_VirtualEnv
@@ -488,7 +500,7 @@ function ph_virtualenv {
 
 # Django framework
 function ph_django {
-    print "    installing Django $pH_Django..."
+    print "    Installing Django $pH_Django..."
     cd $pH_DL
     #wget -q http://www.djangoproject.com/download/$pH_Django/tarball/
     #rm -rf Django-$pH_Django
@@ -501,13 +513,13 @@ function ph_django {
 
 # cURL (for Git to pull remote repos)
 function ph_curl {
-    print "    installing cURL $pH_cURL..."
+    print "    Installing cURL $pH_cURL..."
     cd $pH_DL
     wget -q http://curl.haxx.se/download/curl-$pH_cURL.tar.gz
     rm -rf curl-$pH_cURL
     tar -xzf curl-$pH_cURL.tar.gz
     cd curl-$pH_cURL
-    ./configure --prefix=$pH_install --quiet
+    ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -516,13 +528,13 @@ function ph_curl {
 # Git
 # NO_MMAP is needed to prevent Dreamhost killing git processes
 function ph_git {
-    print "    installing Git $pH_Git..."
+    print "    Installing Git $pH_Git..."
     cd $pH_DL
     wget -q http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz
     rm -rf git-$pH_Git
     tar -xzf git-$pH_Git.tar.gz
     cd git-$pH_Git
-    ./configure --prefix=$pH_install NO_MMAP=1 --quiet
+    ./configure --prefix="$pH_install" NO_MMAP=1 --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
     cd $pH_DL
@@ -530,7 +542,7 @@ function ph_git {
 
 # Hg-Git
 function ph_hggit {
-    print "    installing hg-git $pH_HgGit..."
+    print "    Installing hg-git $pH_HgGit..."
     cd $pH_DL
 
     # dulwich required by hg-git
@@ -670,11 +682,7 @@ function ph_uninstall {
 }
 
 function ph_create_uninstall {
-    if [[ -e "$pH_uninstall_script" ]] ; then
-        echo "Warning: not creating uninstall script because uninstall script already exists at '$pH_uninstall_script'"
-        return;
-    fi
-    echo "    creating uninstall script at $pH_uninstall_script"
+    echo "    Creating uninstall script at $pH_uninstall_script"
     # Copy the ph_init_vars and ph_uninstall function definitions
     declare -f ph_init_vars > $pH_uninstall_script
     declare -f ph_uninstall >> $pH_uninstall_script
@@ -686,6 +694,7 @@ function ph_create_uninstall {
 
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
+    ph_init_vars
     ph_uninstall
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
     echo "Start install"
@@ -701,6 +710,7 @@ elif [ "$DEBUG" == "true" ] || [ "$DEBUG" -gt 0 ] ; then
     # Ex to run ph_python and ph_mercurial
     #    ./pyHost.sh python mercurial
     ph_init_vars
+    ph_install_setup
     for x in "$@" ; do
         "ph_$x"
     done
