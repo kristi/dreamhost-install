@@ -132,7 +132,7 @@ function ph_init_vars {
     pH_log="log.txt"
     
     # TODO: update this; this is the old script
-    pH_script_url="http://bitbucket.org/tmslnz/python-dreamhost-batch/src/tip/pyHost.sh"
+    pH_script_url="https://github.com/kristi/dreamhost-install/blob/master/pyHost.sh"
     
     # Package versions
     #
