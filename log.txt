@@ -1,0 +1,122 @@
+    Creating uninstall script at /home/taikoadmin/install/dreamhost-install/pyHost_uninstall
+    Installing OpenSSL 1.0.0d...
+ar: creating ../libcrypto.a
+Use of uninitialized value $output in pattern match (m//) at asm/md5-x86_64.pl line 115.
+ar: creating ../libssl.a
+    Installing Readline 6.2...
+mv: cannot stat `/home/taikoadmin/local/lib/libreadline.a': No such file or directory
+mv: cannot stat `/home/taikoadmin/local/lib/libhistory.a': No such file or directory
+    Installing Tcl 8.5.10...
+    Installing Tk 8.5.10...
+    Installing Berkeley DB 4.8.30...
+libtool.m4: error: problem compiling CXX test program
+    Installing BZip 1.0.6...
+compress.c: In function ‘BZ2_compressBlock’:
+compress.c:74: warning: inlining failed in call to ‘bsW’: call is unlikely and code size would grow
+compress.c:519: warning: called from here
+compress.c:74: warning: inlining failed in call to ‘bsW’: call is unlikely and code size would grow
+compress.c:520: warning: called from here
+    Installing SQLite 3070701...
+appending configuration tag "CXX" to libtool
+appending configuration tag "F77" to libtool
+    Installing Python 2.7.2...
+creating Modules/Setup
+creating Modules/Setup.local
+creating Makefile
+abort: repository . not found!
+abort: repository . not found!
+abort: repository . not found!
+libpython2.7.a(posixmodule.o): In function `posix_tmpnam':
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/./Modules/posixmodule.c:7370: warning: the use of `tmpnam_r' is dangerous, better use `mkstemp'
+libpython2.7.a(posixmodule.o): In function `posix_tempnam':
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/./Modules/posixmodule.c:7317: warning: the use of `tempnam' is dangerous, better use `mkstemp'
+In file included from /home/taikoadmin/local/include/readline/readline.h:36,
+                 from /home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/readline.c:31:
+/home/taikoadmin/local/include/readline/rltypedefs.h:34: warning: function declaration isn’t a prototype
+/home/taikoadmin/local/include/readline/rltypedefs.h:35: warning: function declaration isn’t a prototype
+/home/taikoadmin/local/include/readline/rltypedefs.h:36: warning: function declaration isn’t a prototype
+/home/taikoadmin/local/include/readline/rltypedefs.h:37: warning: function declaration isn’t a prototype
+In file included from /home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/readline.c:31:
+/home/taikoadmin/local/include/readline/readline.h:381: warning: function declaration isn’t a prototype
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c: In function ‘mmap_resize’:
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3193: warning: implicit declaration of function ‘mremap’
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3193: warning: cast to pointer from integer of different size
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c: In function ‘sys_trim’:
+/home/taikoadmin/install/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3612: warning: comparison between pointer and integer
+config.status: executing libtool commands
+config.status: executing include commands
+config.status: executing src commands
+building dbm using gdbm
+
+Python build finished, but the necessary bits to build these modules were not found:
+bsddb185           dl                 imageop         
+sunaudiodev                                           
+To find the necessary bits, look in setup.py in detect_modules() for the module's name.
+
+    Installing Python setuptools 0.6c11...
+--2011-08-29 11:46:38--  http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11-py2.7.egg
+Resolving pypi.python.org... 82.94.164.168, 2001:888:2000:d::a8
+Connecting to pypi.python.org|82.94.164.168|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 332005 (324K) [application/octet-stream]
+Saving to: `setuptools-0.6c11-py2.7.egg'
+
+     0K .......... .......... .......... .......... .......... 15%  108K 3s
+    50K .......... .......... .......... .......... .......... 30%  308K 1s
+   100K .......... .......... .......... .......... .......... 46%  320K 1s
+   150K .......... .......... .......... .......... .......... 61%  301K 1s
+   200K .......... .......... .......... .......... .......... 77%  310K 0s
+   250K .......... .......... .......... .......... .......... 92%  310K 0s
+   300K .......... .......... ....                            100%  923K=1.3s
+
+2011-08-29 11:46:40 (250 KB/s) - `setuptools-0.6c11-py2.7.egg' saved [332005/332005]
+
+Processing setuptools-0.6c11-py2.7.egg
+Copying setuptools-0.6c11-py2.7.egg to /home/taikoadmin/local/lib/python2.7/site-packages
+Adding setuptools 0.6c11 to easy-install.pth file
+Installing easy_install script to /home/taikoadmin/local/bin
+Installing easy_install-2.7 script to /home/taikoadmin/local/bin
+
+Installed /home/taikoadmin/local/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg
+Processing dependencies for setuptools==0.6c11
+Finished processing dependencies for setuptools==0.6c11
+warning: no files found matching '*.html' under directory 'docs'
+warning: no previously-included files matching '*.txt' found under directory 'docs/_build'
+no previously-included directories found matching 'docs/_build/_sources'
+    Installing Mercurial 1.9.1...
+1580 translated messages, 7 fuzzy translations, 2030 untranslated messages.
+1865 translated messages, 6 fuzzy translations, 1237 untranslated messages.
+335 translated messages, 204 fuzzy translations, 1791 untranslated messages.
+1491 translated messages, 2129 untranslated messages.
+640 translated messages, 8 fuzzy translations, 2372 untranslated messages.
+2226 translated messages, 378 fuzzy translations, 503 untranslated messages.
+678 translated messages, 2 fuzzy translations, 2806 untranslated messages.
+1945 translated messages, 1186 untranslated messages.
+2681 translated messages, 13 fuzzy translations, 926 untranslated messages.
+3620 translated messages.
+358 translated messages, 104 fuzzy translations, 1775 untranslated messages.
+315 translated messages, 35 fuzzy translations, 1933 untranslated messages.
+    Installing VirtualEnv (via pip)...
+    Installing Django (via pip)...
+    Installing cURL 7.21.7...
+    Installing Git 1.7.6...
+GIT_VERSION = 1.7.6
+    * new build flags or prefix
+Writing perl.mak for Git
+GITGUI_VERSION = 0.14.0-dirty
+    * new locations or Tcl/Tk interpreter
+289 translated messages.
+200 translated messages, 7 untranslated messages.
+276 translated messages, 4 fuzzy translations.
+288 translated messages.
+283 translated messages, 6 untranslated messages.
+284 translated messages.
+290 translated messages.
+245 translated messages.
+290 translated messages.
+    Installing hg-git (via pip)...
+pyHost.sh completed the installation in 1252 seconds.
+
+Log out and log back in for the changes in your .bashrc file to take affect.
+If you don't use bash, setup your shel so that your PATH includes your new /home/taikoadmin/local/bin directory.
+
