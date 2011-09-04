@@ -587,7 +587,7 @@ function ph_nodejs {
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
     cd "node-v$pH_NodeJS"
-    ./configure --prefix="$pH_install" --quiet
+    ./configure --prefix="$pH_install" >/dev/null
     make --silent >/dev/null
     make install --silent >/dev/null
 }
@@ -601,11 +601,12 @@ function ph_lesscss {
         rm -rf "less.js"
         git clone -q "https://github.com/cloudhead/less.js.git"
         cd "less.js"
-        git checkout "v$pH_LessCSS"
+        #git checkout "v$pH_LessCSS"
+        cd "$pH_DL"
     fi
     cd "less.js"
     cp "bin/lessc" "$pH_install/bin"
-    cp "lib/less" "$pH_install/lib"
+    cp -a "lib/less" "$pH_install/lib"
 }
 
 # inotify
