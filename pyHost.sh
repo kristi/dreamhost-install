@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # =================================================
-# pyHost version 2.0 beta
+# pyHost version 2.1 beta
 # 
 # This script automates a the download, compiling, and local 
 # installation of Python, Mercurial, Git in the home folder.
@@ -69,7 +69,10 @@
 # 
 # Changelog
 #
-# Updated Aug 1 2011 - Kristi Tsukida <kristi.dev@gmail.com>
+# Sep 4 2011 - Kristi Tsukida <kristi.dev@gmail.com>
+# * Add node.js, lesscss and inotify
+#
+# Aug 1 2011 - Kristi Tsukida <kristi.dev@gmail.com>
 # * Updated version numbers and urls
 # * Use pip to install python packages
 # * Check for directories before creating them
@@ -140,25 +143,28 @@ function ph_init_vars {
     # ...if you are really sure you have all 
     # necessary libraries installed already.
     
-    pH_Python=2.7.2
+    pH_Python="2.7.2"
     pH_setuptools="0.6c11" # for easy_install (need easy_install to install pip)
-    pH_Mercurial=1.9.1 # Don't use pip to install Mercurial since it might not be updated
-    pH_Git=1.7.6
+    pH_Mercurial="1.9.1" # Don't use pip to install Mercurial since it might not be updated
+    pH_Git="1.7.6"
     pH_Django="(via pip)" #1.3 # installed via pip
     pH_VirtualEnv="(via pip)" #1.6.4 # installed via pip
     pH_HgGit="(via pip)" # installed via pip
+    pH_NodeJS="0.4.11"
+    pH_LessCSS="(github)"
+    pH_Inotify="3.14"
     # === Python dependencies ===
-    pH_SSL=1.0.0d # for python
-    pH_Readline=6.2 # for python
-    pH_Tcl=8.5.10 # for python
-    pH_Tk=8.5.10 # for python
-    pH_Berkeley_47x=4.7.25 # for python 2.6
-    pH_Berkeley_48x=4.8.30 # for python 2.7
-    pH_Berkeley_50x=5.2.28 # for python 3
-    pH_BZip=1.0.6 # for python
-    pH_SQLite=3070701 #3.7.7.1  for python
+    pH_SSL="1.0.0d" # for python
+    pH_Readline="6.2" # for python
+    pH_Tcl="8.5.10" # for python
+    pH_Tk="8.5.10" # for python
+    pH_Berkeley_47x="4.7.25" # for python 2.6
+    pH_Berkeley_48x="4.8.30" # for python 2.7
+    pH_Berkeley_50x="5.2.28" # for python 3
+    pH_BZip="1.0.6" # for python
+    pH_SQLite="3070701" #3.7.7.1  for python
     # === Git dependencies ===
-    pH_cURL=7.21.7 # for git
+    pH_cURL="7.21.7" # for git
 
 
 
@@ -187,7 +193,7 @@ function ph_install_setup {
     PH_OLD_PYTHONPATH="$PYTHONPATH"
     
     # Make a backup copy of the current $pH_install folder if it exists.
-    if [[ -e $pH_install ]]; then
+    if [[ -e "$pH_install" ]]; then
         echo "Warning: existing '$pH_install' directory found."
         if [[ ! -e $pH_install.backup ]] ; then
             #read -p "Create a backup copy at $pH_install.backup and continue? [y,n]" choice 
@@ -196,7 +202,7 @@ function ph_install_setup {
             #  *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
             #esac
             echo "    Creating a backup copy at '$pH_install.backup'"
-            cp --archive $pH_install $pH_install.backup
+            cp --archive "$pH_install $pH_install.backup"
         else
             echo "    Existing backup copy found at $pH_install.backup.  No new backup will be created."
             #read -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n]" choice 
@@ -206,8 +212,8 @@ function ph_install_setup {
             #esac
         fi
     fi
-    mkdir --parents $pH_install $pH_DL
-    mkdir --parents --mode=775 $pH_install/lib
+    mkdir --parents "$pH_install" "$pH_DL"
+    mkdir --parents --mode=775 "$pH_install/lib"
     
     # Backup and modify .bashrc
     if [[ ! -e ~/.bashrc-pHbackup ]] ; then
@@ -242,7 +248,7 @@ DELIM
     ####################################################################
     export LD_LIBRARY_PATH="$pH_install/lib"
     
-    export LD_RUN_PATH=$LD_LIBRARY_PATH
+    export LD_RUN_PATH="$LD_LIBRARY_PATH"
     
     export LDFLAGS="\
 -L$pH_install/lib"
@@ -252,8 +258,8 @@ DELIM
 -I$pH_install/include/openssl \
 -I$pH_install/include/readline"
     
-    export CXXFLAGS=$CPPFLAGS
-    export CFLAGS=$CPPFLAGS
+    export CXXFLAGS="$CPPFLAGS"
+    export CFLAGS="$CPPFLAGS"
     
 }
 
@@ -265,84 +271,84 @@ DELIM
 # OpenSSL (required by haslib)
 function ph_openssl {
     print "    Installing OpenSSL $pH_SSL..."
-    cd $pH_DL
-    if [[ ! -e openssl-$pH_SSL ]] ; then
-        wget -q http://www.openssl.org/source/openssl-$pH_SSL.tar.gz
-        rm -rf openssl-$pH_SSL
-        tar -xzf openssl-$pH_SSL.tar.gz
-        cd openssl-$pH_SSL
+    cd "$pH_DL"
+    if [[ ! -e "openssl-$pH_SSL" ]] ; then
+        wget -q "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz"
+        rm -rf "openssl-$pH_SSL"
+        tar -xzf "openssl-$pH_SSL.tar.gz"
+        cd "openssl-$pH_SSL"
         # HACK: Avoid doing config again, since it's slow
         ./config --prefix="$pH_install" --openssldir="$pH_install/openssl" shared > /dev/null
     else
-        cd openssl-$pH_SSL
+        cd "openssl-$pH_SSL"
     fi
     make --silent > /dev/null
     make install --silent > /dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Readline
 function ph_readline {
     print "    Installing Readline $pH_Readline..."
-    cd $pH_DL
-    if [[ ! -e readline-$pH_Readline ]] ; then
-        wget -q ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz
-        rm -rf readline-$pH_Readline
-        tar -xzf readline-$pH_Readline.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "readline-$pH_Readline" ]] ; then
+        wget -q "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz"
+        rm -rf "readline-$pH_Readline"
+        tar -xzf "readline-$pH_Readline.tar.gz"
     else
         cd "$pH_DL/readline-$pH_Readline"
-	# Directory exists, clean up after old build
-	rm -f "$pH_install/lib/libreadline.so.$pH_Readline"
-	rm -f "$pH_install/lib/libreadline.so.6"
-	rm -f "$pH_install/lib/libreadline.so"
+        # Directory exists, clean up after old build
+        rm -f "$pH_install/lib/libreadline.so.$pH_Readline"
+        rm -f "$pH_install/lib/libreadline.so.6"
+        rm -f "$pH_install/lib/libreadline.so"
     fi
-    cd readline-$pH_Readline
+    cd "readline-$pH_Readline"
     ./configure --prefix="$pH_install" --quiet >/dev/null
     make --silent
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Tcl
 function ph_tcl {
     print "    Installing Tcl $pH_Tcl..."
-    cd $pH_DL
-    if [[ ! -e tcl$pH_Tcl-src ]] ; then
-        wget -q http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz
-        rm -rf tcl$pH_Tcl-src
-        tar -xzf tcl$pH_Tcl-src.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "tcl$pH_Tcl-src" ]] ; then
+        wget -q "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz"
+        rm -rf "tcl$pH_Tcl-src"
+        tar -xzf "tcl$pH_Tcl-src.tar.gz"
     fi
-    cd tcl$pH_Tcl/unix
+    cd "tcl$pH_Tcl/unix"
     ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Tk
 function ph_tk {
     print "    Installing Tk $pH_Tk..."
-    cd $pH_DL
-    if [[ ! -e tk$pH_Tcl-src ]] ; then
-        wget -q http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz
-        rm -rf tk$pH_Tk-src
-        tar -xzf tk$pH_Tk-src.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "tk$pH_Tcl-src" ]] ; then
+        wget -q "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz"
+        rm -rf "tk$pH_Tk-src"
+        tar -xzf "tk$pH_Tk-src.tar.gz"
     fi
-    cd tk$pH_Tk/unix
+    cd "tk$pH_Tk/unix"
     ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Oracle Berkeley DB
 function ph_berkeley {
     print "    Installing Berkeley DB $pH_Berkeley..."
-    cd $pH_DL
-    if [[ ! -e db-$pH_Berkeley ]] ; then
-        wget -q http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz
-        rm -rf db-$pH_Berkeley
-        tar -xzf db-$pH_Berkeley.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "db-$pH_Berkeley" ]] ; then
+        wget -q "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz"
+        rm -rf "db-$pH_Berkeley"
+        tar -xzf "db-$pH_Berkeley.tar.gz"
     fi
     cd db-$pH_Berkeley/build_unix
     ../dist/configure  --quiet\
@@ -351,23 +357,23 @@ function ph_berkeley {
     --with-tcl="$pH_install/lib"
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Bzip
 function ph_bzip {
     print "    Installing BZip $pH_BZip..."
-    cd $pH_DL
-    if [[ ! -e bzip2-$pH_BZip ]] ; then
-        wget -q http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz
-        rm -rf bzip2-$pH_BZip
-        tar -xzf bzip2-$pH_BZip.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "bzip2-$pH_BZip" ]] ; then
+        wget -q "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz"
+        rm -rf "bzip2-$pH_BZip"
+        tar -xzf "bzip2-$pH_BZip.tar.gz"
     else
         cd "$pH_DL/bzip2-$pH_BZip"
-	# Directory exists, clean up after old build
+        # Directory exists, clean up after old build
         make clean
-	rm -f "$pH_install/lib/libbz2.so.$pH_BZip"
-	rm -f "$pH_install/lib/libbz2.so.1.0"
+        rm -f "$pH_install/lib/libbz2.so.$pH_BZip"
+        rm -f "$pH_install/lib/libbz2.so.1.0"
     fi
     cd "$pH_DL/bzip2-$pH_BZip"
     # Shared library
@@ -378,23 +384,23 @@ function ph_bzip {
     cp "libbz2.so.$pH_BZip" "$pH_install/lib"
     ln -s "$pH_install/lib/libbz2.so.$pH_BZip" "$pH_install/lib/libbz2.so.1.0"
     
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # SQLite
 function ph_sqlite {
     print "    Installing SQLite $pH_SQLite..."
-    cd $pH_DL
-    if [[ ! -e sqlite-autoconf-$pH_SQLite ]] ; then
-        wget -q http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz
-        rm -rf sqlite-autoconf-$pH_SQLite
-        tar -xzf sqlite-autoconf-$pH_SQLite.tar.gz
+    cd "$pH_DL"
+    if [[ ! -e "sqlite-autoconf-$pH_SQLite" ]] ; then
+        wget -q "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz"
+        rm -rf "sqlite-autoconf-$pH_SQLite"
+        tar -xzf "sqlite-autoconf-$pH_SQLite.tar.gz"
     fi
-    cd sqlite-autoconf-$pH_SQLite
+    cd "sqlite-autoconf-$pH_SQLite"
     ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 
@@ -403,43 +409,43 @@ function ph_python {
     print "    Installing Python $pH_Python..."
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
     export EPREFIX="$pH_install/lib:$EPREFIX"
-    cd $pH_DL
-    wget -q http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz
-    rm -rf Python-$pH_Python
-    tar -xzf Python-$pH_Python.tgz
-    cd Python-$pH_Python
+    cd "$pH_DL"
+    wget -q "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz"
+    rm -rf "Python-$pH_Python"
+    tar -xzf "Python-$pH_Python.tgz"
+    cd "Python-$pH_Python"
     export CXX="g++" # disable warning message about using g++
     ./configure --prefix="$pH_install" --quiet
     make --silent | tail
     make install --silent >/dev/null
     # Unset EPREFIX. Used by Python setup.py
     export EPREFIX=
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Python setuptools
 function ph_setuptools {
     print "    Installing Python setuptools $pH_setuptools..."
-    cd $pH_DL
-    wget http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg
-    sh setuptools-$pH_setuptools-py${pH_Python:0:3}.egg
+    cd "$pH_DL"
+    wget -q "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
+    sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
     easy_install -q pip
 }
 
 # Mercurial
 function ph_mercurial {
     print "    Installing Mercurial $pH_Mercurial..."
-    cd $pH_DL
+    cd "$pH_DL"
     
     # docutils required by mercurial
     pip install -q -U docutils
 
-    wget -q http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz
-    rm -rf mercurial-$pH_Mercurial
-    tar -xzf mercurial-$pH_Mercurial.tar.gz
-    cd mercurial-$pH_Mercurial
+    wget -q "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
+    rm -rf "mercurial-$pH_Mercurial"
+    tar -xzf "mercurial-$pH_Mercurial.tar.gz"
+    cd "mercurial-$pH_Mercurial"
     make install PREFIX="$pH_install" --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
     cat >> ~/.hgrc <<DELIM
 
 # Added by pyHost.sh from:
@@ -478,7 +484,7 @@ DELIM
 # VirtualEnv
 function ph_virtualenv {
     print "    Installing VirtualEnv $pH_VirtualEnv..."
-    cd $pH_DL
+    cd "$pH_DL"
     #wget -q http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
     #rm -rf virtualenv-$pH_VirtualEnv
     #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
@@ -501,49 +507,49 @@ function ph_virtualenv {
 # Django framework
 function ph_django {
     print "    Installing Django $pH_Django..."
-    cd $pH_DL
+    cd "$pH_DL"
     #wget -q http://www.djangoproject.com/download/$pH_Django/tarball/
     #rm -rf Django-$pH_Django
     #tar -xzf Django-$pH_Django.tar.gz
     #cd Django-$pH_Django
     #python setup.py install
     pip install -q -U django
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # cURL (for Git to pull remote repos)
 function ph_curl {
     print "    Installing cURL $pH_cURL..."
-    cd $pH_DL
-    wget -q http://curl.haxx.se/download/curl-$pH_cURL.tar.gz
-    rm -rf curl-$pH_cURL
-    tar -xzf curl-$pH_cURL.tar.gz
-    cd curl-$pH_cURL
+    cd "$pH_DL"
+    wget -q "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz"
+    rm -rf "curl-$pH_cURL"
+    tar -xzf "curl-$pH_cURL.tar.gz"
+    cd "curl-$pH_cURL"
     ./configure --prefix="$pH_install" --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Git
 # NO_MMAP is needed to prevent Dreamhost killing git processes
 function ph_git {
     print "    Installing Git $pH_Git..."
-    cd $pH_DL
-    wget -q http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz
-    rm -rf git-$pH_Git
-    tar -xzf git-$pH_Git.tar.gz
-    cd git-$pH_Git
+    cd "$pH_DL"
+    wget -q "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz"
+    rm -rf "git-$pH_Git"
+    tar -xzf "git-$pH_Git.tar.gz"
+    cd "git-$pH_Git"
     ./configure --prefix="$pH_install" NO_MMAP=1 --quiet
     make --silent >/dev/null
     make install --silent >/dev/null
-    cd $pH_DL
+    cd "$pH_DL"
 }
 
 # Hg-Git
 function ph_hggit {
     print "    Installing hg-git $pH_HgGit..."
-    cd $pH_DL
+    cd "$pH_DL"
 
     # dulwich required by hg-git
     pip install -q -U dulwich
@@ -556,7 +562,7 @@ function ph_hggit {
     #cd $hg_git_dir
     #python setup.py install
     pip install -q -U hg-git
-    cd $pH_DL
+    cd "$pH_DL"
     # Virtualenv to .bashrc
     cat >> ~/.hgrc <<DELIM
     
@@ -570,7 +576,53 @@ hggit =
 DELIM
 }
 
+# Node.js
+function ph_nodejs {
+    print "    Installing node.js $pH_NodeJS..."
+    cd "$pH_DL"
 
+    if [[ ! -e "node-v$pH_NodeJS" ]] ; then
+        wget -q "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz"
+        rm -rf "node-v$pH_NodeJS"
+        tar -xzf "node-v$pH_NodeJS.tar.gz"
+    fi
+    cd "node-v$pH_NodeJS"
+    ./configure --prefix="$pH_install" --quiet
+    make --silent >/dev/null
+    make install --silent >/dev/null
+}
+
+# lesscss
+function ph_lesscss {
+    print "    Installing lessc $pH_LessCSS..."
+    cd "$pH_DL"
+
+    if [[ ! -e "less.js" ]] ; then
+        rm -rf "less.js"
+        git clone -q "https://github.com/cloudhead/less.js.git"
+        cd "less.js"
+        git checkout "v$pH_LessCSS"
+    fi
+    cd "less.js"
+    cp "bin/lessc" "$pH_install/bin"
+    cp "lib/less" "$pH_install/lib"
+}
+
+# inotify
+function ph_inotify {
+    print "    Installing inotify $pH_Inotify..."
+    cd "$pH_DL"
+
+    if [[ ! -e "inotify-tools-$pH_Inotify" ]] ; then
+        wget -q "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz"
+        rm -rf "inotify-tools-$pH_Inotify"
+        tar -xzf "inotify-tools-$pH_Inotify.tar.gz"
+    fi
+    cd "inotify-tools-$pH_Inotify"
+    ./configure --prefix="$pH_install" --quiet
+    make --silent >/dev/null
+    make install --silent >/dev/null
+}
 
 function ph_install {
 
@@ -619,6 +671,15 @@ function ph_install {
     fi
     if test "${pH_HgGit+set}" == set ; then
         ph_hggit
+    fi
+    if test "${pH_NodeJS+set}" == set ; then
+        ph_nodejs
+    fi
+    if test "${pH_LessCSS+set}" == set ; then
+        ph_lesscss
+    fi
+    if test "${pH_Inotify+set}" == set ; then
+        ph_inotify
     fi
     
     cd ~
