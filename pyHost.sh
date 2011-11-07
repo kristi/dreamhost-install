@@ -149,7 +149,7 @@ function ph_init_vars {
     pH_Git="1.7.6"
     pH_Django="(via pip)" #1.3 # installed via pip
     pH_VirtualEnv="(via pip)" #1.6.4 # installed via pip
-    pH_HgGit="(via pip)" # installed via pip
+    #pH_HgGit="(via pip)" # installed via pip
     pH_NodeJS="0.4.11"
     pH_LessCSS="(github)"
     pH_Inotify="3.14"
