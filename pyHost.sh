@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # =================================================
-# pyHost version 2.1 beta
+# pyHost version 2.2 beta
 # 
 # This script automates a the download, compiling, and local 
 # installation of Python, Mercurial, Git in the home folder.
@@ -22,9 +22,6 @@
 # will need to add ~/local/bin to your PATH in your shell's
 # init script.)
 #
-# You may delete the downloads directory after installation is complete.
-#     rm -r downloads
-#
 # After installing, source .bashrc 
 #     source ~/.bashrc
 # OR simply log out and log back in.  Then test that
@@ -38,6 +35,9 @@
 # or else .bashrc will not be read when you log in, so your 
 # PATH may not be setup correctly for your newly installed tools.
 # http://wiki.dreamhost.com/Environment_Setup
+#
+# You may delete the downloads directory after installation is complete.
+#     rm -r downloads
 #
 # Uninstallation:
 #
@@ -58,7 +58,6 @@
 # Originally created by Tommaso Lanza, under the influence
 # of the guide published by Andrew Watts at:
 # http://andrew.io/weblog/2010/02/installing-python-2-6-virtualenv-and-VirtualEnvWrapper-on-dreamhost/
-# Updated and modified by Kristi Tsukida
 #
 # Also, thanks to Kelvin Wong's python installation guide at
 # http://www.kelvinwong.ca/2010/08/02/python-2-7-on-dreamhost/
@@ -88,9 +87,7 @@
 # * /usr/local style install instead of /opt style install (I prefer the simplerPATH manipulations)
 # * Default the install into ~/local
 #
-# TODO: change script url in .bashrc
 # TODO: add virtualenvwrapper?
-# TODO: change the version vars for pip-installed stuff to be "pip" or something (since pip will find the latest version, we don't need to specity a version)
 # TODO: auto-detect latest versions of stuff  (hard to do?)
 # TODO: add flag/option for /opt style install  (Put python, mercurial, and git into their own install directories)
 # TODO: more sophisticated argument parsing
@@ -98,7 +95,6 @@
 # 
 # Ignore these errors:
 # * Openssl
-#     (I don't know why)
 #     Use of uninitialized value $output in pattern match (m//) at asm/md5-x86_64.pl line 115
 # * Readline 
 #     (Makefile is trying to move existing libs, but there are no
@@ -106,7 +102,6 @@
 #     mv: cannot stat 'opt/local/lib/libreadline.a': No such file or directory
 #     mv: cannot stat 'opt/local/lib/libhistory.a': No such file or directory
 # * Berkeley DB
-#     (I don't know why)
 #     libtool.m4: error: problem compiling CXX test program
 #
 # Original script ver 1.5 tmslnz, May 2010
@@ -688,26 +683,26 @@ function ph_install {
     
     cd ~
     finish_time=$(date +%s)
-    echo "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
-    echo ""
-    echo "Log out and log back in for the changes in your environment variables to take affect."
-    echo "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
-    echo ""
+    print "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
+    print ""
+    print "Log out and log back in for the changes in your environment variables to take affect."
+    print "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
+    print ""
 }
 
 function ph_uninstall {
-    echo "Removing $pH_install"
+    print "Removing $pH_install"
     rm -rf "$pH_install" 
 
     if [[ -e "pH_install.backup" ]] ; then
-        echo "Restoring $pH_install.backup"
+        print "Restoring $pH_install.backup"
         mv "$pH_install.backup" "$pH_install"
     fi
 
-    echo "Removing $pH_log"
+    print "Removing $pH_log"
     rm -f "$pH_log"
 
-    echo ""
+    print ""
     read -p "Delete downloads at $pH_DL? [y,n] " choice 
     case ${choice:0:1} in  
       y|Y) echo "    Ok, removing $pH_DL"; rm -rf $pH_DL ;;
@@ -720,30 +715,28 @@ function ph_uninstall {
     fi
 
 
-    echo ""
     choice='n'
-    [[ -e $HOME/.virtualenvs ]] && read -p "Delete $HOME/.virtualenvs? [y,n] " choice 
+    [[ -e $HOME/.virtualenvs ]] && echo "" && read -p "Delete $HOME/.virtualenvs? [y,n] " choice 
     case ${choice:0:1} in  
       y|Y) echo "    Ok, removing $HOME/.virtualenvs"; rm -rf $HOME/.virtualenvs ;;
     esac
 
-    echo ""
     choice='n'
-    [[ -e $HOME/.hgrc ]] && read -p "Delete $HOME/.hgrc? [y,n] " choice 
+    [[ -e $HOME/.hgrc ]] && echo "" && read -p "Delete $HOME/.hgrc? [y,n] " choice 
     case ${choice:0:1} in  
       y|Y) echo "    Ok, removing $HOME/.hgrc"; rm -rf $HOME/.hgrc ;;
     esac
-    echo ""
+    print ""
 
-    echo ""
-    echo "Done."
-    echo ""
-    echo "Please log out and log back in so that environment variables will be reset."
-    echo ""
+    print ""
+    print "Done."
+    print ""
+    print "Please log out and log back in so that environment variables will be reset."
+    print ""
 }
 
 function ph_create_uninstall {
-    echo "    Creating uninstall script at $pH_uninstall_script"
+    print "    Creating uninstall script at $pH_uninstall_script"
     # Copy the ph_init_vars and ph_uninstall function definitions
     declare -f ph_init_vars > $pH_uninstall_script
     declare -f ph_uninstall >> $pH_uninstall_script
@@ -758,8 +751,8 @@ if [ "$1" == "uninstall" ] ; then
     ph_init_vars
     ph_uninstall
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
-    echo "Installing programs into $pH_install"
-    echo "(this will take a few minutes, please be patient)"
+    print "Installing programs into $pH_install"
+    print "(this will take a few minutes, please be patient)"
     ph_init_vars
     {
         ph_create_uninstall
@@ -777,6 +770,6 @@ elif [ "$DEBUG" == "true" ] || [ "$DEBUG" -gt 0 ] ; then
         "ph_$x"
     done
 else
-    echo "Unrecognized option '$1'"
+    echo "Unrecognized option '$1'" >&2
 fi
 
