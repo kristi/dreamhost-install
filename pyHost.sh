@@ -563,7 +563,7 @@ function ph_curl {
 function ph_git {
     log "    Installing Git $pH_Git..."
     cd "$pH_DL"
-    $CURL "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz"
+    $CURL "http://git-core.googlecode.com/files/git-$pH_Git.tar.gz" 
     rm -rf "git-$pH_Git"
     tar -xzf "git-$pH_Git.tar.gz"
     cd "git-$pH_Git"
