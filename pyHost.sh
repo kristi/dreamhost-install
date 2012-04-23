@@ -7,7 +7,7 @@
 # It includes a number of dependencies 
 # (berkeley db, bzip, curl, openssl, readline, sqlite, tcl, tk)
 # and installs some additional plugins 
-# (django, hg-git, pip, setuptools/easy_install, virtualenv).
+# (django, pip, virtualenv).
 # It has been tested on Dreamhost on a shared server running Debian.
 # It should work with other hosts, but it hasn't been tested.
 #
@@ -16,7 +16,7 @@
 #   ./pyHost.sh
 # 
 # With default settings, this command will install 
-# Python, Mercurial, and Git (with dependencies and some plugins)
+# Python, Mercurial, and Git (with dependencies and specified plugins)
 # into ~/local.  It will add ~/local/bin to your PATH
 # in your ~/.bashrc file. (If you use a different shell, you
 # will need to add ~/local/bin to your PATH in your shell's
@@ -104,8 +104,8 @@
 # * Berkeley DB
 #     libtool.m4: error: problem compiling CXX test program
 #
-# Original script ver 1.5 tmslnz, May 2010
-#
+# May 2010 - tmslnz
+# Original script ver 1.5
 #
 # =================================================
 #
@@ -116,6 +116,8 @@
 DEBUG=true
 #TODO implement verbose/quiet output (use the log func below)
 verbose=true
+
+CURL="curl -O -s --show-error --fail --location --retry 1"
 
 function ph_init_vars {
     # Current directory
@@ -242,13 +244,13 @@ function ph_openssl {
     log "    Installing OpenSSL $pH_SSL..."
     cd "$pH_DL"
     if [[ ! -e "openssl-$pH_SSL" ]] ; then
-        wget -nv "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz" >/dev/null
+        $CURL "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz"
         rm -rf "openssl-$pH_SSL"
         tar -xzf "openssl-$pH_SSL.tar.gz"
         cd "openssl-$pH_SSL"
     else
         cd "openssl-$pH_SSL"
-        make --silent clean
+        make --silent clean >/dev/null
     fi
     
     # Fix warning messages
@@ -266,7 +268,7 @@ function ph_readline {
     log "    Installing Readline $pH_Readline..."
     cd "$pH_DL"
     if [[ ! -e "readline-$pH_Readline" ]] ; then
-        wget -nv "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz" >/dev/null
+        $CURL "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz"
         rm -rf "readline-$pH_Readline"
         tar -xzf "readline-$pH_Readline.tar.gz"
     else
@@ -296,7 +298,7 @@ function ph_tcl {
     log "    Installing Tcl $pH_Tcl..."
     cd "$pH_DL"
     if [[ ! -e "tcl$pH_Tcl-src" ]] ; then
-        wget -nv "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz" >/dev/null
+        $CURL "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz"
         rm -rf "tcl$pH_Tcl-src"
         tar -xzf "tcl$pH_Tcl-src.tar.gz"
     fi
@@ -312,7 +314,7 @@ function ph_tk {
     log "    Installing Tk $pH_Tk..."
     cd "$pH_DL"
     if [[ ! -e "tk$pH_Tcl-src" ]] ; then
-        wget -nv "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz" >/dev/null
+        $CURL "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz"
         rm -rf "tk$pH_Tk-src"
         tar -xzf "tk$pH_Tk-src.tar.gz"
     fi
@@ -328,7 +330,7 @@ function ph_berkeley {
     log "    Installing Berkeley DB $pH_Berkeley..."
     cd "$pH_DL"
     if [[ ! -e "db-$pH_Berkeley" ]] ; then
-        wget -nv "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz" >/dev/null
+        $CURL "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz"
         rm -rf "db-$pH_Berkeley"
         tar -xzf "db-$pH_Berkeley.tar.gz"
     fi
@@ -348,7 +350,7 @@ function ph_bzip {
     log "    Installing BZip $pH_BZip..."
     cd "$pH_DL"
     if [[ ! -e "bzip2-$pH_BZip" ]] ; then
-        wget -nv "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz" >/dev/null
+        $CURL "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz"
         rm -rf "bzip2-$pH_BZip"
         tar -xzf "bzip2-$pH_BZip.tar.gz"
     else
@@ -377,7 +379,7 @@ function ph_sqlite {
     log "    Installing SQLite $pH_SQLite..."
     cd "$pH_DL"
     if [[ ! -e "sqlite-autoconf-$pH_SQLite" ]] ; then
-        wget -nv "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz" >/dev/null
+        $CURL "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz"
         rm -rf "sqlite-autoconf-$pH_SQLite"
         tar -xzf "sqlite-autoconf-$pH_SQLite.tar.gz"
     fi
@@ -395,7 +397,7 @@ function ph_python {
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
     export EPREFIX="$pH_install/lib:$EPREFIX"
     cd "$pH_DL"
-    wget -nv "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz" >/dev/null
+    $CURL "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz"
     rm -rf "Python-$pH_Python"
     tar -xzf "Python-$pH_Python.tgz"
     cd "Python-$pH_Python"
@@ -434,7 +436,7 @@ function ph_python {
 function ph_setuptools {
     log "    Installing Python setuptools $pH_setuptools..."
     cd "$pH_DL"
-    wget -nv "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" >/dev/null
+    $CURL "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
     sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
     easy_install -q pip
 }
@@ -446,12 +448,12 @@ function ph_pip {
 
     # Install Distribute first
     # http://www.pip-installer.org/en/latest/installing.html
-    wget -nv http://python-distribute.org/distribute_setup.py >/dev/null
+    $CURL http://python-distribute.org/distribute_setup.py
     sed -i 's/log\.warn/log.debug/g' distribute_setup.py
     "$pH_install/bin/python" distribute_setup.py >/dev/null
 
     # Install PIP
-    wget -nv https://raw.github.com/pypa/pip/master/contrib/get-pip.py >/dev/null
+    $CURL https://raw.github.com/pypa/pip/master/contrib/get-pip.py
     "$pH_install/bin/python" get-pip.py >/dev/null
 }
 
@@ -463,7 +465,7 @@ function ph_mercurial {
     # docutils required by mercurial
     pip install -q -U docutils >/dev/null
 
-    wget -nv "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz" >/dev/null
+    $CURL "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
     rm -rf "mercurial-$pH_Mercurial"
     tar -xzf "mercurial-$pH_Mercurial.tar.gz"
     cd "mercurial-$pH_Mercurial"
@@ -510,7 +512,7 @@ DELIM
 function ph_virtualenv {
     log "    Installing VirtualEnv $pH_VirtualEnv..."
     cd "$pH_DL"
-    #wget -nv http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz >/dev/null
+    #$CURL http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
     #rm -rf virtualenv-$pH_VirtualEnv
     #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
     #cd virtualenv-$pH_VirtualEnv
@@ -533,7 +535,7 @@ function ph_virtualenv {
 function ph_django {
     log "    Installing Django $pH_Django..."
     cd "$pH_DL"
-    #wget -nv http://www.djangoproject.com/download/$pH_Django/tarball/ >/dev/null
+    #$CURL http://www.djangoproject.com/download/$pH_Django/tarball/
     #rm -rf Django-$pH_Django
     #tar -xzf Django-$pH_Django.tar.gz
     #cd Django-$pH_Django
@@ -546,7 +548,7 @@ function ph_django {
 function ph_curl {
     log "    Installing cURL $pH_cURL..."
     cd "$pH_DL"
-    wget -nv "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz" >/dev/null
+    $CURL "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz"
     rm -rf "curl-$pH_cURL"
     tar -xzf "curl-$pH_cURL.tar.gz"
     cd "curl-$pH_cURL"
@@ -561,7 +563,7 @@ function ph_curl {
 function ph_git {
     log "    Installing Git $pH_Git..."
     cd "$pH_DL"
-    wget -nv "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz" >/dev/null
+    $CURL "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz"
     rm -rf "git-$pH_Git"
     tar -xzf "git-$pH_Git.tar.gz"
     cd "git-$pH_Git"
@@ -581,7 +583,7 @@ function ph_hggit {
 
     #[ ! -e hg-git ] && mkdir hg-git
     #cd hg-git
-    #wget -nv http://github.com/schacon/hg-git/tarball/master >/dev/null
+    #$CURL http://github.com/schacon/hg-git/tarball/master
     #tar -xzf *
     #hg_git_dir=$(ls -dC */)
     #cd $hg_git_dir
@@ -607,7 +609,7 @@ function ph_nodejs {
     cd "$pH_DL"
 
     if [[ ! -e "node-v$pH_NodeJS" ]] ; then
-        wget -nv "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz" >/dev/null
+        $CURL "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz"
         rm -rf "node-v$pH_NodeJS"
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
@@ -640,7 +642,7 @@ function ph_inotify {
     cd "$pH_DL"
 
     if [[ ! -e "inotify-tools-$pH_Inotify" ]] ; then
-        wget -nv "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz" >/dev/null
+        $CURL "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz"
         rm -rf "inotify-tools-$pH_Inotify"
         tar -xzf "inotify-tools-$pH_Inotify.tar.gz"
     fi
