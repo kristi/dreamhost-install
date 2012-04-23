@@ -117,8 +117,6 @@ DEBUG=true
 #TODO implement verbose/quiet output (use the log func below)
 verbose=true
 
-CURL="curl -O -s --show-error --fail --location --retry 1"
-
 function ph_init_vars {
     # Current directory
     pH_PWD="$PWD"
@@ -174,6 +172,11 @@ function ph_init_vars {
     elif [[ "${pH_Python:0:1}" == "3" ]]; then
         pH_Berkeley=$pH_Berkeley_50x
     fi
+
+    CURL="curl -O -s --show-error --fail --location --retry 1"
+    PYTHON="$pH_install/bin/python"
+    PIP="$pH_install/bin/pip"
+
 }
 
 function log {
@@ -230,7 +233,7 @@ DELIM
 
     fi
 
-    export PATH="$pH_install/bin:$PATH"
+#    export PATH="$pH_install/bin:$PATH"
 
 }
 
@@ -450,11 +453,11 @@ function ph_pip {
     # http://www.pip-installer.org/en/latest/installing.html
     $CURL http://python-distribute.org/distribute_setup.py
     sed -i 's/log\.warn/log.debug/g' distribute_setup.py
-    "$pH_install/bin/python" distribute_setup.py >/dev/null
+    $PYTHON distribute_setup.py >/dev/null
 
     # Install PIP
     $CURL https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-    "$pH_install/bin/python" get-pip.py >/dev/null
+    $PYTHON get-pip.py >/dev/null
 }
 
 # Mercurial
@@ -463,7 +466,7 @@ function ph_mercurial {
     cd "$pH_DL"
     
     # docutils required by mercurial
-    pip install -q -U docutils >/dev/null
+    $PIP install -q -U docutils >/dev/null
 
     $CURL "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
     rm -rf "mercurial-$pH_Mercurial"
@@ -518,9 +521,9 @@ function ph_virtualenv {
     #cd virtualenv-$pH_VirtualEnv
     ## Create a virtualenv
     #python virtualenv.py $pH_virtualenv_dir
-    pip install -q -U virtualenv 
+    $PIP install -q -U virtualenv 
 
-    #pip install -q -U virtualenvwrapper
+    #$PIP install -q -U virtualenvwrapper
     
     # Add Virtualenvwrapper settings to .bashrc
     #cat >> ~/.bashrc <<DELIM
@@ -540,7 +543,7 @@ function ph_django {
     #tar -xzf Django-$pH_Django.tar.gz
     #cd Django-$pH_Django
     #python setup.py install
-    pip install -q -U django
+    $PIP install -q -U django
     cd "$pH_DL"
 }
 
@@ -579,7 +582,7 @@ function ph_hggit {
     cd "$pH_DL"
 
     # dulwich required by hg-git
-    pip install -q -U dulwich
+    $PIP install -q -U dulwich
 
     #[ ! -e hg-git ] && mkdir hg-git
     #cd hg-git
@@ -588,7 +591,7 @@ function ph_hggit {
     #hg_git_dir=$(ls -dC */)
     #cd $hg_git_dir
     #python setup.py install
-    pip install -q -U hg-git
+    $PIP install -q -U hg-git
     cd "$pH_DL"
     # Virtualenv to .bashrc
     cat >> ~/.hgrc <<DELIM
