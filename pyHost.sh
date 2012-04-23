@@ -141,7 +141,7 @@ function ph_init_vars {
     pH_Python="2.7.2"
     pH_pip="(via get-pip.py script)"
     pH_Mercurial="2.1.1" # Don't use pip to install Mercurial since it might not be updated
-    pH_Git="1.7.9.5"
+    pH_Git="1.7.10"
     pH_Django="(via pip)" # installed via pip
     pH_VirtualEnv="(via pip)" # installed via pip
     #pH_HgGit="(via pip)" # installed via pip
@@ -242,7 +242,7 @@ function ph_openssl {
     log "    Installing OpenSSL $pH_SSL..."
     cd "$pH_DL"
     if [[ ! -e "openssl-$pH_SSL" ]] ; then
-        wget -q "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz"
+        wget -nv "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz" >/dev/null
         rm -rf "openssl-$pH_SSL"
         tar -xzf "openssl-$pH_SSL.tar.gz"
         cd "openssl-$pH_SSL"
@@ -266,7 +266,7 @@ function ph_readline {
     log "    Installing Readline $pH_Readline..."
     cd "$pH_DL"
     if [[ ! -e "readline-$pH_Readline" ]] ; then
-        wget -q "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz"
+        wget -nv "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz" >/dev/null
         rm -rf "readline-$pH_Readline"
         tar -xzf "readline-$pH_Readline.tar.gz"
     else
@@ -296,7 +296,7 @@ function ph_tcl {
     log "    Installing Tcl $pH_Tcl..."
     cd "$pH_DL"
     if [[ ! -e "tcl$pH_Tcl-src" ]] ; then
-        wget -q "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz"
+        wget -nv "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz" >/dev/null
         rm -rf "tcl$pH_Tcl-src"
         tar -xzf "tcl$pH_Tcl-src.tar.gz"
     fi
@@ -312,7 +312,7 @@ function ph_tk {
     log "    Installing Tk $pH_Tk..."
     cd "$pH_DL"
     if [[ ! -e "tk$pH_Tcl-src" ]] ; then
-        wget -q "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz"
+        wget -nv "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz" >/dev/null
         rm -rf "tk$pH_Tk-src"
         tar -xzf "tk$pH_Tk-src.tar.gz"
     fi
@@ -328,7 +328,7 @@ function ph_berkeley {
     log "    Installing Berkeley DB $pH_Berkeley..."
     cd "$pH_DL"
     if [[ ! -e "db-$pH_Berkeley" ]] ; then
-        wget -q "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz"
+        wget -nv "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz" >/dev/null
         rm -rf "db-$pH_Berkeley"
         tar -xzf "db-$pH_Berkeley.tar.gz"
     fi
@@ -348,7 +348,7 @@ function ph_bzip {
     log "    Installing BZip $pH_BZip..."
     cd "$pH_DL"
     if [[ ! -e "bzip2-$pH_BZip" ]] ; then
-        wget -q "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz"
+        wget -nv "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz" >/dev/null
         rm -rf "bzip2-$pH_BZip"
         tar -xzf "bzip2-$pH_BZip.tar.gz"
     else
@@ -377,7 +377,7 @@ function ph_sqlite {
     log "    Installing SQLite $pH_SQLite..."
     cd "$pH_DL"
     if [[ ! -e "sqlite-autoconf-$pH_SQLite" ]] ; then
-        wget -q "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz"
+        wget -nv "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz" >/dev/null
         rm -rf "sqlite-autoconf-$pH_SQLite"
         tar -xzf "sqlite-autoconf-$pH_SQLite.tar.gz"
     fi
@@ -395,7 +395,7 @@ function ph_python {
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
     export EPREFIX="$pH_install/lib:$EPREFIX"
     cd "$pH_DL"
-    wget -q "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz"
+    wget -nv "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz" >/dev/null
     rm -rf "Python-$pH_Python"
     tar -xzf "Python-$pH_Python.tgz"
     cd "Python-$pH_Python"
@@ -428,11 +428,13 @@ function ph_python {
     cd "$pH_DL"
 }
 
+# Pip is now installed using Distribute, instead of setuptools,
+# making setuptools obsolete.  This is here for reference only.
 # Python setuptools
 function ph_setuptools {
     log "    Installing Python setuptools $pH_setuptools..."
     cd "$pH_DL"
-    wget -q "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
+    wget -nv "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" >/dev/null
     sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
     easy_install -q pip
 }
@@ -441,10 +443,13 @@ function ph_setuptools {
 function ph_pip {
     log "    Installing Python PIP $pH_pip..."
     cd "$pH_DL"
+
+    # Install Distribute first
     # instructions from 
     # http://www.pip-installer.org/en/latest/installing.html
-    curl --silent http://python-distribute.org/distribute_setup.py  | sed 's/log.warn/log.debug/g'| python >/dev/null
+    curl --silent http://python-distribute.org/distribute_setup.py  | sed 's/log\.warn/log.debug/g'| python >/dev/null
 
+    # Install PIP
     curl --silent https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python >/dev/null
 }
 
@@ -456,7 +461,7 @@ function ph_mercurial {
     # docutils required by mercurial
     pip install -q -U docutils >/dev/null
 
-    wget -q "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
+    wget -nv "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz" >/dev/null
     rm -rf "mercurial-$pH_Mercurial"
     tar -xzf "mercurial-$pH_Mercurial.tar.gz"
     cd "mercurial-$pH_Mercurial"
@@ -503,7 +508,7 @@ DELIM
 function ph_virtualenv {
     log "    Installing VirtualEnv $pH_VirtualEnv..."
     cd "$pH_DL"
-    #wget -q http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
+    #wget -nv http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz >/dev/null
     #rm -rf virtualenv-$pH_VirtualEnv
     #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
     #cd virtualenv-$pH_VirtualEnv
@@ -526,7 +531,7 @@ function ph_virtualenv {
 function ph_django {
     log "    Installing Django $pH_Django..."
     cd "$pH_DL"
-    #wget -q http://www.djangoproject.com/download/$pH_Django/tarball/
+    #wget -nv http://www.djangoproject.com/download/$pH_Django/tarball/ >/dev/null
     #rm -rf Django-$pH_Django
     #tar -xzf Django-$pH_Django.tar.gz
     #cd Django-$pH_Django
@@ -539,7 +544,7 @@ function ph_django {
 function ph_curl {
     log "    Installing cURL $pH_cURL..."
     cd "$pH_DL"
-    wget -q "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz"
+    wget -nv "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz" >/dev/null
     rm -rf "curl-$pH_cURL"
     tar -xzf "curl-$pH_cURL.tar.gz"
     cd "curl-$pH_cURL"
@@ -554,7 +559,7 @@ function ph_curl {
 function ph_git {
     log "    Installing Git $pH_Git..."
     cd "$pH_DL"
-    wget -q "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz"
+    wget -nv "http://kernel.org/pub/software/scm/git/git-$pH_Git.tar.gz" >/dev/null
     rm -rf "git-$pH_Git"
     tar -xzf "git-$pH_Git.tar.gz"
     cd "git-$pH_Git"
@@ -574,7 +579,7 @@ function ph_hggit {
 
     #[ ! -e hg-git ] && mkdir hg-git
     #cd hg-git
-    #wget -q http://github.com/schacon/hg-git/tarball/master
+    #wget -nv http://github.com/schacon/hg-git/tarball/master >/dev/null
     #tar -xzf *
     #hg_git_dir=$(ls -dC */)
     #cd $hg_git_dir
@@ -600,7 +605,7 @@ function ph_nodejs {
     cd "$pH_DL"
 
     if [[ ! -e "node-v$pH_NodeJS" ]] ; then
-        wget -q "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz"
+        wget -nv "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz" >/dev/null
         rm -rf "node-v$pH_NodeJS"
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
@@ -633,7 +638,7 @@ function ph_inotify {
     cd "$pH_DL"
 
     if [[ ! -e "inotify-tools-$pH_Inotify" ]] ; then
-        wget -q "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz"
+        wget -nv "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz" >/dev/null
         rm -rf "inotify-tools-$pH_Inotify"
         tar -xzf "inotify-tools-$pH_Inotify.tar.gz"
     fi
