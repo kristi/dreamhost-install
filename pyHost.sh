@@ -445,12 +445,14 @@ function ph_pip {
     cd "$pH_DL"
 
     # Install Distribute first
-    # instructions from 
     # http://www.pip-installer.org/en/latest/installing.html
-    curl --silent http://python-distribute.org/distribute_setup.py  | sed 's/log\.warn/log.debug/g'| python >/dev/null
+    wget -nv http://python-distribute.org/distribute_setup.py >/dev/null
+    sed -i 's/log\.warn/log.debug/g' distribute_setup.py
+    "$pH_install/bin/python" distribute_setup.py >/dev/null
 
     # Install PIP
-    curl --silent https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python >/dev/null
+    wget -nv https://raw.github.com/pypa/pip/master/contrib/get-pip.py >/dev/null
+    "$pH_install/bin/python" get-pip.py >/dev/null
 }
 
 # Mercurial
