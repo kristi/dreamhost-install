@@ -148,8 +148,6 @@ function ph_init_vars {
     #pH_HgGit="(via pip)" # installed via pip
     pH_NodeJS="0.6.15"
     pH_LessCSS="(github)"
-    pH_M4="1.4.16"
-    pH_Autoconf="2.68"
     pH_Inotify="3.14"
     # === Python dependencies ===
     pH_SSL="1.0.1" # for python
@@ -163,6 +161,9 @@ function ph_init_vars {
     pH_SQLite="3071100" # 3.7.11 for python
     # === Git dependencies ===
     pH_cURL="7.25.0" # for git
+    # === Inotify dependencies ===
+    pH_M4="1.4.16" # for inotify
+    pH_Autoconf="2.68" # for inotify
 
 
 
@@ -181,6 +182,7 @@ function ph_init_vars {
     PIP="$pH_install/bin/pip"
 
     export PATH="$pH_install/bin:$PATH"
+    export PKG_CONFIG_PATH="$pH_install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 }
 
