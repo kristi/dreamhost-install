@@ -40,166 +40,283 @@ Creating /home/enoki/local/lib/python2.7/site-packages/setuptools.pth
     Installing Git 1.7.10...
 curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
 GIT_VERSION = 1.7.10
-    * new build flags or prefix
-    * new link flags
 Writing perl.mak for Git
 GITGUI_VERSION = 0.16.0-dirty
-    * new locations or Tcl/Tk interpreter
-289 translated messages.
-200 translated messages, 7 untranslated messages.
-276 translated messages, 4 fuzzy translations.
-288 translated messages.
-283 translated messages, 6 untranslated messages.
-284 translated messages.
-290 translated messages.
-245 translated messages.
-290 translated messages.
-14 translated messages.
-0 translated messages, 722 untranslated messages.
-104 translated messages, 620 untranslated messages.
-724 translated messages.
-724 translated messages.
-    Installing node.js 0.4.11...
+    Installing cgit 0.9.0.3...
 curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
-Checking for program g++ or c++          : g++ 
-Checking for program cpp                 : /usr/bin/cpp 
-Checking for program ar                  : /usr/bin/ar 
-Checking for program ranlib              : /usr/bin/ranlib 
-Checking for g++                         : ok  
-Checking for program gcc or cc           : /usr/bin/gcc 
-Checking for gcc                         : ok  
-Checking for library dl                  : yes 
-Checking for openssl                     : yes 
-Checking for library util                : yes 
-Checking for library rt                  : yes 
-Checking for library pthread             : yes 
-Checking for function pthread_create     : yes 
-Checking for function pthread_atfork     : yes 
-Checking for futimes(2)                  : yes 
-Checking for readahead(2)                : yes 
-Checking for fdatasync(2)                : yes 
-Checking for pread(2) and pwrite(2)      : yes 
-Checking for sendfile(2)                 : yes 
-Checking for sync_file_range(2)          : yes 
-Checking for header sys/inotify.h        : yes 
-Checking for function inotify_init       : yes 
-Checking for header sys/epoll.h          : yes 
-Checking for function epoll_ctl          : yes 
-Checking for header port.h               : not found 
-Checking for header poll.h               : yes 
-Checking for function poll               : yes 
-Checking for header ['sys/types.h', 'sys/event.h'] : not found 
-Checking for header sys/queue.h                    : yes 
-Checking for function kqueue                       : not found 
-Checking for header sys/select.h                   : yes 
-Checking for function select                       : yes 
-Checking for header sys/eventfd.h                  : not found 
-Checking for SYS_clock_gettime                     : yes 
-Checking for library rt                            : yes 
-Checking for function clock_gettime                : yes 
-Checking for function nanosleep                    : yes 
-Checking for function ceil                         : yes 
-Checking for fdatasync(2) with c++                 : yes 
-'configure' finished successfully (5.101s)
-Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
-[ 1/75] cc: deps/libeio/eio.c -> build/default/deps/libeio/eio_1.o
-[ 2/75] cc: deps/libev/ev.c -> build/default/deps/libev/ev_1.o
-../deps/libev/ev.c: In function ‘evpipe_write’:
-../deps/libev/ev.c:1344: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result
-../deps/libev/ev.c: In function ‘pipecb’:
-../deps/libev/ev.c:1371: warning: ignoring return value of ‘read’, declared with attribute warn_unused_result
-[ 3/75] cc: deps/c-ares/ares_strcasecmp.c -> build/default/deps/c-ares/ares_strcasecmp_1.o
-[ 4/75] cc: deps/c-ares/ares_free_string.c -> build/default/deps/c-ares/ares_free_string_1.o
-[ 5/75] cc: deps/c-ares/ares_options.c -> build/default/deps/c-ares/ares_options_1.o
-[ 6/75] cc: deps/c-ares/ares_send.c -> build/default/deps/c-ares/ares_send_1.o
-[ 7/75] cc: deps/c-ares/ares_parse_txt_reply.c -> build/default/deps/c-ares/ares_parse_txt_reply_1.o
-[ 8/75] cc: deps/c-ares/ares_parse_ptr_reply.c -> build/default/deps/c-ares/ares_parse_ptr_reply_1.o
-[ 9/75] cc: deps/c-ares/ares_nowarn.c -> build/default/deps/c-ares/ares_nowarn_1.o
-[10/75] cc: deps/c-ares/ares_search.c -> build/default/deps/c-ares/ares_search_1.o
-[11/75] cc: deps/c-ares/ares_gethostbyname.c -> build/default/deps/c-ares/ares_gethostbyname_1.o
-[12/75] cc: deps/c-ares/ares_getsock.c -> build/default/deps/c-ares/ares_getsock_1.o
-[13/75] cc: deps/c-ares/ares__timeval.c -> build/default/deps/c-ares/ares__timeval_1.o
-[14/75] cc: deps/c-ares/inet_ntop.c -> build/default/deps/c-ares/inet_ntop_1.o
-[15/75] cc: deps/c-ares/ares_parse_a_reply.c -> build/default/deps/c-ares/ares_parse_a_reply_1.o
-[16/75] cc: deps/c-ares/ares_getopt.c -> build/default/deps/c-ares/ares_getopt_1.o
-[17/75] cc: deps/c-ares/ares__close_sockets.c -> build/default/deps/c-ares/ares__close_sockets_1.o
-[18/75] cc: deps/c-ares/ares_expand_string.c -> build/default/deps/c-ares/ares_expand_string_1.o
-[19/75] cc: deps/c-ares/ares_destroy.c -> build/default/deps/c-ares/ares_destroy_1.o
-[20/75] cc: deps/c-ares/ares_cancel.c -> build/default/deps/c-ares/ares_cancel_1.o
-[21/75] cc: deps/c-ares/ares_parse_aaaa_reply.c -> build/default/deps/c-ares/ares_parse_aaaa_reply_1.o
-[22/75] cc: deps/c-ares/ares_parse_ns_reply.c -> build/default/deps/c-ares/ares_parse_ns_reply_1.o
-[23/75] cc: deps/c-ares/ares_version.c -> build/default/deps/c-ares/ares_version_1.o
-[24/75] cc: deps/c-ares/ares__get_hostent.c -> build/default/deps/c-ares/ares__get_hostent_1.o
-[25/75] cc: deps/c-ares/ares_writev.c -> build/default/deps/c-ares/ares_writev_1.o
-[26/75] cc: deps/c-ares/ares_expand_name.c -> build/default/deps/c-ares/ares_expand_name_1.o
-[27/75] cc: deps/c-ares/ares_free_hostent.c -> build/default/deps/c-ares/ares_free_hostent_1.o
-[28/75] cc: deps/c-ares/ares_parse_mx_reply.c -> build/default/deps/c-ares/ares_parse_mx_reply_1.o
-[29/75] cc: deps/c-ares/ares_gethostbyaddr.c -> build/default/deps/c-ares/ares_gethostbyaddr_1.o
-[30/75] cc: deps/c-ares/ares_llist.c -> build/default/deps/c-ares/ares_llist_1.o
-[31/75] cc: deps/c-ares/ares_data.c -> build/default/deps/c-ares/ares_data_1.o
-[32/75] cc: deps/c-ares/ares_init.c -> build/default/deps/c-ares/ares_init_1.o
-[33/75] cc: deps/c-ares/ares_timeout.c -> build/default/deps/c-ares/ares_timeout_1.o
-[34/75] cc: deps/c-ares/ares_fds.c -> build/default/deps/c-ares/ares_fds_1.o
-[35/75] cc: deps/c-ares/inet_net_pton.c -> build/default/deps/c-ares/inet_net_pton_1.o
-[36/75] cc: deps/c-ares/ares_strerror.c -> build/default/deps/c-ares/ares_strerror_1.o
-[37/75] cc: deps/c-ares/bitncmp.c -> build/default/deps/c-ares/bitncmp_1.o
-[38/75] cc: deps/c-ares/ares_getnameinfo.c -> build/default/deps/c-ares/ares_getnameinfo_1.o
-[39/75] cc: deps/c-ares/ares_library_init.c -> build/default/deps/c-ares/ares_library_init_1.o
-[40/75] cc: deps/c-ares/ares_mkquery.c -> build/default/deps/c-ares/ares_mkquery_1.o
-[41/75] cc: deps/c-ares/ares_process.c -> build/default/deps/c-ares/ares_process_1.o
-[42/75] cc: deps/c-ares/windows_port.c -> build/default/deps/c-ares/windows_port_1.o
-[43/75] cc: deps/c-ares/ares_parse_srv_reply.c -> build/default/deps/c-ares/ares_parse_srv_reply_1.o
-[44/75] cc: deps/c-ares/ares_query.c -> build/default/deps/c-ares/ares_query_1.o
-[45/75] cc: deps/c-ares/ares__read_line.c -> build/default/deps/c-ares/ares__read_line_1.o
-[46/75] cc: deps/c-ares/ares_strdup.c -> build/default/deps/c-ares/ares_strdup_1.o
-[47/75] cc: deps/http_parser/http_parser.c -> build/default/deps/http_parser/http_parser_2.o
-[48/75] src/node_natives.h: src/node.js lib/dgram.js lib/console.js lib/buffer.js lib/querystring.js lib/http.js lib/net.js lib/stream.js lib/events.js lib/util.js lib/tty_win32.js lib/module.js lib/_debugger.js lib/assert.js lib/fs.js lib/os.js lib/dns.js lib/vm.js lib/url.js lib/tls.js lib/tty_posix.js lib/crypto.js lib/sys.js lib/https.js lib/freelist.js lib/readline.js lib/_linklist.js lib/tty.js lib/child_process.js lib/repl.js lib/path.js lib/string_decoder.js lib/timers.js lib/constants.js -> build/default/src/node_natives.h
-[49/75] copy: src/node_config.h.in -> build/default/src/node_config.h
-[50/75] copy: tools/nodejs.pc.in -> build/default/tools/nodejs.pc
-[51/75] libv8.a: deps/v8/SConstruct -> build/default/libv8.a
+    MM vector.d
+    MM ui-tree.d
+    MM ui-tag.d
+    MM ui-summary.d
+    MM ui-stats.d
+    MM ui-ssdiff.d
+    MM ui-snapshot.d
+    MM ui-shared.d
+    MM ui-repolist.d
+    MM ui-refs.d
+    MM ui-plain.d
+    MM ui-patch.d
+    MM ui-log.d
+    MM ui-diff.d
+    MM ui-commit.d
+    MM ui-clone.d
+    MM ui-blob.d
+    MM ui-atom.d
+    MM shared.d
+    MM scan-tree.d
+    MM parsing.d
+    MM html.d
+    MM configfile.d
+    MM cmd.d
+    MM cgit.d
+    MM cache.d
+CGIT_VERSION = v0.9.0.3
+curl http://hjemli.net/git/git/snapshot/git-1.7.4.tar.bz2 | tar -xjf - && rm -rf git && mv git-1.7.4 git
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0100  2588    0  2588    0     0   1472      0 --:--:--  0:00:01 --:--:--  1606100  125k    0  125k    0     0  50042      0 --:--:--  0:00:02 --:--:-- 53064100  630k    0  630k    0     0   173k      0 --:--:--  0:00:03 --:--:--  180k100  888k    0  888k    0     0   193k      0 --:--:--  0:00:04 --:--:--  199k100 1188k    0 1188k    0     0   152k      0 --:--:--  0:00:07 --:--:--  179k100 1987k    0 1987k    0     0   230k      0 --:--:--  0:00:08 --:--:--  289k100 2337k    0 2337k    0     0   232k      0 --:--:--  0:00:10 --:--:--  295k100 2465k    0 2465k    0     0   231k      0 --:--:--  0:00:10 --:--:--  260k100 2598k    0 2598k    0     0   243k      0 --:--:--  0:00:10 --:--:--  281k
+    CC cache.o
+    CC cgit.o
+    CC cmd.o
+    CC configfile.o
+    CC html.o
+    CC parsing.o
+    CC scan-tree.o
+    CC shared.o
+    CC ui-atom.o
+    CC ui-blob.o
+    CC ui-clone.o
+    CC ui-commit.o
+    CC ui-diff.o
+    CC ui-log.o
+    CC ui-patch.o
+    CC ui-plain.o
+    CC ui-refs.o
+    CC ui-repolist.o
+    CC ui-shared.o
+    CC ui-snapshot.o
+    CC ui-ssdiff.o
+    CC ui-stats.o
+    CC ui-summary.o
+    CC ui-tag.o
+    CC ui-tree.o
+    CC vector.o
+    SUBDIR git
+GIT_VERSION = 1.7.4
+    * new build flags or prefix
+    CC abspath.o
+    CC advice.o
+    CC alias.o
+    CC alloc.o
+    CC archive.o
+    CC archive-tar.o
+    CC archive-zip.o
+    CC attr.o
+    CC base85.o
+    CC bisect.o
+    CC blob.o
+    CC branch.o
+    CC bundle.o
+    CC cache-tree.o
+    CC color.o
+    CC combine-diff.o
+    CC commit.o
+    CC config.o
+    CC connect.o
+    CC convert.o
+    CC copy.o
+    CC csum-file.o
+    CC ctype.o
+    CC date.o
+    CC decorate.o
+    CC diffcore-break.o
+    CC diffcore-delta.o
+    CC diffcore-order.o
+    CC diffcore-pickaxe.o
+    CC diffcore-rename.o
+    CC diff-delta.o
+    CC diff-lib.o
+    CC diff-no-index.o
+    CC diff.o
+    CC dir.o
+    CC editor.o
+    CC entry.o
+    CC environment.o
+    CC exec_cmd.o
+    CC fsck.o
+    CC graph.o
+    CC grep.o
+    CC hash.o
+    GEN common-cmds.h
+    CC help.o
+    CC hex.o
+    CC ident.o
+    CC levenshtein.o
+    CC list-objects.o
+    CC ll-merge.o
+    CC lockfile.o
+    CC log-tree.o
+    CC mailmap.o
+    CC match-trees.o
+    CC merge-file.o
+    CC merge-recursive.o
+    CC name-hash.o
+    CC notes.o
+    CC notes-cache.o
+    CC notes-merge.o
+    CC object.o
+    CC pack-check.o
+    CC pack-refs.o
+    CC pack-revindex.o
+    CC pack-write.o
+    CC pager.o
+    CC parse-options.o
+    CC patch-delta.o
+    CC patch-ids.o
+    CC path.o
+    CC pkt-line.o
+    CC preload-index.o
+    CC pretty.o
+    CC progress.o
+    CC quote.o
+    CC reachable.o
+    CC read-cache.o
+    CC reflog-walk.o
+    CC refs.o
+    CC remote.o
+    CC replace_object.o
+    CC rerere.o
+    CC resolve-undo.o
+    CC revision.o
+    CC run-command.o
+    CC server-info.o
+    CC setup.o
+    CC sha1-lookup.o
+    CC sha1_file.o
+    CC sha1_name.o
+    CC shallow.o
+    CC sideband.o
+    CC sigchain.o
+    CC strbuf.o
+    CC string-list.o
+    CC submodule.o
+    CC symlinks.o
+    CC tag.o
+    CC trace.o
+    CC transport.o
+    CC transport-helper.o
+    CC tree-diff.o
+    CC tree.o
+    CC tree-walk.o
+    CC unpack-trees.o
+    CC url.o
+    CC usage.o
+    CC userdiff.o
+    CC utf8.o
+    CC walker.o
+    CC wrapper.o
+    CC write_or_die.o
+    CC ws.o
+    CC wt-status.o
+    CC xdiff-interface.o
+    CC zlib.o
+    CC thread-utils.o
+    CC compat/strlcpy.o
+    AR libgit.a
+    SUBDIR git
+    CC xdiff/xdiffi.o
+    CC xdiff/xprepare.o
+    CC xdiff/xutils.o
+    CC xdiff/xemit.o
+    CC xdiff/xmerge.o
+    CC xdiff/xpatience.o
+    AR xdiff/lib.a
+    CC cgit
+    SUBDIR git
+    SUBDIR git
+    CC cgit
+install -m 0755 -d /home/enoki/local/cgit
+install -m 0755 cgit /home/enoki/local/cgit/cgit.cgi
+install -m 0755 -d /home/enoki/local/cgit
+install -m 0644 cgit.css /home/enoki/local/cgit/cgit.css
+install -m 0644 cgit.png /home/enoki/local/cgit/cgit.png
+install -m 0755 -d /home/enoki/local/lib/cgit/filters
+install -m 0755 filters/* /home/enoki/local/lib/cgit/filters
+    Installing node.js 0.6.15...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
++ sed -i '/log.setLevel/s/logging\.DEBUG/0/' tools/wafadmin/Logs.py
++ sed -i s/sys.stderr/sys.stdout/ tools/wafadmin/Utils.py
++ rm -f tools/wafadmin/Utils.pyc tools/wafadmin/Logs.pyc
++ ./configure --prefix=/home/enoki/local
+'configure' finished successfully (0.308s)
++ make --silent
+Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.6.15/out'
+[ 1/35] copy: src/node_config.h.in -> out/Release/src/node_config.h
+[ 2/35] cc: deps/http_parser/http_parser.c -> out/Release/deps/http_parser/http_parser_3.o
+[ 3/35] src/node_natives.h: src/node.js lib/dgram.js lib/console.js lib/buffer.js lib/querystring.js lib/punycode.js lib/http.js lib/net.js lib/freelist.js lib/events.js lib/util.js lib/module.js lib/_debugger.js lib/assert.js lib/fs.js lib/cluster.js lib/os.js lib/dns.js lib/vm.js lib/url.js lib/tls.js lib/crypto.js lib/sys.js lib/https.js lib/stream.js lib/readline.js lib/_linklist.js lib/buffer_ieee754.js lib/tty.js lib/child_process.js lib/repl.js lib/path.js lib/string_decoder.js lib/timers.js lib/zlib.js lib/constants.js -> out/Release/src/node_natives.h
+[ 4/35] uv: deps/uv/include/uv.h -> out/Release/deps/uv/uv.a
+In file included from src/unix/eio/eio.c:51:
+src/unix/eio/ecb.h: In function ‘ecb_unreachable’:
+src/unix/eio/ecb.h:333: warning: ‘noreturn’ function does return
+[ 5/35] libv8.a: deps/v8/SConstruct -> out/Release/libv8.a
 
 scons: warning: Ignoring missing SConscript 'obj/test/release/SConscript'
-File "/home/enoki/dreamhost-install/downloads/node-v0.4.11/deps/v8/SConstruct", line 1201, in BuildSpecific
-[52/75] cxx: src/node_main.cc -> build/default/src/node_main_4.o
-[53/75] cxx: src/node.cc -> build/default/src/node_4.o
-[54/75] cxx: src/node_buffer.cc -> build/default/src/node_buffer_4.o
-[55/75] cxx: src/node_javascript.cc -> build/default/src/node_javascript_4.o
-[56/75] cxx: src/node_extensions.cc -> build/default/src/node_extensions_4.o
-[57/75] cxx: src/node_http_parser.cc -> build/default/src/node_http_parser_4.o
-[58/75] cxx: src/node_net.cc -> build/default/src/node_net_4.o
-[59/75] cxx: src/node_io_watcher.cc -> build/default/src/node_io_watcher_4.o
-[60/75] cxx: src/node_constants.cc -> build/default/src/node_constants_4.o
-[61/75] cxx: src/node_cares.cc -> build/default/src/node_cares_4.o
-[62/75] cxx: src/node_events.cc -> build/default/src/node_events_4.o
-[63/75] cxx: src/node_file.cc -> build/default/src/node_file_4.o
-[64/75] cxx: src/node_signal_watcher.cc -> build/default/src/node_signal_watcher_4.o
-[65/75] cxx: src/node_stat_watcher.cc -> build/default/src/node_stat_watcher_4.o
-[66/75] cxx: src/node_timer.cc -> build/default/src/node_timer_4.o
-[67/75] cxx: src/node_script.cc -> build/default/src/node_script_4.o
-[68/75] cxx: src/node_os.cc -> build/default/src/node_os_4.o
-[69/75] cxx: src/node_dtrace.cc -> build/default/src/node_dtrace_4.o
-[70/75] cxx: src/node_string.cc -> build/default/src/node_string_4.o
-[71/75] cxx: src/node_stdio.cc -> build/default/src/node_stdio_4.o
-[72/75] cxx: src/node_child_process.cc -> build/default/src/node_child_process_4.o
-[73/75] cxx: src/platform_linux.cc -> build/default/src/platform_linux_4.o
-[74/75] cxx: src/node_crypto.cc -> build/default/src/node_crypto_4.o
-[75/75] cxx_link: build/default/src/node_main_4.o build/default/src/node_4.o build/default/src/node_buffer_4.o build/default/src/node_javascript_4.o build/default/src/node_extensions_4.o build/default/src/node_http_parser_4.o build/default/src/node_net_4.o build/default/src/node_io_watcher_4.o build/default/src/node_constants_4.o build/default/src/node_cares_4.o build/default/src/node_events_4.o build/default/src/node_file_4.o build/default/src/node_signal_watcher_4.o build/default/src/node_stat_watcher_4.o build/default/src/node_timer_4.o build/default/src/node_script_4.o build/default/src/node_os_4.o build/default/src/node_dtrace_4.o build/default/src/node_string_4.o build/default/src/node_stdio_4.o build/default/src/node_child_process_4.o build/default/src/platform_linux_4.o build/default/src/node_crypto_4.o build/default/deps/libeio/eio_1.o build/default/deps/http_parser/http_parser_2.o build/default/deps/libev/ev_1.o build/default/deps/c-ares/ares_strcasecmp_1.o build/default/deps/c-ares/ares_free_string_1.o build/default/deps/c-ares/ares_options_1.o build/default/deps/c-ares/ares_send_1.o build/default/deps/c-ares/ares_parse_txt_reply_1.o build/default/deps/c-ares/ares_parse_ptr_reply_1.o build/default/deps/c-ares/ares_nowarn_1.o build/default/deps/c-ares/ares_search_1.o build/default/deps/c-ares/ares_gethostbyname_1.o build/default/deps/c-ares/ares_getsock_1.o build/default/deps/c-ares/ares__timeval_1.o build/default/deps/c-ares/inet_ntop_1.o build/default/deps/c-ares/ares_parse_a_reply_1.o build/default/deps/c-ares/ares_getopt_1.o build/default/deps/c-ares/ares__close_sockets_1.o build/default/deps/c-ares/ares_expand_string_1.o build/default/deps/c-ares/ares_destroy_1.o build/default/deps/c-ares/ares_cancel_1.o build/default/deps/c-ares/ares_parse_aaaa_reply_1.o build/default/deps/c-ares/ares_parse_ns_reply_1.o build/default/deps/c-ares/ares_version_1.o build/default/deps/c-ares/ares__get_hostent_1.o build/default/deps/c-ares/ares_writev_1.o build/default/deps/c-ares/ares_expand_name_1.o build/default/deps/c-ares/ares_free_hostent_1.o build/default/deps/c-ares/ares_parse_mx_reply_1.o build/default/deps/c-ares/ares_gethostbyaddr_1.o build/default/deps/c-ares/ares_llist_1.o build/default/deps/c-ares/ares_data_1.o build/default/deps/c-ares/ares_init_1.o build/default/deps/c-ares/ares_timeout_1.o build/default/deps/c-ares/ares_fds_1.o build/default/deps/c-ares/inet_net_pton_1.o build/default/deps/c-ares/ares_strerror_1.o build/default/deps/c-ares/bitncmp_1.o build/default/deps/c-ares/ares_getnameinfo_1.o build/default/deps/c-ares/ares_library_init_1.o build/default/deps/c-ares/ares_mkquery_1.o build/default/deps/c-ares/ares_process_1.o build/default/deps/c-ares/windows_port_1.o build/default/deps/c-ares/ares_parse_srv_reply_1.o build/default/deps/c-ares/ares_query_1.o build/default/deps/c-ares/ares__read_line_1.o build/default/deps/c-ares/ares_strdup_1.o -> build/default/node
-Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
-'build' finished successfully (3m45.589s)
-Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
-* installing deps/libeio/eio.h as /home/enoki/local/include/node/eio.h
+File "/home/enoki/dreamhost-install/downloads/node-v0.6.15/deps/v8/SConstruct", line 1475, in BuildSpecific
+[ 6/35] cxx: src/node_main.cc -> out/Release/src/node_main_5.o
+[ 7/35] cxx: src/node.cc -> out/Release/src/node_5.o
+[ 8/35] cxx: src/node_buffer.cc -> out/Release/src/node_buffer_5.o
+[ 9/35] cxx: src/node_javascript.cc -> out/Release/src/node_javascript_5.o
+[10/35] cxx: src/node_extensions.cc -> out/Release/src/node_extensions_5.o
+[11/35] cxx: src/node_http_parser.cc -> out/Release/src/node_http_parser_5.o
+[12/35] cxx: src/node_constants.cc -> out/Release/src/node_constants_5.o
+[13/35] cxx: src/node_file.cc -> out/Release/src/node_file_5.o
+[14/35] cxx: src/node_script.cc -> out/Release/src/node_script_5.o
+[15/35] cxx: src/node_os.cc -> out/Release/src/node_os_5.o
+[16/35] cxx: src/node_dtrace.cc -> out/Release/src/node_dtrace_5.o
+[17/35] cxx: src/node_string.cc -> out/Release/src/node_string_5.o
+[18/35] cxx: src/node_zlib.cc -> out/Release/src/node_zlib_5.o
+[19/35] cxx: src/timer_wrap.cc -> out/Release/src/timer_wrap_5.o
+[20/35] cxx: src/handle_wrap.cc -> out/Release/src/handle_wrap_5.o
+[21/35] cxx: src/stream_wrap.cc -> out/Release/src/stream_wrap_5.o
+[22/35] cxx: src/tcp_wrap.cc -> out/Release/src/tcp_wrap_5.o
+[23/35] cxx: src/udp_wrap.cc -> out/Release/src/udp_wrap_5.o
+[24/35] cxx: src/pipe_wrap.cc -> out/Release/src/pipe_wrap_5.o
+[25/35] cxx: src/cares_wrap.cc -> out/Release/src/cares_wrap_5.o
+[26/35] cxx: src/tty_wrap.cc -> out/Release/src/tty_wrap_5.o
+[27/35] cxx: src/fs_event_wrap.cc -> out/Release/src/fs_event_wrap_5.o
+[28/35] cxx: src/process_wrap.cc -> out/Release/src/process_wrap_5.o
+[29/35] cxx: src/v8_typed_array.cc -> out/Release/src/v8_typed_array_5.o
+[30/35] cxx: src/node_signal_watcher.cc -> out/Release/src/node_signal_watcher_5.o
+[31/35] cxx: src/node_stat_watcher.cc -> out/Release/src/node_stat_watcher_5.o
+[32/35] cxx: src/node_io_watcher.cc -> out/Release/src/node_io_watcher_5.o
+[33/35] cxx: src/platform_linux.cc -> out/Release/src/platform_linux_5.o
+[34/35] cxx: src/node_crypto.cc -> out/Release/src/node_crypto_5.o
+[35/35] cxx_link: out/Release/src/node_main_5.o out/Release/src/node_5.o out/Release/src/node_buffer_5.o out/Release/src/node_javascript_5.o out/Release/src/node_extensions_5.o out/Release/src/node_http_parser_5.o out/Release/src/node_constants_5.o out/Release/src/node_file_5.o out/Release/src/node_script_5.o out/Release/src/node_os_5.o out/Release/src/node_dtrace_5.o out/Release/src/node_string_5.o out/Release/src/node_zlib_5.o out/Release/src/timer_wrap_5.o out/Release/src/handle_wrap_5.o out/Release/src/stream_wrap_5.o out/Release/src/tcp_wrap_5.o out/Release/src/udp_wrap_5.o out/Release/src/pipe_wrap_5.o out/Release/src/cares_wrap_5.o out/Release/src/tty_wrap_5.o out/Release/src/fs_event_wrap_5.o out/Release/src/process_wrap_5.o out/Release/src/v8_typed_array_5.o out/Release/src/node_signal_watcher_5.o out/Release/src/node_stat_watcher_5.o out/Release/src/node_io_watcher_5.o out/Release/src/platform_linux_5.o out/Release/src/node_crypto_5.o out/Release/deps/http_parser/http_parser_3.o -> out/Release/node
+Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.6.15/out'
+'build' finished successfully (4m1.698s)
++ make install --silent
+Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.6.15/out'
+* installing deps/uv/include/uv.h as /home/enoki/local/include/node/uv.h
+* installing deps/uv/include/ares_version.h as /home/enoki/local/include/node/ares_version.h
+* installing deps/uv/include/ares.h as /home/enoki/local/include/node/ares.h
+* installing deps/uv/include/uv-private/tree.h as /home/enoki/local/include/node/uv-private/tree.h
+* installing deps/uv/include/uv-private/eio.h as /home/enoki/local/include/node/uv-private/eio.h
+* installing deps/uv/include/uv-private/ev.h as /home/enoki/local/include/node/uv-private/ev.h
+* installing deps/uv/include/uv-private/ngx-queue.h as /home/enoki/local/include/node/uv-private/ngx-queue.h
+* installing deps/uv/include/uv-private/uv-win.h as /home/enoki/local/include/node/uv-private/uv-win.h
+* installing deps/uv/include/uv-private/uv-unix.h as /home/enoki/local/include/node/uv-private/uv-unix.h
+* installing deps/uv/include/ares.h as /home/enoki/local/include/node/c-ares/ares.h
+* installing deps/uv/include/ares_version.h as /home/enoki/local/include/node/c-ares/ares_version.h
 * installing deps/v8/include/v8-profiler.h as /home/enoki/local/include/node/v8-profiler.h
 * installing deps/v8/include/v8stdint.h as /home/enoki/local/include/node/v8stdint.h
 * installing deps/v8/include/v8-preparser.h as /home/enoki/local/include/node/v8-preparser.h
 * installing deps/v8/include/v8.h as /home/enoki/local/include/node/v8.h
 * installing deps/v8/include/v8-debug.h as /home/enoki/local/include/node/v8-debug.h
 * installing deps/v8/include/v8-testing.h as /home/enoki/local/include/node/v8-testing.h
-* installing deps/libev/ev.h as /home/enoki/local/include/node/ev.h
-* installing build/default/config.h as /home/enoki/local/include/node/config.h
+* installing out/Release/config.h as /home/enoki/local/include/node/config.h
 * installing src/node.h as /home/enoki/local/include/node/node.h
 * installing src/node_object_wrap.h as /home/enoki/local/include/node/node_object_wrap.h
 * installing src/node_buffer.h as /home/enoki/local/include/node/node_buffer.h
-* installing src/node_events.h as /home/enoki/local/include/node/node_events.h
 * installing src/node_version.h as /home/enoki/local/include/node/node_version.h
 * installing doc/node.1 as /home/enoki/local/share/man/man1/node.1
 * installing tools/node-waf as /home/enoki/local/bin/node-waf
@@ -252,33 +369,768 @@ Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/bu
 * installing tools/wafadmin/Tools/xlcxx.py as /home/enoki/local/lib/node/wafadmin/Tools/xlcxx.py
 * installing tools/wafadmin/Tools/gob2.py as /home/enoki/local/lib/node/wafadmin/Tools/gob2.py
 * installing tools/wafadmin/Tools/ar.py as /home/enoki/local/lib/node/wafadmin/Tools/ar.py
-* installing build/default/tools/nodejs.pc as /home/enoki/local/lib/pkgconfig/nodejs.pc
-* installing build/default/node as /home/enoki/local/bin/node
-* installing build/default/src/node_config.h as /home/enoki/local/include/node/node_config.h
-Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
-'install' finished successfully (0.277s)
+* installing deps/npm/bin/npm as /home/enoki/local/lib/node_modules/npm/bin/npm
+* installing deps/npm/bin/read-package-json.js as /home/enoki/local/lib/node_modules/npm/bin/read-package-json.js
+* installing deps/npm/bin/npm-cli.js as /home/enoki/local/lib/node_modules/npm/bin/npm-cli.js
+* installing deps/npm/bin/npm.cmd as /home/enoki/local/lib/node_modules/npm/bin/npm.cmd
+* installing deps/npm/bin/node-gyp-bin/node-gyp.cmd as /home/enoki/local/lib/node_modules/npm/bin/node-gyp-bin/node-gyp.cmd
+* installing deps/npm/bin/node-gyp-bin/node-gyp as /home/enoki/local/lib/node_modules/npm/bin/node-gyp-bin/node-gyp
+* installing deps/npm/package.json as /home/enoki/local/lib/node_modules/npm/package.json
+* installing deps/npm/LICENSE as /home/enoki/local/lib/node_modules/npm/LICENSE
+* installing deps/npm/lib/publish.js as /home/enoki/local/lib/node_modules/npm/lib/publish.js
+* installing deps/npm/lib/edit.js as /home/enoki/local/lib/node_modules/npm/lib/edit.js
+* installing deps/npm/lib/rebuild.js as /home/enoki/local/lib/node_modules/npm/lib/rebuild.js
+* installing deps/npm/lib/build.js as /home/enoki/local/lib/node_modules/npm/lib/build.js
+* installing deps/npm/lib/version.js as /home/enoki/local/lib/node_modules/npm/lib/version.js
+* installing deps/npm/lib/start.js as /home/enoki/local/lib/node_modules/npm/lib/start.js
+* installing deps/npm/lib/get.js as /home/enoki/local/lib/node_modules/npm/lib/get.js
+* installing deps/npm/lib/shrinkwrap.js as /home/enoki/local/lib/node_modules/npm/lib/shrinkwrap.js
+* installing deps/npm/lib/star.js as /home/enoki/local/lib/node_modules/npm/lib/star.js
+* installing deps/npm/lib/prefix.js as /home/enoki/local/lib/node_modules/npm/lib/prefix.js
+* installing deps/npm/lib/test.js as /home/enoki/local/lib/node_modules/npm/lib/test.js
+* installing deps/npm/lib/init.js as /home/enoki/local/lib/node_modules/npm/lib/init.js
+* installing deps/npm/lib/run-script.js as /home/enoki/local/lib/node_modules/npm/lib/run-script.js
+* installing deps/npm/lib/link.js as /home/enoki/local/lib/node_modules/npm/lib/link.js
+* installing deps/npm/lib/unpublish.js as /home/enoki/local/lib/node_modules/npm/lib/unpublish.js
+* installing deps/npm/lib/docs.js as /home/enoki/local/lib/node_modules/npm/lib/docs.js
+* installing deps/npm/lib/npm.js as /home/enoki/local/lib/node_modules/npm/lib/npm.js
+* installing deps/npm/lib/outdated.js as /home/enoki/local/lib/node_modules/npm/lib/outdated.js
+* installing deps/npm/lib/update.js as /home/enoki/local/lib/node_modules/npm/lib/update.js
+* installing deps/npm/lib/completion.js as /home/enoki/local/lib/node_modules/npm/lib/completion.js
+* installing deps/npm/lib/submodule.js as /home/enoki/local/lib/node_modules/npm/lib/submodule.js
+* installing deps/npm/lib/unbuild.js as /home/enoki/local/lib/node_modules/npm/lib/unbuild.js
+* installing deps/npm/lib/restart.js as /home/enoki/local/lib/node_modules/npm/lib/restart.js
+* installing deps/npm/lib/owner.js as /home/enoki/local/lib/node_modules/npm/lib/owner.js
+* installing deps/npm/lib/prune.js as /home/enoki/local/lib/node_modules/npm/lib/prune.js
+* installing deps/npm/lib/utils/output.js as /home/enoki/local/lib/node_modules/npm/lib/utils/output.js
+* installing deps/npm/lib/utils/npm-registry-client/tag.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/tag.js
+* installing deps/npm/lib/utils/npm-registry-client/publish.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/publish.js
+* installing deps/npm/lib/utils/npm-registry-client/request.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/request.js
+* installing deps/npm/lib/utils/npm-registry-client/unpublish.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/unpublish.js
+* installing deps/npm/lib/utils/npm-registry-client/get.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/get.js
+* installing deps/npm/lib/utils/npm-registry-client/star.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/star.js
+* installing deps/npm/lib/utils/npm-registry-client/adduser.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/adduser.js
+* installing deps/npm/lib/utils/npm-registry-client/index.js as /home/enoki/local/lib/node_modules/npm/lib/utils/npm-registry-client/index.js
+* installing deps/npm/lib/utils/log.js as /home/enoki/local/lib/node_modules/npm/lib/utils/log.js
+* installing deps/npm/lib/utils/config-defs.js as /home/enoki/local/lib/node_modules/npm/lib/utils/config-defs.js
+* installing deps/npm/lib/utils/load-package-defaults.js as /home/enoki/local/lib/node_modules/npm/lib/utils/load-package-defaults.js
+* installing deps/npm/lib/utils/cmd-shim.js as /home/enoki/local/lib/node_modules/npm/lib/utils/cmd-shim.js
+* installing deps/npm/lib/utils/completion/installed-shallow.js as /home/enoki/local/lib/node_modules/npm/lib/utils/completion/installed-shallow.js
+* installing deps/npm/lib/utils/completion/installed-deep.js as /home/enoki/local/lib/node_modules/npm/lib/utils/completion/installed-deep.js
+* installing deps/npm/lib/utils/completion/users.js as /home/enoki/local/lib/node_modules/npm/lib/utils/completion/users.js
+* installing deps/npm/lib/utils/completion/remote-packages.js as /home/enoki/local/lib/node_modules/npm/lib/utils/completion/remote-packages.js
+* installing deps/npm/lib/utils/completion/file-completion.js as /home/enoki/local/lib/node_modules/npm/lib/utils/completion/file-completion.js
+* installing deps/npm/lib/utils/promise-chain.js as /home/enoki/local/lib/node_modules/npm/lib/utils/promise-chain.js
+* installing deps/npm/lib/utils/link.js as /home/enoki/local/lib/node_modules/npm/lib/utils/link.js
+* installing deps/npm/lib/utils/exec.js as /home/enoki/local/lib/node_modules/npm/lib/utils/exec.js
+* installing deps/npm/lib/utils/lifecycle.js as /home/enoki/local/lib/node_modules/npm/lib/utils/lifecycle.js
+* installing deps/npm/lib/utils/completion.sh as /home/enoki/local/lib/node_modules/npm/lib/utils/completion.sh
+* installing deps/npm/lib/utils/tar.js as /home/enoki/local/lib/node_modules/npm/lib/utils/tar.js
+* installing deps/npm/lib/utils/error-handler.js as /home/enoki/local/lib/node_modules/npm/lib/utils/error-handler.js
+* installing deps/npm/lib/utils/gently-rm.js as /home/enoki/local/lib/node_modules/npm/lib/utils/gently-rm.js
+* installing deps/npm/lib/utils/read-installed.js as /home/enoki/local/lib/node_modules/npm/lib/utils/read-installed.js
+* installing deps/npm/lib/utils/fetch.js as /home/enoki/local/lib/node_modules/npm/lib/utils/fetch.js
+* installing deps/npm/lib/utils/find-prefix.js as /home/enoki/local/lib/node_modules/npm/lib/utils/find-prefix.js
+* installing deps/npm/lib/utils/relativize.js as /home/enoki/local/lib/node_modules/npm/lib/utils/relativize.js
+* installing deps/npm/lib/utils/sha.js as /home/enoki/local/lib/node_modules/npm/lib/utils/sha.js
+* installing deps/npm/lib/utils/read-json.js as /home/enoki/local/lib/node_modules/npm/lib/utils/read-json.js
+* installing deps/npm/lib/utils/find.js as /home/enoki/local/lib/node_modules/npm/lib/utils/find.js
+* installing deps/npm/lib/utils/ini.js as /home/enoki/local/lib/node_modules/npm/lib/utils/ini.js
+* installing deps/npm/lib/search.js as /home/enoki/local/lib/node_modules/npm/lib/search.js
+* installing deps/npm/lib/substack.js as /home/enoki/local/lib/node_modules/npm/lib/substack.js
+* installing deps/npm/lib/config.js as /home/enoki/local/lib/node_modules/npm/lib/config.js
+* installing deps/npm/lib/help-search.js as /home/enoki/local/lib/node_modules/npm/lib/help-search.js
+* installing deps/npm/lib/bugs.js as /home/enoki/local/lib/node_modules/npm/lib/bugs.js
+* installing deps/npm/lib/deprecate.js as /home/enoki/local/lib/node_modules/npm/lib/deprecate.js
+* installing deps/npm/lib/view.js as /home/enoki/local/lib/node_modules/npm/lib/view.js
+* installing deps/npm/lib/set.js as /home/enoki/local/lib/node_modules/npm/lib/set.js
+* installing deps/npm/lib/ls.js as /home/enoki/local/lib/node_modules/npm/lib/ls.js
+* installing deps/npm/lib/adduser.js as /home/enoki/local/lib/node_modules/npm/lib/adduser.js
+* installing deps/npm/lib/xmas.js as /home/enoki/local/lib/node_modules/npm/lib/xmas.js
+* installing deps/npm/lib/root.js as /home/enoki/local/lib/node_modules/npm/lib/root.js
+* installing deps/npm/lib/whoami.js as /home/enoki/local/lib/node_modules/npm/lib/whoami.js
+* installing deps/npm/lib/tag.js as /home/enoki/local/lib/node_modules/npm/lib/tag.js
+* installing deps/npm/lib/pack.js as /home/enoki/local/lib/node_modules/npm/lib/pack.js
+* installing deps/npm/lib/cache.js as /home/enoki/local/lib/node_modules/npm/lib/cache.js
+* installing deps/npm/lib/stop.js as /home/enoki/local/lib/node_modules/npm/lib/stop.js
+* installing deps/npm/lib/faq.js as /home/enoki/local/lib/node_modules/npm/lib/faq.js
+* installing deps/npm/lib/install.js as /home/enoki/local/lib/node_modules/npm/lib/install.js
+* installing deps/npm/lib/bin.js as /home/enoki/local/lib/node_modules/npm/lib/bin.js
+* installing deps/npm/lib/explore.js as /home/enoki/local/lib/node_modules/npm/lib/explore.js
+* installing deps/npm/lib/help.js as /home/enoki/local/lib/node_modules/npm/lib/help.js
+* installing deps/npm/lib/uninstall.js as /home/enoki/local/lib/node_modules/npm/lib/uninstall.js
+* installing deps/npm/doc/api/help-search.md as /home/enoki/local/lib/node_modules/npm/doc/api/help-search.md
+* installing deps/npm/doc/api/load.md as /home/enoki/local/lib/node_modules/npm/doc/api/load.md
+* installing deps/npm/doc/api/ls.md as /home/enoki/local/lib/node_modules/npm/doc/api/ls.md
+* installing deps/npm/doc/api/tag.md as /home/enoki/local/lib/node_modules/npm/doc/api/tag.md
+* installing deps/npm/doc/api/stop.md as /home/enoki/local/lib/node_modules/npm/doc/api/stop.md
+* installing deps/npm/doc/api/bugs.md as /home/enoki/local/lib/node_modules/npm/doc/api/bugs.md
+* installing deps/npm/doc/api/bin.md as /home/enoki/local/lib/node_modules/npm/doc/api/bin.md
+* installing deps/npm/doc/api/root.md as /home/enoki/local/lib/node_modules/npm/doc/api/root.md
+* installing deps/npm/doc/api/install.md as /home/enoki/local/lib/node_modules/npm/doc/api/install.md
+* installing deps/npm/doc/api/deprecate.md as /home/enoki/local/lib/node_modules/npm/doc/api/deprecate.md
+* installing deps/npm/doc/api/rebuild.md as /home/enoki/local/lib/node_modules/npm/doc/api/rebuild.md
+* installing deps/npm/doc/api/uninstall.md as /home/enoki/local/lib/node_modules/npm/doc/api/uninstall.md
+* installing deps/npm/doc/api/pack.md as /home/enoki/local/lib/node_modules/npm/doc/api/pack.md
+* installing deps/npm/doc/api/explore.md as /home/enoki/local/lib/node_modules/npm/doc/api/explore.md
+* installing deps/npm/doc/api/commands.md as /home/enoki/local/lib/node_modules/npm/doc/api/commands.md
+* installing deps/npm/doc/api/prefix.md as /home/enoki/local/lib/node_modules/npm/doc/api/prefix.md
+* installing deps/npm/doc/api/whoami.md as /home/enoki/local/lib/node_modules/npm/doc/api/whoami.md
+* installing deps/npm/doc/api/docs.md as /home/enoki/local/lib/node_modules/npm/doc/api/docs.md
+* installing deps/npm/doc/api/link.md as /home/enoki/local/lib/node_modules/npm/doc/api/link.md
+* installing deps/npm/doc/api/view.md as /home/enoki/local/lib/node_modules/npm/doc/api/view.md
+* installing deps/npm/doc/api/test.md as /home/enoki/local/lib/node_modules/npm/doc/api/test.md
+* installing deps/npm/doc/api/publish.md as /home/enoki/local/lib/node_modules/npm/doc/api/publish.md
+* installing deps/npm/doc/api/edit.md as /home/enoki/local/lib/node_modules/npm/doc/api/edit.md
+* installing deps/npm/doc/api/start.md as /home/enoki/local/lib/node_modules/npm/doc/api/start.md
+* installing deps/npm/doc/api/version.md as /home/enoki/local/lib/node_modules/npm/doc/api/version.md
+* installing deps/npm/doc/api/unpublish.md as /home/enoki/local/lib/node_modules/npm/doc/api/unpublish.md
+* installing deps/npm/doc/api/restart.md as /home/enoki/local/lib/node_modules/npm/doc/api/restart.md
+* installing deps/npm/doc/api/config.md as /home/enoki/local/lib/node_modules/npm/doc/api/config.md
+* installing deps/npm/doc/api/search.md as /home/enoki/local/lib/node_modules/npm/doc/api/search.md
+* installing deps/npm/doc/api/update.md as /home/enoki/local/lib/node_modules/npm/doc/api/update.md
+* installing deps/npm/doc/api/shrinkwrap.md as /home/enoki/local/lib/node_modules/npm/doc/api/shrinkwrap.md
+* installing deps/npm/doc/api/outdated.md as /home/enoki/local/lib/node_modules/npm/doc/api/outdated.md
+* installing deps/npm/doc/api/init.md as /home/enoki/local/lib/node_modules/npm/doc/api/init.md
+* installing deps/npm/doc/api/prune.md as /home/enoki/local/lib/node_modules/npm/doc/api/prune.md
+* installing deps/npm/doc/api/submodule.md as /home/enoki/local/lib/node_modules/npm/doc/api/submodule.md
+* installing deps/npm/doc/api/npm.md as /home/enoki/local/lib/node_modules/npm/doc/api/npm.md
+* installing deps/npm/doc/api/owner.md as /home/enoki/local/lib/node_modules/npm/doc/api/owner.md
+* installing deps/npm/doc/api/run-script.md as /home/enoki/local/lib/node_modules/npm/doc/api/run-script.md
+* installing deps/npm/doc/cli/bundle.md as /home/enoki/local/lib/node_modules/npm/doc/cli/bundle.md
+* installing deps/npm/doc/cli/help-search.md as /home/enoki/local/lib/node_modules/npm/doc/cli/help-search.md
+* installing deps/npm/doc/cli/tag.md as /home/enoki/local/lib/node_modules/npm/doc/cli/tag.md
+* installing deps/npm/doc/cli/semver.md as /home/enoki/local/lib/node_modules/npm/doc/cli/semver.md
+* installing deps/npm/doc/cli/npm.md as /home/enoki/local/lib/node_modules/npm/doc/cli/npm.md
+* installing deps/npm/doc/cli/stop.md as /home/enoki/local/lib/node_modules/npm/doc/cli/stop.md
+* installing deps/npm/doc/cli/faq.md as /home/enoki/local/lib/node_modules/npm/doc/cli/faq.md
+* installing deps/npm/doc/cli/bugs.md as /home/enoki/local/lib/node_modules/npm/doc/cli/bugs.md
+* installing deps/npm/doc/cli/bin.md as /home/enoki/local/lib/node_modules/npm/doc/cli/bin.md
+* installing deps/npm/doc/cli/adduser.md as /home/enoki/local/lib/node_modules/npm/doc/cli/adduser.md
+* installing deps/npm/doc/cli/edit.md as /home/enoki/local/lib/node_modules/npm/doc/cli/edit.md
+* installing deps/npm/doc/cli/root.md as /home/enoki/local/lib/node_modules/npm/doc/cli/root.md
+* installing deps/npm/doc/cli/disputes.md as /home/enoki/local/lib/node_modules/npm/doc/cli/disputes.md
+* installing deps/npm/doc/cli/install.md as /home/enoki/local/lib/node_modules/npm/doc/cli/install.md
+* installing deps/npm/doc/cli/link.md as /home/enoki/local/lib/node_modules/npm/doc/cli/link.md
+* installing deps/npm/doc/cli/build.md as /home/enoki/local/lib/node_modules/npm/doc/cli/build.md
+* installing deps/npm/doc/cli/rebuild.md as /home/enoki/local/lib/node_modules/npm/doc/cli/rebuild.md
+* installing deps/npm/doc/cli/index.md as /home/enoki/local/lib/node_modules/npm/doc/cli/index.md
+* installing deps/npm/doc/cli/list.md as /home/enoki/local/lib/node_modules/npm/doc/cli/list.md
+* installing deps/npm/doc/cli/cache.md as /home/enoki/local/lib/node_modules/npm/doc/cli/cache.md
+* installing deps/npm/doc/cli/outdated.md as /home/enoki/local/lib/node_modules/npm/doc/cli/outdated.md
+* installing deps/npm/doc/cli/pack.md as /home/enoki/local/lib/node_modules/npm/doc/cli/pack.md
+* installing deps/npm/doc/cli/explore.md as /home/enoki/local/lib/node_modules/npm/doc/cli/explore.md
+* installing deps/npm/doc/cli/folders.md as /home/enoki/local/lib/node_modules/npm/doc/cli/folders.md
+* installing deps/npm/doc/cli/prefix.md as /home/enoki/local/lib/node_modules/npm/doc/cli/prefix.md
+* installing deps/npm/doc/cli/whoami.md as /home/enoki/local/lib/node_modules/npm/doc/cli/whoami.md
+* installing deps/npm/doc/cli/docs.md as /home/enoki/local/lib/node_modules/npm/doc/cli/docs.md
+* installing deps/npm/doc/cli/scripts.md as /home/enoki/local/lib/node_modules/npm/doc/cli/scripts.md
+* installing deps/npm/doc/cli/help.md as /home/enoki/local/lib/node_modules/npm/doc/cli/help.md
+* installing deps/npm/doc/cli/view.md as /home/enoki/local/lib/node_modules/npm/doc/cli/view.md
+* installing deps/npm/doc/cli/test.md as /home/enoki/local/lib/node_modules/npm/doc/cli/test.md
+* installing deps/npm/doc/cli/removing-npm.md as /home/enoki/local/lib/node_modules/npm/doc/cli/removing-npm.md
+* installing deps/npm/doc/cli/json.md as /home/enoki/local/lib/node_modules/npm/doc/cli/json.md
+* installing deps/npm/doc/cli/star.md as /home/enoki/local/lib/node_modules/npm/doc/cli/star.md
+* installing deps/npm/doc/cli/publish.md as /home/enoki/local/lib/node_modules/npm/doc/cli/publish.md
+* installing deps/npm/doc/cli/uninstall.md as /home/enoki/local/lib/node_modules/npm/doc/cli/uninstall.md
+* installing deps/npm/doc/cli/start.md as /home/enoki/local/lib/node_modules/npm/doc/cli/start.md
+* installing deps/npm/doc/cli/version.md as /home/enoki/local/lib/node_modules/npm/doc/cli/version.md
+* installing deps/npm/doc/cli/unpublish.md as /home/enoki/local/lib/node_modules/npm/doc/cli/unpublish.md
+* installing deps/npm/doc/cli/developers.md as /home/enoki/local/lib/node_modules/npm/doc/cli/developers.md
+* installing deps/npm/doc/cli/coding-style.md as /home/enoki/local/lib/node_modules/npm/doc/cli/coding-style.md
+* installing deps/npm/doc/cli/config.md as /home/enoki/local/lib/node_modules/npm/doc/cli/config.md
+* installing deps/npm/doc/cli/changelog.md as /home/enoki/local/lib/node_modules/npm/doc/cli/changelog.md
+* installing deps/npm/doc/cli/search.md as /home/enoki/local/lib/node_modules/npm/doc/cli/search.md
+* installing deps/npm/doc/cli/update.md as /home/enoki/local/lib/node_modules/npm/doc/cli/update.md
+* installing deps/npm/doc/cli/registry.md as /home/enoki/local/lib/node_modules/npm/doc/cli/registry.md
+* installing deps/npm/doc/cli/shrinkwrap.md as /home/enoki/local/lib/node_modules/npm/doc/cli/shrinkwrap.md
+* installing deps/npm/doc/cli/owner.md as /home/enoki/local/lib/node_modules/npm/doc/cli/owner.md
+* installing deps/npm/doc/cli/init.md as /home/enoki/local/lib/node_modules/npm/doc/cli/init.md
+* installing deps/npm/doc/cli/prune.md as /home/enoki/local/lib/node_modules/npm/doc/cli/prune.md
+* installing deps/npm/doc/cli/restart.md as /home/enoki/local/lib/node_modules/npm/doc/cli/restart.md
+* installing deps/npm/doc/cli/submodule.md as /home/enoki/local/lib/node_modules/npm/doc/cli/submodule.md
+* installing deps/npm/doc/cli/deprecate.md as /home/enoki/local/lib/node_modules/npm/doc/cli/deprecate.md
+* installing deps/npm/doc/cli/completion.md as /home/enoki/local/lib/node_modules/npm/doc/cli/completion.md
+* installing deps/npm/doc/cli/run-script.md as /home/enoki/local/lib/node_modules/npm/doc/cli/run-script.md
+* installing deps/npm/scripts/index-build.js as /home/enoki/local/lib/node_modules/npm/scripts/index-build.js
+* installing deps/npm/scripts/doc-build.sh as /home/enoki/local/lib/node_modules/npm/scripts/doc-build.sh
+* installing deps/npm/scripts/release.sh as /home/enoki/local/lib/node_modules/npm/scripts/release.sh
+* installing deps/npm/scripts/clean-old.sh as /home/enoki/local/lib/node_modules/npm/scripts/clean-old.sh
+* installing deps/npm/scripts/install.sh as /home/enoki/local/lib/node_modules/npm/scripts/install.sh
+* installing deps/npm/Makefile as /home/enoki/local/lib/node_modules/npm/Makefile
+* installing deps/npm/node_modules/inherits/inherits.js as /home/enoki/local/lib/node_modules/npm/node_modules/inherits/inherits.js
+* installing deps/npm/node_modules/inherits/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/inherits/package.json
+* installing deps/npm/node_modules/inherits/inherits-old.js as /home/enoki/local/lib/node_modules/npm/node_modules/inherits/inherits-old.js
+* installing deps/npm/node_modules/inherits/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/inherits/README.md
+* installing deps/npm/node_modules/inherits/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/inherits/LICENSE
+* installing deps/npm/node_modules/abbrev/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/abbrev/package.json
+* installing deps/npm/node_modules/abbrev/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/abbrev/README.md
+* installing deps/npm/node_modules/abbrev/lib/abbrev.js as /home/enoki/local/lib/node_modules/npm/node_modules/abbrev/lib/abbrev.js
+* installing deps/npm/node_modules/abbrev/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/abbrev/LICENSE
+* installing deps/npm/node_modules/semver/bin/semver as /home/enoki/local/lib/node_modules/npm/node_modules/semver/bin/semver
+* installing deps/npm/node_modules/semver/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/semver/package.json
+* installing deps/npm/node_modules/semver/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/semver/README.md
+* installing deps/npm/node_modules/semver/semver.js as /home/enoki/local/lib/node_modules/npm/node_modules/semver/semver.js
+* installing deps/npm/node_modules/semver/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/semver/LICENSE
+* installing deps/npm/node_modules/tar/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/tar/package.json
+* installing deps/npm/node_modules/tar/lib/entry-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/entry-writer.js
+* installing deps/npm/node_modules/tar/lib/extended-header.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/extended-header.js
+* installing deps/npm/node_modules/tar/lib/global-header-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/global-header-writer.js
+* installing deps/npm/node_modules/tar/lib/buffer-entry.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/buffer-entry.js
+* installing deps/npm/node_modules/tar/lib/extended-header-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/extended-header-writer.js
+* installing deps/npm/node_modules/tar/lib/parse.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/parse.js
+* installing deps/npm/node_modules/tar/lib/pack.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/pack.js
+* installing deps/npm/node_modules/tar/lib/entry.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/entry.js
+* installing deps/npm/node_modules/tar/lib/header.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/header.js
+* installing deps/npm/node_modules/tar/lib/extract.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/lib/extract.js
+* installing deps/npm/node_modules/tar/tar.js as /home/enoki/local/lib/node_modules/npm/node_modules/tar/tar.js
+* installing deps/npm/node_modules/tar/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/tar/.npmignore
+* installing deps/npm/node_modules/tar/.travis.yml as /home/enoki/local/lib/node_modules/npm/node_modules/tar/.travis.yml
+* installing deps/npm/node_modules/tar/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/tar/README.md
+* installing deps/npm/node_modules/graceful-fs/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/graceful-fs/package.json
+* installing deps/npm/node_modules/graceful-fs/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/graceful-fs/.npmignore
+* installing deps/npm/node_modules/graceful-fs/graceful-fs.js as /home/enoki/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js
+* installing deps/npm/node_modules/graceful-fs/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/graceful-fs/README.md
+* installing deps/npm/node_modules/graceful-fs/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/graceful-fs/LICENSE
+* installing deps/npm/node_modules/uid-number/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/uid-number/package.json
+* installing deps/npm/node_modules/uid-number/get-uid-gid.js as /home/enoki/local/lib/node_modules/npm/node_modules/uid-number/get-uid-gid.js
+* installing deps/npm/node_modules/uid-number/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/uid-number/README.md
+* installing deps/npm/node_modules/uid-number/uid-number.js as /home/enoki/local/lib/node_modules/npm/node_modules/uid-number/uid-number.js
+* installing deps/npm/node_modules/ini/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/ini/package.json
+* installing deps/npm/node_modules/ini/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/ini/README.md
+* installing deps/npm/node_modules/ini/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/ini/LICENSE
+* installing deps/npm/node_modules/ini/ini.js as /home/enoki/local/lib/node_modules/npm/node_modules/ini/ini.js
+* installing deps/npm/node_modules/minimatch/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/minimatch/package.json
+* installing deps/npm/node_modules/minimatch/.travis.yml as /home/enoki/local/lib/node_modules/npm/node_modules/minimatch/.travis.yml
+* installing deps/npm/node_modules/minimatch/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/minimatch/README.md
+* installing deps/npm/node_modules/minimatch/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/minimatch/LICENSE
+* installing deps/npm/node_modules/minimatch/minimatch.js as /home/enoki/local/lib/node_modules/npm/node_modules/minimatch/minimatch.js
+* installing deps/npm/node_modules/block-stream/block-stream.js as /home/enoki/local/lib/node_modules/npm/node_modules/block-stream/block-stream.js
+* installing deps/npm/node_modules/block-stream/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/block-stream/package.json
+* installing deps/npm/node_modules/block-stream/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/block-stream/README.md
+* installing deps/npm/node_modules/fstream/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/package.json
+* installing deps/npm/node_modules/fstream/lib/file-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/file-writer.js
+* installing deps/npm/node_modules/fstream/lib/dir-reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/dir-reader.js
+* installing deps/npm/node_modules/fstream/lib/proxy-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/proxy-writer.js
+* installing deps/npm/node_modules/fstream/lib/link-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/link-writer.js
+* installing deps/npm/node_modules/fstream/lib/get-type.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/get-type.js
+* installing deps/npm/node_modules/fstream/lib/writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/writer.js
+* installing deps/npm/node_modules/fstream/lib/dir-writer.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js
+* installing deps/npm/node_modules/fstream/lib/reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/reader.js
+* installing deps/npm/node_modules/fstream/lib/abstract.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/abstract.js
+* installing deps/npm/node_modules/fstream/lib/socket-reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/socket-reader.js
+* installing deps/npm/node_modules/fstream/lib/collect.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/collect.js
+* installing deps/npm/node_modules/fstream/lib/proxy-reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/proxy-reader.js
+* installing deps/npm/node_modules/fstream/lib/link-reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/link-reader.js
+* installing deps/npm/node_modules/fstream/lib/file-reader.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/lib/file-reader.js
+* installing deps/npm/node_modules/fstream/fstream.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/fstream.js
+* installing deps/npm/node_modules/fstream/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/.npmignore
+* installing deps/npm/node_modules/fstream/LICENCE as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/LICENCE
+* installing deps/npm/node_modules/fstream/.travis.yml as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/.travis.yml
+* installing deps/npm/node_modules/fstream/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/fstream/README.md
+* installing deps/npm/node_modules/nopt/bin/nopt.js as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/bin/nopt.js
+* installing deps/npm/node_modules/nopt/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/package.json
+* installing deps/npm/node_modules/nopt/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/LICENSE
+* installing deps/npm/node_modules/nopt/lib/nopt.js as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/lib/nopt.js
+* installing deps/npm/node_modules/nopt/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/.npmignore
+* installing deps/npm/node_modules/nopt/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/nopt/README.md
+* installing deps/npm/node_modules/which/bin/which as /home/enoki/local/lib/node_modules/npm/node_modules/which/bin/which
+* installing deps/npm/node_modules/which/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/which/package.json
+* installing deps/npm/node_modules/which/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/which/README.md
+* installing deps/npm/node_modules/which/which.js as /home/enoki/local/lib/node_modules/npm/node_modules/which/which.js
+* installing deps/npm/node_modules/which/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/which/LICENSE
+* installing deps/npm/node_modules/fstream-npm/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/package.json
+* installing deps/npm/node_modules/fstream-npm/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/.npmignore
+* installing deps/npm/node_modules/fstream-npm/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/README.md
+* installing deps/npm/node_modules/fstream-npm/node_modules/fstream-ignore/ignore.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/node_modules/fstream-ignore/ignore.js
+* installing deps/npm/node_modules/fstream-npm/node_modules/fstream-ignore/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/node_modules/fstream-ignore/.npmignore
+* installing deps/npm/node_modules/fstream-npm/node_modules/fstream-ignore/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/node_modules/fstream-ignore/package.json
+* installing deps/npm/node_modules/fstream-npm/node_modules/fstream-ignore/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/node_modules/fstream-ignore/README.md
+* installing deps/npm/node_modules/fstream-npm/fstream-npm.js as /home/enoki/local/lib/node_modules/npm/node_modules/fstream-npm/fstream-npm.js
+* installing deps/npm/node_modules/read/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/read/package.json
+* installing deps/npm/node_modules/read/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/read/README.md
+* installing deps/npm/node_modules/read/lib/read.js as /home/enoki/local/lib/node_modules/npm/node_modules/read/lib/read.js
+* installing deps/npm/node_modules/read/LICENCE as /home/enoki/local/lib/node_modules/npm/node_modules/read/LICENCE
+* installing deps/npm/node_modules/node-uuid/LICENSE.md as /home/enoki/local/lib/node_modules/npm/node_modules/node-uuid/LICENSE.md
+* installing deps/npm/node_modules/node-uuid/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/node-uuid/.npmignore
+* installing deps/npm/node_modules/node-uuid/uuid.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-uuid/uuid.js
+* installing deps/npm/node_modules/node-uuid/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/node-uuid/package.json
+* installing deps/npm/node_modules/node-uuid/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/node-uuid/README.md
+* installing deps/npm/node_modules/mkdirp/README.markdown as /home/enoki/local/lib/node_modules/npm/node_modules/mkdirp/README.markdown
+* installing deps/npm/node_modules/mkdirp/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/mkdirp/package.json
+* installing deps/npm/node_modules/mkdirp/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/mkdirp/LICENSE
+* installing deps/npm/node_modules/mkdirp/index.js as /home/enoki/local/lib/node_modules/npm/node_modules/mkdirp/index.js
+* installing deps/npm/node_modules/chownr/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/chownr/package.json
+* installing deps/npm/node_modules/chownr/chownr.js as /home/enoki/local/lib/node_modules/npm/node_modules/chownr/chownr.js
+* installing deps/npm/node_modules/chownr/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/chownr/README.md
+* installing deps/npm/node_modules/rimraf/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/rimraf/package.json
+* installing deps/npm/node_modules/rimraf/rimraf.js as /home/enoki/local/lib/node_modules/npm/node_modules/rimraf/rimraf.js
+* installing deps/npm/node_modules/rimraf/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/rimraf/README.md
+* installing deps/npm/node_modules/rimraf/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/rimraf/LICENSE
+* installing deps/npm/node_modules/rimraf/AUTHORS as /home/enoki/local/lib/node_modules/npm/node_modules/rimraf/AUTHORS
+* installing deps/npm/node_modules/node-gyp/bin/node-gyp.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js
+* installing deps/npm/node_modules/node-gyp/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/package.json
+* installing deps/npm/node_modules/node-gyp/updateLegacy.sh as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/updateLegacy.sh
+* installing deps/npm/node_modules/node-gyp/lib/remove.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/remove.js
+* installing deps/npm/node_modules/node-gyp/lib/configure.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/configure.js
+* installing deps/npm/node_modules/node-gyp/lib/rebuild.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/rebuild.js
+* installing deps/npm/node_modules/node-gyp/lib/build.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/build.js
+* installing deps/npm/node_modules/node-gyp/lib/list.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/list.js
+* installing deps/npm/node_modules/node-gyp/lib/install.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/install.js
+* installing deps/npm/node_modules/node-gyp/lib/util/hook.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/util/hook.js
+* installing deps/npm/node_modules/node-gyp/lib/util/asyncEmit.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/util/asyncEmit.js
+* installing deps/npm/node_modules/node-gyp/lib/util/mkdirp.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/util/mkdirp.js
+* installing deps/npm/node_modules/node-gyp/lib/node-gyp.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/node-gyp.js
+* installing deps/npm/node_modules/node-gyp/lib/clean.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/lib/clean.js
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/package.json
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/server.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/server.js
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/lib/ansi.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/lib/ansi.js
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/nodejs.png as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/nodejs.png
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/.npmignore
+* installing deps/npm/node_modules/node-gyp/node_modules/ansi/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/ansi/README.md
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/package.json
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/glob.js as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/glob.js
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/.npmignore
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/LICENCE as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/LICENCE
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/.travis.yml as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/.travis.yml
+* installing deps/npm/node_modules/node-gyp/node_modules/glob/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/node_modules/glob/README.md
+* installing deps/npm/node_modules/node-gyp/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/.npmignore
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp_addon as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp_addon
+* installing deps/npm/node_modules/node-gyp/legacy/tools/addon.gypi as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/addon.gypi
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/PRESUBMIT.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/PRESUBMIT.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xml_fix.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xml_fix.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/system_test.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/system_test.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/easy_xml_test.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/easy_xml_test.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/SCons.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/SCons.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSSettings.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSSettings.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/ninja_syntax.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/ninja_syntax.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/scons.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/scons.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/msvs_test.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/msvs_test.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/gypsh.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/gypsh.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/dump_dependency_json.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/dump_dependency_json.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/make.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/make.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/ninja.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/ninja.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/__init__.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/__init__.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/gypd.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/gypd.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/xcode.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/xcode.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/ninja_test.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/ninja_test.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/msvs.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/generator/msvs.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/sun_tool.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/sun_tool.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xcode_emulation.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xcode_emulation.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/mac_tool.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/mac_tool.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/__init__.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/__init__.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/input.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/input.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSSettings_test.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSSettings_test.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSNew.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSNew.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xcodeproj_file.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/xcodeproj_file.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSToolFile.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSToolFile.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSVersion.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSVersion.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSUserFile.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSUserFile.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/common.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/common.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/easy_xml.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/easy_xml.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSProject.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylib/gyp/MSVSProject.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/gyp.bat as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/gyp.bat
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/samples/samples.bat as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/samples/samples.bat
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/samples/samples as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/samples/samples
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/LICENSE
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/gyp_dummy.c as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/gyp_dummy.c
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/gyp as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/gyp
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/OWNERS as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/OWNERS
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/pylintrc as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/pylintrc
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/.npmignore
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/codereview.settings as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/codereview.settings
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/gyptest.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/gyptest.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/DEPS as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/DEPS
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/AUTHORS as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/AUTHORS
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/buildbot/buildbot_run.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/buildbot/buildbot_run.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/setup.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/setup.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/MANIFEST as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/MANIFEST
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_vcproj.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_vcproj.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_gyp.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_gyp.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/graphviz.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/graphviz.py
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/README as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/README
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/README as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/README
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/Specifications/gyp.xclangspec as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/Specifications/gyp.xclangspec
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/Specifications/gyp.pbfilespec as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/Xcode/Specifications/gyp.pbfilespec
+* installing deps/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_sln.py as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/tools/gyp/tools/pretty_sln.py
+* installing deps/npm/node_modules/node-gyp/legacy/common.gypi as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/legacy/common.gypi
+* installing deps/npm/node_modules/node-gyp/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/node-gyp/README.md
+* installing deps/npm/node_modules/request/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/request/package.json
+* installing deps/npm/node_modules/request/forever.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/forever.js
+* installing deps/npm/node_modules/request/vendor/cookie/jar.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/vendor/cookie/jar.js
+* installing deps/npm/node_modules/request/vendor/cookie/index.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/vendor/cookie/index.js
+* installing deps/npm/node_modules/request/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/request/LICENSE
+* installing deps/npm/node_modules/request/tunnel.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/tunnel.js
+* installing deps/npm/node_modules/request/mimetypes.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/mimetypes.js
+* installing deps/npm/node_modules/request/main.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/main.js
+* installing deps/npm/node_modules/request/uuid.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/uuid.js
+* installing deps/npm/node_modules/request/oauth.js as /home/enoki/local/lib/node_modules/npm/node_modules/request/oauth.js
+* installing deps/npm/node_modules/request/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/request/README.md
+* installing deps/npm/node_modules/slide/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/slide/package.json
+* installing deps/npm/node_modules/slide/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/slide/LICENSE
+* installing deps/npm/node_modules/slide/lib/async-map-ordered.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/lib/async-map-ordered.js
+* installing deps/npm/node_modules/slide/lib/async-map.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js
+* installing deps/npm/node_modules/slide/lib/slide.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/lib/slide.js
+* installing deps/npm/node_modules/slide/lib/bind-actor.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/lib/bind-actor.js
+* installing deps/npm/node_modules/slide/lib/chain.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/lib/chain.js
+* installing deps/npm/node_modules/slide/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/slide/.npmignore
+* installing deps/npm/node_modules/slide/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/slide/README.md
+* installing deps/npm/node_modules/slide/index.js as /home/enoki/local/lib/node_modules/npm/node_modules/slide/index.js
+* installing deps/npm/node_modules/archy/README.markdown as /home/enoki/local/lib/node_modules/npm/node_modules/archy/README.markdown
+* installing deps/npm/node_modules/archy/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/archy/package.json
+* installing deps/npm/node_modules/archy/index.js as /home/enoki/local/lib/node_modules/npm/node_modules/archy/index.js
+* installing deps/npm/node_modules/proto-list/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/proto-list/package.json
+* installing deps/npm/node_modules/proto-list/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/proto-list/README.md
+* installing deps/npm/node_modules/proto-list/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/proto-list/LICENSE
+* installing deps/npm/node_modules/proto-list/proto-list.js as /home/enoki/local/lib/node_modules/npm/node_modules/proto-list/proto-list.js
+* installing deps/npm/node_modules/lru-cache/package.json as /home/enoki/local/lib/node_modules/npm/node_modules/lru-cache/package.json
+* installing deps/npm/node_modules/lru-cache/.npmignore as /home/enoki/local/lib/node_modules/npm/node_modules/lru-cache/.npmignore
+* installing deps/npm/node_modules/lru-cache/README.md as /home/enoki/local/lib/node_modules/npm/node_modules/lru-cache/README.md
+* installing deps/npm/node_modules/lru-cache/lib/lru-cache.js as /home/enoki/local/lib/node_modules/npm/node_modules/lru-cache/lib/lru-cache.js
+* installing deps/npm/node_modules/lru-cache/LICENSE as /home/enoki/local/lib/node_modules/npm/node_modules/lru-cache/LICENSE
+* installing deps/npm/cli.js as /home/enoki/local/lib/node_modules/npm/cli.js
+* installing deps/npm/.npmignore as /home/enoki/local/lib/node_modules/npm/.npmignore
+* installing deps/npm/html/n-large.png as /home/enoki/local/lib/node_modules/npm/html/n-large.png
+* installing deps/npm/html/favicon.ico as /home/enoki/local/lib/node_modules/npm/html/favicon.ico
+* installing deps/npm/html/npm.png as /home/enoki/local/lib/node_modules/npm/html/npm.png
+* installing deps/npm/html/npm-fin.png as /home/enoki/local/lib/node_modules/npm/html/npm-fin.png
+* installing deps/npm/html/api/get.html as /home/enoki/local/lib/node_modules/npm/html/api/get.html
+* installing deps/npm/html/api/owner.html as /home/enoki/local/lib/node_modules/npm/html/api/owner.html
+* installing deps/npm/html/api/link.html as /home/enoki/local/lib/node_modules/npm/html/api/link.html
+* installing deps/npm/html/api/unpublish.html as /home/enoki/local/lib/node_modules/npm/html/api/unpublish.html
+* installing deps/npm/html/api/edit.html as /home/enoki/local/lib/node_modules/npm/html/api/edit.html
+* installing deps/npm/html/api/restart.html as /home/enoki/local/lib/node_modules/npm/html/api/restart.html
+* installing deps/npm/html/api/root.html as /home/enoki/local/lib/node_modules/npm/html/api/root.html
+* installing deps/npm/html/api/outdated.html as /home/enoki/local/lib/node_modules/npm/html/api/outdated.html
+* installing deps/npm/html/api/publish.html as /home/enoki/local/lib/node_modules/npm/html/api/publish.html
+* installing deps/npm/html/api/docs.html as /home/enoki/local/lib/node_modules/npm/html/api/docs.html
+* installing deps/npm/html/api/ln.html as /home/enoki/local/lib/node_modules/npm/html/api/ln.html
+* installing deps/npm/html/api/pack.html as /home/enoki/local/lib/node_modules/npm/html/api/pack.html
+* installing deps/npm/html/api/search.html as /home/enoki/local/lib/node_modules/npm/html/api/search.html
+* installing deps/npm/html/api/whoami.html as /home/enoki/local/lib/node_modules/npm/html/api/whoami.html
+* installing deps/npm/html/api/GubbleBum-Blocky.ttf as /home/enoki/local/lib/node_modules/npm/html/api/GubbleBum-Blocky.ttf
+* installing deps/npm/html/api/npm.html as /home/enoki/local/lib/node_modules/npm/html/api/npm.html
+* installing deps/npm/html/api/submodule.html as /home/enoki/local/lib/node_modules/npm/html/api/submodule.html
+* installing deps/npm/html/api/home.html as /home/enoki/local/lib/node_modules/npm/html/api/home.html
+* installing deps/npm/html/api/init.html as /home/enoki/local/lib/node_modules/npm/html/api/init.html
+* installing deps/npm/html/api/update.html as /home/enoki/local/lib/node_modules/npm/html/api/update.html
+* installing deps/npm/html/api/run-script.html as /home/enoki/local/lib/node_modules/npm/html/api/run-script.html
+* installing deps/npm/html/api/help-search.html as /home/enoki/local/lib/node_modules/npm/html/api/help-search.html
+* installing deps/npm/html/api/config.html as /home/enoki/local/lib/node_modules/npm/html/api/config.html
+* installing deps/npm/html/api/version.html as /home/enoki/local/lib/node_modules/npm/html/api/version.html
+* installing deps/npm/html/api/load.html as /home/enoki/local/lib/node_modules/npm/html/api/load.html
+* installing deps/npm/html/api/tag.html as /home/enoki/local/lib/node_modules/npm/html/api/tag.html
+* installing deps/npm/html/api/view.html as /home/enoki/local/lib/node_modules/npm/html/api/view.html
+* installing deps/npm/html/api/ls.html as /home/enoki/local/lib/node_modules/npm/html/api/ls.html
+* installing deps/npm/html/api/install.html as /home/enoki/local/lib/node_modules/npm/html/api/install.html
+* installing deps/npm/html/api/find.html as /home/enoki/local/lib/node_modules/npm/html/api/find.html
+* installing deps/npm/html/api/prefix.html as /home/enoki/local/lib/node_modules/npm/html/api/prefix.html
+* installing deps/npm/html/api/author.html as /home/enoki/local/lib/node_modules/npm/html/api/author.html
+* installing deps/npm/html/api/prune.html as /home/enoki/local/lib/node_modules/npm/html/api/prune.html
+* installing deps/npm/html/api/test.html as /home/enoki/local/lib/node_modules/npm/html/api/test.html
+* installing deps/npm/html/api/stop.html as /home/enoki/local/lib/node_modules/npm/html/api/stop.html
+* installing deps/npm/html/api/shrinkwrap.html as /home/enoki/local/lib/node_modules/npm/html/api/shrinkwrap.html
+* installing deps/npm/html/api/explore.html as /home/enoki/local/lib/node_modules/npm/html/api/explore.html
+* installing deps/npm/html/api/deprecate.html as /home/enoki/local/lib/node_modules/npm/html/api/deprecate.html
+* installing deps/npm/html/api/commands.html as /home/enoki/local/lib/node_modules/npm/html/api/commands.html
+* installing deps/npm/html/api/rm.html as /home/enoki/local/lib/node_modules/npm/html/api/rm.html
+* installing deps/npm/html/api/bin.html as /home/enoki/local/lib/node_modules/npm/html/api/bin.html
+* installing deps/npm/html/api/start.html as /home/enoki/local/lib/node_modules/npm/html/api/start.html
+* installing deps/npm/html/api/set.html as /home/enoki/local/lib/node_modules/npm/html/api/set.html
+* installing deps/npm/html/api/bugs.html as /home/enoki/local/lib/node_modules/npm/html/api/bugs.html
+* installing deps/npm/html/api/uninstall.html as /home/enoki/local/lib/node_modules/npm/html/api/uninstall.html
+* installing deps/npm/html/api/list.html as /home/enoki/local/lib/node_modules/npm/html/api/list.html
+* installing deps/npm/html/api/rebuild.html as /home/enoki/local/lib/node_modules/npm/html/api/rebuild.html
+* installing deps/npm/html/api/style.css as /home/enoki/local/lib/node_modules/npm/html/api/style.css
+* installing deps/npm/html/doc/scripts.html as /home/enoki/local/lib/node_modules/npm/html/doc/scripts.html
+* installing deps/npm/html/doc/owner.html as /home/enoki/local/lib/node_modules/npm/html/doc/owner.html
+* installing deps/npm/html/doc/link.html as /home/enoki/local/lib/node_modules/npm/html/doc/link.html
+* installing deps/npm/html/doc/disputes.html as /home/enoki/local/lib/node_modules/npm/html/doc/disputes.html
+* installing deps/npm/html/doc/registry.html as /home/enoki/local/lib/node_modules/npm/html/doc/registry.html
+* installing deps/npm/html/doc/edit.html as /home/enoki/local/lib/node_modules/npm/html/doc/edit.html
+* installing deps/npm/html/doc/restart.html as /home/enoki/local/lib/node_modules/npm/html/doc/restart.html
+* installing deps/npm/html/doc/root.html as /home/enoki/local/lib/node_modules/npm/html/doc/root.html
+* installing deps/npm/html/doc/folders.html as /home/enoki/local/lib/node_modules/npm/html/doc/folders.html
+* installing deps/npm/html/doc/outdated.html as /home/enoki/local/lib/node_modules/npm/html/doc/outdated.html
+* installing deps/npm/html/doc/removing-npm.html as /home/enoki/local/lib/node_modules/npm/html/doc/removing-npm.html
+* installing deps/npm/html/doc/publish.html as /home/enoki/local/lib/node_modules/npm/html/doc/publish.html
+* installing deps/npm/html/doc/docs.html as /home/enoki/local/lib/node_modules/npm/html/doc/docs.html
+* installing deps/npm/html/doc/unpublish.html as /home/enoki/local/lib/node_modules/npm/html/doc/unpublish.html
+* installing deps/npm/html/doc/ln.html as /home/enoki/local/lib/node_modules/npm/html/doc/ln.html
+* installing deps/npm/html/doc/pack.html as /home/enoki/local/lib/node_modules/npm/html/doc/pack.html
+* installing deps/npm/html/doc/search.html as /home/enoki/local/lib/node_modules/npm/html/doc/search.html
+* installing deps/npm/html/doc/whoami.html as /home/enoki/local/lib/node_modules/npm/html/doc/whoami.html
+* installing deps/npm/html/doc/GubbleBum-Blocky.ttf as /home/enoki/local/lib/node_modules/npm/html/doc/GubbleBum-Blocky.ttf
+* installing deps/npm/html/doc/adduser.html as /home/enoki/local/lib/node_modules/npm/html/doc/adduser.html
+* installing deps/npm/html/doc/npm.html as /home/enoki/local/lib/node_modules/npm/html/doc/npm.html
+* installing deps/npm/html/doc/cache.html as /home/enoki/local/lib/node_modules/npm/html/doc/cache.html
+* installing deps/npm/html/doc/home.html as /home/enoki/local/lib/node_modules/npm/html/doc/home.html
+* installing deps/npm/html/doc/init.html as /home/enoki/local/lib/node_modules/npm/html/doc/init.html
+* installing deps/npm/html/doc/json.html as /home/enoki/local/lib/node_modules/npm/html/doc/json.html
+* installing deps/npm/html/doc/update.html as /home/enoki/local/lib/node_modules/npm/html/doc/update.html
+* installing deps/npm/html/doc/star.html as /home/enoki/local/lib/node_modules/npm/html/doc/star.html
+* installing deps/npm/html/doc/help.html as /home/enoki/local/lib/node_modules/npm/html/doc/help.html
+* installing deps/npm/html/doc/run-script.html as /home/enoki/local/lib/node_modules/npm/html/doc/run-script.html
+* installing deps/npm/html/doc/help-search.html as /home/enoki/local/lib/node_modules/npm/html/doc/help-search.html
+* installing deps/npm/html/doc/config.html as /home/enoki/local/lib/node_modules/npm/html/doc/config.html
+* installing deps/npm/html/doc/set.html as /home/enoki/local/lib/node_modules/npm/html/doc/set.html
+* installing deps/npm/html/doc/semver.html as /home/enoki/local/lib/node_modules/npm/html/doc/semver.html
+* installing deps/npm/html/doc/completion.html as /home/enoki/local/lib/node_modules/npm/html/doc/completion.html
+* installing deps/npm/html/doc/tag.html as /home/enoki/local/lib/node_modules/npm/html/doc/tag.html
+* installing deps/npm/html/doc/view.html as /home/enoki/local/lib/node_modules/npm/html/doc/view.html
+* installing deps/npm/html/doc/ls.html as /home/enoki/local/lib/node_modules/npm/html/doc/ls.html
+* installing deps/npm/html/doc/install.html as /home/enoki/local/lib/node_modules/npm/html/doc/install.html
+* installing deps/npm/html/doc/find.html as /home/enoki/local/lib/node_modules/npm/html/doc/find.html
+* installing deps/npm/html/doc/prefix.html as /home/enoki/local/lib/node_modules/npm/html/doc/prefix.html
+* installing deps/npm/html/doc/author.html as /home/enoki/local/lib/node_modules/npm/html/doc/author.html
+* installing deps/npm/html/doc/prune.html as /home/enoki/local/lib/node_modules/npm/html/doc/prune.html
+* installing deps/npm/html/doc/test.html as /home/enoki/local/lib/node_modules/npm/html/doc/test.html
+* installing deps/npm/html/doc/global.html as /home/enoki/local/lib/node_modules/npm/html/doc/global.html
+* installing deps/npm/html/doc/stop.html as /home/enoki/local/lib/node_modules/npm/html/doc/stop.html
+* installing deps/npm/html/doc/faq.html as /home/enoki/local/lib/node_modules/npm/html/doc/faq.html
+* installing deps/npm/html/doc/bundle.html as /home/enoki/local/lib/node_modules/npm/html/doc/bundle.html
+* installing deps/npm/html/doc/shrinkwrap.html as /home/enoki/local/lib/node_modules/npm/html/doc/shrinkwrap.html
+* installing deps/npm/html/doc/developers.html as /home/enoki/local/lib/node_modules/npm/html/doc/developers.html
+* installing deps/npm/html/doc/index.html as /home/enoki/local/lib/node_modules/npm/html/doc/index.html
+* installing deps/npm/html/doc/explore.html as /home/enoki/local/lib/node_modules/npm/html/doc/explore.html
+* installing deps/npm/html/doc/build.html as /home/enoki/local/lib/node_modules/npm/html/doc/build.html
+* installing deps/npm/html/doc/get.html as /home/enoki/local/lib/node_modules/npm/html/doc/get.html
+* installing deps/npm/html/doc/deprecate.html as /home/enoki/local/lib/node_modules/npm/html/doc/deprecate.html
+* installing deps/npm/html/doc/changelog.html as /home/enoki/local/lib/node_modules/npm/html/doc/changelog.html
+* installing deps/npm/html/doc/rm.html as /home/enoki/local/lib/node_modules/npm/html/doc/rm.html
+* installing deps/npm/html/doc/bin.html as /home/enoki/local/lib/node_modules/npm/html/doc/bin.html
+* installing deps/npm/html/doc/coding-style.html as /home/enoki/local/lib/node_modules/npm/html/doc/coding-style.html
+* installing deps/npm/html/doc/start.html as /home/enoki/local/lib/node_modules/npm/html/doc/start.html
+* installing deps/npm/html/doc/version.html as /home/enoki/local/lib/node_modules/npm/html/doc/version.html
+* installing deps/npm/html/doc/bugs.html as /home/enoki/local/lib/node_modules/npm/html/doc/bugs.html
+* installing deps/npm/html/doc/submodule.html as /home/enoki/local/lib/node_modules/npm/html/doc/submodule.html
+* installing deps/npm/html/doc/README.html as /home/enoki/local/lib/node_modules/npm/html/doc/README.html
+* installing deps/npm/html/doc/uninstall.html as /home/enoki/local/lib/node_modules/npm/html/doc/uninstall.html
+* installing deps/npm/html/doc/list.html as /home/enoki/local/lib/node_modules/npm/html/doc/list.html
+* installing deps/npm/html/doc/rebuild.html as /home/enoki/local/lib/node_modules/npm/html/doc/rebuild.html
+* installing deps/npm/html/doc/style.css as /home/enoki/local/lib/node_modules/npm/html/doc/style.css
+* installing deps/npm/html/npm-16.png as /home/enoki/local/lib/node_modules/npm/html/npm-16.png
+* installing deps/npm/html/npm-256w.png as /home/enoki/local/lib/node_modules/npm/html/npm-256w.png
+* installing deps/npm/html/n-64.png as /home/enoki/local/lib/node_modules/npm/html/n-64.png
+* installing deps/npm/html/index.html as /home/enoki/local/lib/node_modules/npm/html/index.html
+* installing deps/npm/html/npm-256-square.png as /home/enoki/local/lib/node_modules/npm/html/npm-256-square.png
+* installing deps/npm/html/dochead.html as /home/enoki/local/lib/node_modules/npm/html/dochead.html
+* installing deps/npm/html/npm-64-square.png as /home/enoki/local/lib/node_modules/npm/html/npm-64-square.png
+* installing deps/npm/html/docfoot.html as /home/enoki/local/lib/node_modules/npm/html/docfoot.html
+* installing deps/npm/html/npm-large.png as /home/enoki/local/lib/node_modules/npm/html/npm-large.png
+* installing deps/npm/configure as /home/enoki/local/lib/node_modules/npm/configure
+* installing deps/npm/AUTHORS as /home/enoki/local/lib/node_modules/npm/AUTHORS
+* installing deps/npm/test/packages/npm-test-shrinkwrap/test.sh as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-shrinkwrap/test.sh
+* installing deps/npm/test/packages/npm-test-shrinkwrap/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-shrinkwrap/package.json
+* installing deps/npm/test/packages/npm-test-shrinkwrap/npm-shrinkwrap.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-shrinkwrap/npm-shrinkwrap.json
+* installing deps/npm/test/packages/npm-test-platform-all/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-platform-all/package.json
+* installing deps/npm/test/packages/npm-test-optional-deps/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-optional-deps/package.json
+* installing deps/npm/test/packages/npm-test-optional-deps/test.js as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-optional-deps/test.js
+* installing deps/npm/test/packages/npm-test-ignore/include4 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/include4
+* installing deps/npm/test/packages/npm-test-ignore/test.sh as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/test.sh
+* installing deps/npm/test/packages/npm-test-ignore/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/package.json
+* installing deps/npm/test/packages/npm-test-ignore/sub/include4 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/sub/include4
+* installing deps/npm/test/packages/npm-test-ignore/sub/include as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/sub/include
+* installing deps/npm/test/packages/npm-test-ignore/sub/include2 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/sub/include2
+* installing deps/npm/test/packages/npm-test-ignore/.npmignore as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-ignore/.npmignore
+* installing deps/npm/test/packages/npm-test-env-reader/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-env-reader/package.json
+* installing deps/npm/test/packages/npm-test-env-reader/test.js as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-env-reader/test.js
+* installing deps/npm/test/packages/npm-test-files/include4 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/include4
+* installing deps/npm/test/packages/npm-test-files/test.sh as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/test.sh
+* installing deps/npm/test/packages/npm-test-files/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/package.json
+* installing deps/npm/test/packages/npm-test-files/sub/include4 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/sub/include4
+* installing deps/npm/test/packages/npm-test-files/sub/include as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/sub/include
+* installing deps/npm/test/packages/npm-test-files/sub/include2 as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/sub/include2
+* installing deps/npm/test/packages/npm-test-files/.npmignore as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-files/.npmignore
+* installing deps/npm/test/packages/npm-test-private/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-private/package.json
+* installing deps/npm/test/packages/npm-test-platform/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-platform/package.json
+* installing deps/npm/test/packages/npm-test-blerg/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-blerg/package.json
+* installing deps/npm/test/packages/npm-test-blerg/test.js as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-blerg/test.js
+* installing deps/npm/test/packages/npm-test-bundled-git/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-bundled-git/package.json
+* installing deps/npm/test/packages/npm-test-bundled-git/test.js as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-bundled-git/test.js
+* installing deps/npm/test/packages/npm-test-bundled-git/minimatch-expected.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-bundled-git/minimatch-expected.json
+* installing deps/npm/test/packages/npm-test-test-package/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-test-package/package.json
+* installing deps/npm/test/packages/npm-test-url-dep/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-url-dep/package.json
+* installing deps/npm/test/packages/npm-test-missing-bindir/package.json as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-missing-bindir/package.json
+* installing deps/npm/test/packages/npm-test-missing-bindir/test.js as /home/enoki/local/lib/node_modules/npm/test/packages/npm-test-missing-bindir/test.js
+* installing deps/npm/test/run.js as /home/enoki/local/lib/node_modules/npm/test/run.js
+* installing deps/npm/test/update-test.sh as /home/enoki/local/lib/node_modules/npm/test/update-test.sh
+* installing deps/npm/test/common.js as /home/enoki/local/lib/node_modules/npm/test/common.js
+* installing deps/npm/.travis.yml as /home/enoki/local/lib/node_modules/npm/.travis.yml
+* installing deps/npm/README.md as /home/enoki/local/lib/node_modules/npm/README.md
+* installing deps/npm/man/man1/npm.1 as /home/enoki/local/lib/node_modules/npm/man/man1/npm.1
+* installing deps/npm/man/man1/README.1 as /home/enoki/local/lib/node_modules/npm/man/man1/README.1
+* installing deps/npm/man/man1/disputes.1 as /home/enoki/local/lib/node_modules/npm/man/man1/disputes.1
+* installing deps/npm/man/man1/deprecate.1 as /home/enoki/local/lib/node_modules/npm/man/man1/deprecate.1
+* installing deps/npm/man/man1/bugs.1 as /home/enoki/local/lib/node_modules/npm/man/man1/bugs.1
+* installing deps/npm/man/man1/edit.1 as /home/enoki/local/lib/node_modules/npm/man/man1/edit.1
+* installing deps/npm/man/man1/developers.1 as /home/enoki/local/lib/node_modules/npm/man/man1/developers.1
+* installing deps/npm/man/man1/build.1 as /home/enoki/local/lib/node_modules/npm/man/man1/build.1
+* installing deps/npm/man/man1/scripts.1 as /home/enoki/local/lib/node_modules/npm/man/man1/scripts.1
+* installing deps/npm/man/man1/registry.1 as /home/enoki/local/lib/node_modules/npm/man/man1/registry.1
+* installing deps/npm/man/man1/get.1 as /home/enoki/local/lib/node_modules/npm/man/man1/get.1
+* installing deps/npm/man/man1/init.1 as /home/enoki/local/lib/node_modules/npm/man/man1/init.1
+* installing deps/npm/man/man1/ls.1 as /home/enoki/local/lib/node_modules/npm/man/man1/ls.1
+* installing deps/npm/man/man1/coding-style.1 as /home/enoki/local/lib/node_modules/npm/man/man1/coding-style.1
+* installing deps/npm/man/man1/changelog.1 as /home/enoki/local/lib/node_modules/npm/man/man1/changelog.1
+* installing deps/npm/man/man1/find.1 as /home/enoki/local/lib/node_modules/npm/man/man1/find.1
+* installing deps/npm/man/man1/view.1 as /home/enoki/local/lib/node_modules/npm/man/man1/view.1
+* installing deps/npm/man/man1/prune.1 as /home/enoki/local/lib/node_modules/npm/man/man1/prune.1
+* installing deps/npm/man/man1/start.1 as /home/enoki/local/lib/node_modules/npm/man/man1/start.1
+* installing deps/npm/man/man1/global.1 as /home/enoki/local/lib/node_modules/npm/man/man1/global.1
+* installing deps/npm/man/man1/whoami.1 as /home/enoki/local/lib/node_modules/npm/man/man1/whoami.1
+* installing deps/npm/man/man1/pack.1 as /home/enoki/local/lib/node_modules/npm/man/man1/pack.1
+* installing deps/npm/man/man1/link.1 as /home/enoki/local/lib/node_modules/npm/man/man1/link.1
+* installing deps/npm/man/man1/version.1 as /home/enoki/local/lib/node_modules/npm/man/man1/version.1
+* installing deps/npm/man/man1/help.1 as /home/enoki/local/lib/node_modules/npm/man/man1/help.1
+* installing deps/npm/man/man1/adduser.1 as /home/enoki/local/lib/node_modules/npm/man/man1/adduser.1
+* installing deps/npm/man/man1/uninstall.1 as /home/enoki/local/lib/node_modules/npm/man/man1/uninstall.1
+* installing deps/npm/man/man1/config.1 as /home/enoki/local/lib/node_modules/npm/man/man1/config.1
+* installing deps/npm/man/man1/set.1 as /home/enoki/local/lib/node_modules/npm/man/man1/set.1
+* installing deps/npm/man/man1/search.1 as /home/enoki/local/lib/node_modules/npm/man/man1/search.1
+* installing deps/npm/man/man1/rebuild.1 as /home/enoki/local/lib/node_modules/npm/man/man1/rebuild.1
+* installing deps/npm/man/man1/prefix.1 as /home/enoki/local/lib/node_modules/npm/man/man1/prefix.1
+* installing deps/npm/man/man1/ln.1 as /home/enoki/local/lib/node_modules/npm/man/man1/ln.1
+* installing deps/npm/man/man1/publish.1 as /home/enoki/local/lib/node_modules/npm/man/man1/publish.1
+* installing deps/npm/man/man1/bin.1 as /home/enoki/local/lib/node_modules/npm/man/man1/bin.1
+* installing deps/npm/man/man1/folders.1 as /home/enoki/local/lib/node_modules/npm/man/man1/folders.1
+* installing deps/npm/man/man1/submodule.1 as /home/enoki/local/lib/node_modules/npm/man/man1/submodule.1
+* installing deps/npm/man/man1/explore.1 as /home/enoki/local/lib/node_modules/npm/man/man1/explore.1
+* installing deps/npm/man/man1/completion.1 as /home/enoki/local/lib/node_modules/npm/man/man1/completion.1
+* installing deps/npm/man/man1/unpublish.1 as /home/enoki/local/lib/node_modules/npm/man/man1/unpublish.1
+* installing deps/npm/man/man1/outdated.1 as /home/enoki/local/lib/node_modules/npm/man/man1/outdated.1
+* installing deps/npm/man/man1/removing-npm.1 as /home/enoki/local/lib/node_modules/npm/man/man1/removing-npm.1
+* installing deps/npm/man/man1/install.1 as /home/enoki/local/lib/node_modules/npm/man/man1/install.1
+* installing deps/npm/man/man1/update.1 as /home/enoki/local/lib/node_modules/npm/man/man1/update.1
+* installing deps/npm/man/man1/stop.1 as /home/enoki/local/lib/node_modules/npm/man/man1/stop.1
+* installing deps/npm/man/man1/faq.1 as /home/enoki/local/lib/node_modules/npm/man/man1/faq.1
+* installing deps/npm/man/man1/restart.1 as /home/enoki/local/lib/node_modules/npm/man/man1/restart.1
+* installing deps/npm/man/man1/shrinkwrap.1 as /home/enoki/local/lib/node_modules/npm/man/man1/shrinkwrap.1
+* installing deps/npm/man/man1/cache.1 as /home/enoki/local/lib/node_modules/npm/man/man1/cache.1
+* installing deps/npm/man/man1/bundle.1 as /home/enoki/local/lib/node_modules/npm/man/man1/bundle.1
+* installing deps/npm/man/man1/home.1 as /home/enoki/local/lib/node_modules/npm/man/man1/home.1
+* installing deps/npm/man/man1/owner.1 as /home/enoki/local/lib/node_modules/npm/man/man1/owner.1
+* installing deps/npm/man/man1/author.1 as /home/enoki/local/lib/node_modules/npm/man/man1/author.1
+* installing deps/npm/man/man1/semver.1 as /home/enoki/local/lib/node_modules/npm/man/man1/semver.1
+* installing deps/npm/man/man1/run-script.1 as /home/enoki/local/lib/node_modules/npm/man/man1/run-script.1
+* installing deps/npm/man/man1/root.1 as /home/enoki/local/lib/node_modules/npm/man/man1/root.1
+* installing deps/npm/man/man1/rm.1 as /home/enoki/local/lib/node_modules/npm/man/man1/rm.1
+* installing deps/npm/man/man1/docs.1 as /home/enoki/local/lib/node_modules/npm/man/man1/docs.1
+* installing deps/npm/man/man1/tag.1 as /home/enoki/local/lib/node_modules/npm/man/man1/tag.1
+* installing deps/npm/man/man1/index.1 as /home/enoki/local/lib/node_modules/npm/man/man1/index.1
+* installing deps/npm/man/man1/help-search.1 as /home/enoki/local/lib/node_modules/npm/man/man1/help-search.1
+* installing deps/npm/man/man1/json.1 as /home/enoki/local/lib/node_modules/npm/man/man1/json.1
+* installing deps/npm/man/man1/list.1 as /home/enoki/local/lib/node_modules/npm/man/man1/list.1
+* installing deps/npm/man/man1/test.1 as /home/enoki/local/lib/node_modules/npm/man/man1/test.1
+* installing deps/npm/man/man1/star.1 as /home/enoki/local/lib/node_modules/npm/man/man1/star.1
+* installing deps/npm/man/man3/deprecate.3 as /home/enoki/local/lib/node_modules/npm/man/man3/deprecate.3
+* installing deps/npm/man/man3/bin.3 as /home/enoki/local/lib/node_modules/npm/man/man3/bin.3
+* installing deps/npm/man/man3/commands.3 as /home/enoki/local/lib/node_modules/npm/man/man3/commands.3
+* installing deps/npm/man/man3/bugs.3 as /home/enoki/local/lib/node_modules/npm/man/man3/bugs.3
+* installing deps/npm/man/man3/edit.3 as /home/enoki/local/lib/node_modules/npm/man/man3/edit.3
+* installing deps/npm/man/man3/prefix.3 as /home/enoki/local/lib/node_modules/npm/man/man3/prefix.3
+* installing deps/npm/man/man3/get.3 as /home/enoki/local/lib/node_modules/npm/man/man3/get.3
+* installing deps/npm/man/man3/init.3 as /home/enoki/local/lib/node_modules/npm/man/man3/init.3
+* installing deps/npm/man/man3/npm.3 as /home/enoki/local/lib/node_modules/npm/man/man3/npm.3
+* installing deps/npm/man/man3/ls.3 as /home/enoki/local/lib/node_modules/npm/man/man3/ls.3
+* installing deps/npm/man/man3/find.3 as /home/enoki/local/lib/node_modules/npm/man/man3/find.3
+* installing deps/npm/man/man3/prune.3 as /home/enoki/local/lib/node_modules/npm/man/man3/prune.3
+* installing deps/npm/man/man3/start.3 as /home/enoki/local/lib/node_modules/npm/man/man3/start.3
+* installing deps/npm/man/man3/whoami.3 as /home/enoki/local/lib/node_modules/npm/man/man3/whoami.3
+* installing deps/npm/man/man3/view.3 as /home/enoki/local/lib/node_modules/npm/man/man3/view.3
+* installing deps/npm/man/man3/uninstall.3 as /home/enoki/local/lib/node_modules/npm/man/man3/uninstall.3
+* installing deps/npm/man/man3/version.3 as /home/enoki/local/lib/node_modules/npm/man/man3/version.3
+* installing deps/npm/man/man3/link.3 as /home/enoki/local/lib/node_modules/npm/man/man3/link.3
+* installing deps/npm/man/man3/config.3 as /home/enoki/local/lib/node_modules/npm/man/man3/config.3
+* installing deps/npm/man/man3/set.3 as /home/enoki/local/lib/node_modules/npm/man/man3/set.3
+* installing deps/npm/man/man3/search.3 as /home/enoki/local/lib/node_modules/npm/man/man3/search.3
+* installing deps/npm/man/man3/rebuild.3 as /home/enoki/local/lib/node_modules/npm/man/man3/rebuild.3
+* installing deps/npm/man/man3/publish.3 as /home/enoki/local/lib/node_modules/npm/man/man3/publish.3
+* installing deps/npm/man/man3/ln.3 as /home/enoki/local/lib/node_modules/npm/man/man3/ln.3
+* installing deps/npm/man/man3/submodule.3 as /home/enoki/local/lib/node_modules/npm/man/man3/submodule.3
+* installing deps/npm/man/man3/explore.3 as /home/enoki/local/lib/node_modules/npm/man/man3/explore.3
+* installing deps/npm/man/man3/unpublish.3 as /home/enoki/local/lib/node_modules/npm/man/man3/unpublish.3
+* installing deps/npm/man/man3/install.3 as /home/enoki/local/lib/node_modules/npm/man/man3/install.3
+* installing deps/npm/man/man3/outdated.3 as /home/enoki/local/lib/node_modules/npm/man/man3/outdated.3
+* installing deps/npm/man/man3/load.3 as /home/enoki/local/lib/node_modules/npm/man/man3/load.3
+* installing deps/npm/man/man3/restart.3 as /home/enoki/local/lib/node_modules/npm/man/man3/restart.3
+* installing deps/npm/man/man3/update.3 as /home/enoki/local/lib/node_modules/npm/man/man3/update.3
+* installing deps/npm/man/man3/stop.3 as /home/enoki/local/lib/node_modules/npm/man/man3/stop.3
+* installing deps/npm/man/man3/shrinkwrap.3 as /home/enoki/local/lib/node_modules/npm/man/man3/shrinkwrap.3
+* installing deps/npm/man/man3/author.3 as /home/enoki/local/lib/node_modules/npm/man/man3/author.3
+* installing deps/npm/man/man3/home.3 as /home/enoki/local/lib/node_modules/npm/man/man3/home.3
+* installing deps/npm/man/man3/owner.3 as /home/enoki/local/lib/node_modules/npm/man/man3/owner.3
+* installing deps/npm/man/man3/run-script.3 as /home/enoki/local/lib/node_modules/npm/man/man3/run-script.3
+* installing deps/npm/man/man3/root.3 as /home/enoki/local/lib/node_modules/npm/man/man3/root.3
+* installing deps/npm/man/man3/rm.3 as /home/enoki/local/lib/node_modules/npm/man/man3/rm.3
+* installing deps/npm/man/man3/tag.3 as /home/enoki/local/lib/node_modules/npm/man/man3/tag.3
+* installing deps/npm/man/man3/docs.3 as /home/enoki/local/lib/node_modules/npm/man/man3/docs.3
+* installing deps/npm/man/man3/pack.3 as /home/enoki/local/lib/node_modules/npm/man/man3/pack.3
+* installing deps/npm/man/man3/list.3 as /home/enoki/local/lib/node_modules/npm/man/man3/list.3
+* installing deps/npm/man/man3/test.3 as /home/enoki/local/lib/node_modules/npm/man/man3/test.3
+* installing deps/npm/man/man3/help-search.3 as /home/enoki/local/lib/node_modules/npm/man/man3/help-search.3
+* symlink /home/enoki/local/bin/npm (-> ../lib/node_modules/npm/bin/npm-cli.js)
+* installing out/Release/node as /home/enoki/local/bin/node
+* installing out/Release/src/node_config.h as /home/enoki/local/include/node/node_config.h
+Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.6.15/out'
+'install' finished successfully (0.706s)
++ set +x
     Installing lessc (github)...
-git-remote-https: /home/enoki/local/lib/libcurl.so.4: no version information available (required by git-remote-https)
+    Installing m4 1.4.16...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
+    Installing autoconf 2.68...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
+Loading 00debian-vars...
+Loading /etc/emacs/site-start.d/50autoconf.el (source)...
+Loading /etc/emacs/site-start.d/50dictionaries-common.el (source)...
+Loading debian-ispell...
+Loading /var/cache/dictionaries-common/emacsen-ispell-default.el (source)...
+Loading /var/cache/dictionaries-common/emacsen-ispell-dicts.el (source)...
+Loading /etc/emacs/site-start.d/50gforth.el (source)...
+Loading /etc/emacs/site-start.d/50git-core.el (source)...
+Loading /etc/emacs/site-start.d/50mh-e.el (source)...
+Loading /etc/emacs/site-start.d/50psvn.el (source)...
+Loading /etc/emacs/site-start.d/50pymacs.el (source)...
+Loading /etc/emacs/site-start.d/50python-docutils.el (source)...
+Loading /etc/emacs/site-start.d/50python-mode.el (source)...
+Wrote /home/enoki/dreamhost-install/downloads/autoconf-2.68/lib/emacs/elc.24188/autoconf-mode.elc
+Wrote /home/enoki/dreamhost-install/downloads/autoconf-2.68/lib/emacs/elc.24188/autotest-mode.elc
     Installing inotify 3.14...
 curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
 aclocal.m4:16: warning: this file was generated for autoconf 2.64.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.
-configure.ac:6: error: Autoconf version 2.62 or higher is required
-aclocal.m4:8399: AM_INIT_AUTOMAKE is expanded from...
-configure.ac:6: the top level
-autom4te: /usr/bin/m4 failed with exit status: 63
-autoheader: '/usr/bin/autom4te' failed with exit status: 63
-WARNING: `autoheader' is probably too old.  You should only need it if
-         you modified `acconfig.h' or `configure.ac'.  You might want
-         to install the `Autoconf' and `GNU m4' packages.  Grab them
-         from any GNU archive site.
+configure.ac:16: warning: AC_LANG_CONFTEST: no AC_LANG_SOURCE call detected in body
+../../lib/autoconf/lang.m4:194: AC_LANG_CONFTEST is expanded from...
+../../lib/autoconf/general.m4:2662: _AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2679: AC_LINK_IFELSE is expanded from...
+aclocal.m4:1037: _LT_SYS_MODULE_PATH_AIX is expanded from...
+aclocal.m4:4185: _LT_LINKER_SHLIBS is expanded from...
+aclocal.m4:5267: _LT_LANG_C_CONFIG is expanded from...
+aclocal.m4:159: _LT_SETUP is expanded from...
+aclocal.m4:88: LT_INIT is expanded from...
+configure.ac:16: the top level
+configure.ac:16: warning: AC_LANG_CONFTEST: no AC_LANG_SOURCE call detected in body
+../../lib/autoconf/lang.m4:194: AC_LANG_CONFTEST is expanded from...
+../../lib/autoconf/general.m4:2662: _AC_LINK_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2679: AC_LINK_IFELSE is expanded from...
+aclocal.m4:4185: _LT_LINKER_SHLIBS is expanded from...
+aclocal.m4:5267: _LT_LANG_C_CONFIG is expanded from...
+aclocal.m4:159: _LT_SETUP is expanded from...
+aclocal.m4:88: LT_INIT is expanded from...
+configure.ac:16: the top level
+configure.ac:49: warning: AC_LANG_CONFTEST: no AC_LANG_SOURCE call detected in body
+../../lib/autoconf/lang.m4:194: AC_LANG_CONFTEST is expanded from...
+../../lib/autoconf/general.m4:2591: _AC_COMPILE_IFELSE is expanded from...
+../../lib/autoconf/general.m4:2607: AC_COMPILE_IFELSE is expanded from...
+configure.ac:49: the top level
 inotifytools.c: In function ‘event_compare’:
 inotifytools.c:2029: warning: cast from pointer to integer of different size
 inotifytools.c: In function ‘inotifytools_wd_sorted_by_event’:
 inotifytools.c:2050: warning: cast to pointer from integer of different size
-pyHost.sh completed the installation in 1541 seconds.
+
+pyHost.sh completed the installation in 1556 seconds.
 
 Log out and log back in for the changes in your environment variables to take affect.
 (If you don't use bash, setup your shell so that your PATH includes your new /home/enoki/local/bin directory.)

@@ -146,8 +146,10 @@ function ph_init_vars {
     pH_Django="(via pip)" # installed via pip
     pH_VirtualEnv="(via pip)" # installed via pip
     #pH_HgGit="(via pip)" # installed via pip
-    pH_NodeJS="0.4.11"
+    pH_NodeJS="0.6.15"
     pH_LessCSS="(github)"
+    pH_M4="1.4.16"
+    pH_Autoconf="2.68"
     pH_Inotify="3.14"
     # === Python dependencies ===
     pH_SSL="1.0.1" # for python
@@ -177,6 +179,8 @@ function ph_init_vars {
     CURL="curl -O -s --show-error --fail --location --retry 1"
     PYTHON="$pH_install/bin/python"
     PIP="$pH_install/bin/pip"
+
+    export PATH="$pH_install/bin:$PATH"
 
 }
 
@@ -234,7 +238,7 @@ DELIM
 
     fi
 
-#    export PATH="$pH_install/bin:$PATH"
+    # TODO: Make sure .bashrc is called by .bash_profile
 
 }
 
@@ -556,7 +560,9 @@ function ph_curl {
     rm -rf "curl-$pH_cURL"
     tar -xzf "curl-$pH_cURL.tar.gz"
     cd "curl-$pH_cURL"
-    ./configure --prefix="$pH_install" --quiet
+    ./configure --prefix="$pH_install" --quiet \
+        --with-ssl=${pH_install} \
+        --enable-ipv6 --enable-cookies --enable-crypto-auth
     make --silent >/dev/null
     make install --silent >/dev/null
     cd "$pH_DL"
@@ -572,6 +578,13 @@ function ph_git {
     tar -xzf "git-$pH_Git.tar.gz"
     cd "git-$pH_Git"
     ./configure --prefix="$pH_install" NO_MMAP=1 --quiet
+    # Remove translation messages from error output
+    sed -i "/MSGFMT/s/--statistics//" Makefile
+    sed -i "/new build flags or prefix/s/1>&2//" Makefile
+    sed -i "/new link flags/s/1>&2//" Makefile
+    sed -i "/new locations or Tcl\/Tk interpreter/s/1>&2//" git-gui/Makefile
+    sed -i "/MSGFMT/s/--statistics//" git-gui/Makefile
+    sed -i "/MSGFMT/s/--statistics//" gitk-git/Makefile
     make --silent >/dev/null
     make install --silent >/dev/null
     cd "$pH_DL"
@@ -608,7 +621,7 @@ function ph_cgit {
 
     $CURL "http://hjemli.net/git/cgit/snapshot/cgit-$pH_Cgit.tar.gz"
     rm -rf "cgit-$pH_Cgit"
-    tar xzf "cgit-$pH_Cgit"
+    tar xzf "cgit-$pH_Cgit.tar.gz"
     cd "cgit-$pH_Cgit"
 
     cat >> cgit.conf <<DELIM
@@ -685,14 +698,19 @@ function ph_nodejs {
     cd "$pH_DL"
 
     if [[ ! -e "node-v$pH_NodeJS" ]] ; then
-        $CURL "http://nodejs.org/dist/node-v$pH_NodeJS.tar.gz"
-        rm -rf "node-v$pH_NodeJS"
+        $CURL "http://nodejs.org/dist/v$pH_NodeJS/node-v$pH_NodeJS.tar.gz"
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
     cd "node-v$pH_NodeJS"
+set -x
+    sed -i '/log.setLevel/s/logging\.DEBUG/0/' tools/wafadmin/Logs.py
+    sed -i 's/sys.stderr/sys.stdout/' tools/wafadmin/Utils.py
+    rm -f tools/wafadmin/{Utils,Logs}.pyc
     ./configure --prefix="$pH_install" >/dev/null
+    # suppress output
     make --silent >/dev/null
     make install --silent >/dev/null
+set +x
 }
 
 # lesscss
@@ -710,6 +728,38 @@ function ph_lesscss {
     cd "less.js"
     cp "bin/lessc" "$pH_install/bin"
     cp -a "lib/less" "$pH_install/lib"
+}
+
+# m4
+function ph_m4 {
+    log "    Installing m4 $pH_M4..."
+    cd "$pH_DL"
+
+    if [[ ! -e "m4-$pH_M4" ]] ; then
+        $CURL "http://ftp.gnu.org/gnu/m4/m4-$pH_M4.tar.gz"
+        rm -rf "m4-$pH_M4"
+        tar -xzf "m4-$pH_M4.tar.gz"
+    fi
+    cd "m4-$pH_M4"
+    ./configure --prefix="$pH_install" --quiet
+    make --silent >/dev/null
+    make install --silent >/dev/null
+}
+
+# autoconf
+function ph_autoconf {
+    log "    Installing autoconf $pH_Autoconf..."
+    cd "$pH_DL"
+
+    if [[ ! -e "autoconf-$pH_Autoconf" ]] ; then
+        $CURL "http://ftp.gnu.org/gnu/autoconf/autoconf-$pH_Autoconf.tar.gz"
+        rm -rf "autoconf-$pH_Autoconf"
+        tar -xzf "autoconf-$pH_Autoconf.tar.gz"
+    fi
+    cd "autoconf-$pH_Autoconf"
+    ./configure --prefix="$pH_install" --quiet
+    make --silent >/dev/null
+    make install --silent >/dev/null
 }
 
 # inotify
@@ -788,12 +838,19 @@ function ph_install {
     if test "${pH_LessCSS+set}" == set ; then
         ph_lesscss
     fi
+    if test "${pH_M4+set}" == set ; then
+        ph_m4
+    fi
+    if test "${pH_Autoconf+set}" == set ; then
+        ph_autoconf
+    fi
     if test "${pH_Inotify+set}" == set ; then
         ph_inotify
     fi
     
     cd ~
     finish_time=$(date +%s)
+    log ""
     log "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
     log ""
     log "Log out and log back in for the changes in your environment variables to take affect."
@@ -848,8 +905,8 @@ function ph_uninstall {
 function ph_create_uninstall {
     log "    Creating uninstall script at $pH_uninstall_script"
     # Copy function definitions
-    declare -f ph_init_vars > $pH_uninstall_script
-    declare -f log        >> $pH_uninstall_script
+    declare -f ph_init_vars >  $pH_uninstall_script
+    declare -f log          >> $pH_uninstall_script
     declare -f ph_uninstall >> $pH_uninstall_script
     echo "" >> $pH_uninstall_script
     echo "ph_init_vars" >> $pH_uninstall_script
