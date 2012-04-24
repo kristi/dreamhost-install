@@ -1,4 +1,4 @@
-    Creating uninstall script at /home/enoki/dreamhost-install/pyHost_uninstall
+    Creating uninstall script at /home/enoki/dreamhost-install/uninstall_pyHost
     Installing OpenSSL 1.0.1...
     Installing Readline 6.2...
     Installing Tcl 8.5.11...
@@ -7,12 +7,279 @@
     Installing BZip 1.0.6...
     Installing SQLite 3071100...
     Installing Python 2.7.2...
-    Installing Python setuptools 0.6c11...
-warning: no files found matching '*.html' under directory 'docs'
-warning: no previously-included files matching '*.txt' found under directory 'docs/_build'
-no previously-included directories found matching 'docs/_build/_sources'
+libpython2.7.a(posixmodule.o): In function `posix_tmpnam':
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/./Modules/posixmodule.c:7370: warning: the use of `tmpnam_r' is dangerous, better use `mkstemp'
+libpython2.7.a(posixmodule.o): In function `posix_tempnam':
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/./Modules/posixmodule.c:7317: warning: the use of `tempnam' is dangerous, better use `mkstemp'
+In file included from /home/enoki/local/include/readline/readline.h:36,
+                 from /home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/readline.c:31:
+/home/enoki/local/include/readline/rltypedefs.h:34: warning: function declaration isn’t a prototype
+/home/enoki/local/include/readline/rltypedefs.h:35: warning: function declaration isn’t a prototype
+/home/enoki/local/include/readline/rltypedefs.h:36: warning: function declaration isn’t a prototype
+/home/enoki/local/include/readline/rltypedefs.h:37: warning: function declaration isn’t a prototype
+In file included from /home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/readline.c:31:
+/home/enoki/local/include/readline/readline.h:381: warning: function declaration isn’t a prototype
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c: In function ‘mmap_resize’:
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3193: warning: implicit declaration of function ‘mremap’
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3193: warning: cast to pointer from integer of different size
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c: In function ‘sys_trim’:
+/home/enoki/dreamhost-install/downloads/Python-2.7.2/Modules/_ctypes/libffi/src/dlmalloc.c:3612: warning: comparison between pointer and integer
+    Installing Python PIP (via get-pip.py script)...
+Before install bootstrap.
+Scanning installed packages
+No setuptools distribution found
+warning: no files found matching 'Makefile' under directory 'docs'
+warning: no files found matching 'indexsidebar.html' under directory 'docs'
+After install bootstrap.
+Creating /home/enoki/local/lib/python2.7/site-packages/setuptools-0.6c11-py2.7.egg-info
+Creating /home/enoki/local/lib/python2.7/site-packages/setuptools.pth
     Installing Mercurial 2.1.1...
     Installing VirtualEnv (via pip)...
     Installing Django (via pip)...
     Installing cURL 7.25.0...
-    Installing Git 1.7.9.5...
+    Installing Git 1.7.10...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
+GIT_VERSION = 1.7.10
+    * new build flags or prefix
+    * new link flags
+Writing perl.mak for Git
+GITGUI_VERSION = 0.16.0-dirty
+    * new locations or Tcl/Tk interpreter
+289 translated messages.
+200 translated messages, 7 untranslated messages.
+276 translated messages, 4 fuzzy translations.
+288 translated messages.
+283 translated messages, 6 untranslated messages.
+284 translated messages.
+290 translated messages.
+245 translated messages.
+290 translated messages.
+14 translated messages.
+0 translated messages, 722 untranslated messages.
+104 translated messages, 620 untranslated messages.
+724 translated messages.
+724 translated messages.
+    Installing node.js 0.4.11...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
+Checking for program g++ or c++          : g++ 
+Checking for program cpp                 : /usr/bin/cpp 
+Checking for program ar                  : /usr/bin/ar 
+Checking for program ranlib              : /usr/bin/ranlib 
+Checking for g++                         : ok  
+Checking for program gcc or cc           : /usr/bin/gcc 
+Checking for gcc                         : ok  
+Checking for library dl                  : yes 
+Checking for openssl                     : yes 
+Checking for library util                : yes 
+Checking for library rt                  : yes 
+Checking for library pthread             : yes 
+Checking for function pthread_create     : yes 
+Checking for function pthread_atfork     : yes 
+Checking for futimes(2)                  : yes 
+Checking for readahead(2)                : yes 
+Checking for fdatasync(2)                : yes 
+Checking for pread(2) and pwrite(2)      : yes 
+Checking for sendfile(2)                 : yes 
+Checking for sync_file_range(2)          : yes 
+Checking for header sys/inotify.h        : yes 
+Checking for function inotify_init       : yes 
+Checking for header sys/epoll.h          : yes 
+Checking for function epoll_ctl          : yes 
+Checking for header port.h               : not found 
+Checking for header poll.h               : yes 
+Checking for function poll               : yes 
+Checking for header ['sys/types.h', 'sys/event.h'] : not found 
+Checking for header sys/queue.h                    : yes 
+Checking for function kqueue                       : not found 
+Checking for header sys/select.h                   : yes 
+Checking for function select                       : yes 
+Checking for header sys/eventfd.h                  : not found 
+Checking for SYS_clock_gettime                     : yes 
+Checking for library rt                            : yes 
+Checking for function clock_gettime                : yes 
+Checking for function nanosleep                    : yes 
+Checking for function ceil                         : yes 
+Checking for fdatasync(2) with c++                 : yes 
+'configure' finished successfully (5.101s)
+Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
+[ 1/75] cc: deps/libeio/eio.c -> build/default/deps/libeio/eio_1.o
+[ 2/75] cc: deps/libev/ev.c -> build/default/deps/libev/ev_1.o
+../deps/libev/ev.c: In function ‘evpipe_write’:
+../deps/libev/ev.c:1344: warning: ignoring return value of ‘write’, declared with attribute warn_unused_result
+../deps/libev/ev.c: In function ‘pipecb’:
+../deps/libev/ev.c:1371: warning: ignoring return value of ‘read’, declared with attribute warn_unused_result
+[ 3/75] cc: deps/c-ares/ares_strcasecmp.c -> build/default/deps/c-ares/ares_strcasecmp_1.o
+[ 4/75] cc: deps/c-ares/ares_free_string.c -> build/default/deps/c-ares/ares_free_string_1.o
+[ 5/75] cc: deps/c-ares/ares_options.c -> build/default/deps/c-ares/ares_options_1.o
+[ 6/75] cc: deps/c-ares/ares_send.c -> build/default/deps/c-ares/ares_send_1.o
+[ 7/75] cc: deps/c-ares/ares_parse_txt_reply.c -> build/default/deps/c-ares/ares_parse_txt_reply_1.o
+[ 8/75] cc: deps/c-ares/ares_parse_ptr_reply.c -> build/default/deps/c-ares/ares_parse_ptr_reply_1.o
+[ 9/75] cc: deps/c-ares/ares_nowarn.c -> build/default/deps/c-ares/ares_nowarn_1.o
+[10/75] cc: deps/c-ares/ares_search.c -> build/default/deps/c-ares/ares_search_1.o
+[11/75] cc: deps/c-ares/ares_gethostbyname.c -> build/default/deps/c-ares/ares_gethostbyname_1.o
+[12/75] cc: deps/c-ares/ares_getsock.c -> build/default/deps/c-ares/ares_getsock_1.o
+[13/75] cc: deps/c-ares/ares__timeval.c -> build/default/deps/c-ares/ares__timeval_1.o
+[14/75] cc: deps/c-ares/inet_ntop.c -> build/default/deps/c-ares/inet_ntop_1.o
+[15/75] cc: deps/c-ares/ares_parse_a_reply.c -> build/default/deps/c-ares/ares_parse_a_reply_1.o
+[16/75] cc: deps/c-ares/ares_getopt.c -> build/default/deps/c-ares/ares_getopt_1.o
+[17/75] cc: deps/c-ares/ares__close_sockets.c -> build/default/deps/c-ares/ares__close_sockets_1.o
+[18/75] cc: deps/c-ares/ares_expand_string.c -> build/default/deps/c-ares/ares_expand_string_1.o
+[19/75] cc: deps/c-ares/ares_destroy.c -> build/default/deps/c-ares/ares_destroy_1.o
+[20/75] cc: deps/c-ares/ares_cancel.c -> build/default/deps/c-ares/ares_cancel_1.o
+[21/75] cc: deps/c-ares/ares_parse_aaaa_reply.c -> build/default/deps/c-ares/ares_parse_aaaa_reply_1.o
+[22/75] cc: deps/c-ares/ares_parse_ns_reply.c -> build/default/deps/c-ares/ares_parse_ns_reply_1.o
+[23/75] cc: deps/c-ares/ares_version.c -> build/default/deps/c-ares/ares_version_1.o
+[24/75] cc: deps/c-ares/ares__get_hostent.c -> build/default/deps/c-ares/ares__get_hostent_1.o
+[25/75] cc: deps/c-ares/ares_writev.c -> build/default/deps/c-ares/ares_writev_1.o
+[26/75] cc: deps/c-ares/ares_expand_name.c -> build/default/deps/c-ares/ares_expand_name_1.o
+[27/75] cc: deps/c-ares/ares_free_hostent.c -> build/default/deps/c-ares/ares_free_hostent_1.o
+[28/75] cc: deps/c-ares/ares_parse_mx_reply.c -> build/default/deps/c-ares/ares_parse_mx_reply_1.o
+[29/75] cc: deps/c-ares/ares_gethostbyaddr.c -> build/default/deps/c-ares/ares_gethostbyaddr_1.o
+[30/75] cc: deps/c-ares/ares_llist.c -> build/default/deps/c-ares/ares_llist_1.o
+[31/75] cc: deps/c-ares/ares_data.c -> build/default/deps/c-ares/ares_data_1.o
+[32/75] cc: deps/c-ares/ares_init.c -> build/default/deps/c-ares/ares_init_1.o
+[33/75] cc: deps/c-ares/ares_timeout.c -> build/default/deps/c-ares/ares_timeout_1.o
+[34/75] cc: deps/c-ares/ares_fds.c -> build/default/deps/c-ares/ares_fds_1.o
+[35/75] cc: deps/c-ares/inet_net_pton.c -> build/default/deps/c-ares/inet_net_pton_1.o
+[36/75] cc: deps/c-ares/ares_strerror.c -> build/default/deps/c-ares/ares_strerror_1.o
+[37/75] cc: deps/c-ares/bitncmp.c -> build/default/deps/c-ares/bitncmp_1.o
+[38/75] cc: deps/c-ares/ares_getnameinfo.c -> build/default/deps/c-ares/ares_getnameinfo_1.o
+[39/75] cc: deps/c-ares/ares_library_init.c -> build/default/deps/c-ares/ares_library_init_1.o
+[40/75] cc: deps/c-ares/ares_mkquery.c -> build/default/deps/c-ares/ares_mkquery_1.o
+[41/75] cc: deps/c-ares/ares_process.c -> build/default/deps/c-ares/ares_process_1.o
+[42/75] cc: deps/c-ares/windows_port.c -> build/default/deps/c-ares/windows_port_1.o
+[43/75] cc: deps/c-ares/ares_parse_srv_reply.c -> build/default/deps/c-ares/ares_parse_srv_reply_1.o
+[44/75] cc: deps/c-ares/ares_query.c -> build/default/deps/c-ares/ares_query_1.o
+[45/75] cc: deps/c-ares/ares__read_line.c -> build/default/deps/c-ares/ares__read_line_1.o
+[46/75] cc: deps/c-ares/ares_strdup.c -> build/default/deps/c-ares/ares_strdup_1.o
+[47/75] cc: deps/http_parser/http_parser.c -> build/default/deps/http_parser/http_parser_2.o
+[48/75] src/node_natives.h: src/node.js lib/dgram.js lib/console.js lib/buffer.js lib/querystring.js lib/http.js lib/net.js lib/stream.js lib/events.js lib/util.js lib/tty_win32.js lib/module.js lib/_debugger.js lib/assert.js lib/fs.js lib/os.js lib/dns.js lib/vm.js lib/url.js lib/tls.js lib/tty_posix.js lib/crypto.js lib/sys.js lib/https.js lib/freelist.js lib/readline.js lib/_linklist.js lib/tty.js lib/child_process.js lib/repl.js lib/path.js lib/string_decoder.js lib/timers.js lib/constants.js -> build/default/src/node_natives.h
+[49/75] copy: src/node_config.h.in -> build/default/src/node_config.h
+[50/75] copy: tools/nodejs.pc.in -> build/default/tools/nodejs.pc
+[51/75] libv8.a: deps/v8/SConstruct -> build/default/libv8.a
+
+scons: warning: Ignoring missing SConscript 'obj/test/release/SConscript'
+File "/home/enoki/dreamhost-install/downloads/node-v0.4.11/deps/v8/SConstruct", line 1201, in BuildSpecific
+[52/75] cxx: src/node_main.cc -> build/default/src/node_main_4.o
+[53/75] cxx: src/node.cc -> build/default/src/node_4.o
+[54/75] cxx: src/node_buffer.cc -> build/default/src/node_buffer_4.o
+[55/75] cxx: src/node_javascript.cc -> build/default/src/node_javascript_4.o
+[56/75] cxx: src/node_extensions.cc -> build/default/src/node_extensions_4.o
+[57/75] cxx: src/node_http_parser.cc -> build/default/src/node_http_parser_4.o
+[58/75] cxx: src/node_net.cc -> build/default/src/node_net_4.o
+[59/75] cxx: src/node_io_watcher.cc -> build/default/src/node_io_watcher_4.o
+[60/75] cxx: src/node_constants.cc -> build/default/src/node_constants_4.o
+[61/75] cxx: src/node_cares.cc -> build/default/src/node_cares_4.o
+[62/75] cxx: src/node_events.cc -> build/default/src/node_events_4.o
+[63/75] cxx: src/node_file.cc -> build/default/src/node_file_4.o
+[64/75] cxx: src/node_signal_watcher.cc -> build/default/src/node_signal_watcher_4.o
+[65/75] cxx: src/node_stat_watcher.cc -> build/default/src/node_stat_watcher_4.o
+[66/75] cxx: src/node_timer.cc -> build/default/src/node_timer_4.o
+[67/75] cxx: src/node_script.cc -> build/default/src/node_script_4.o
+[68/75] cxx: src/node_os.cc -> build/default/src/node_os_4.o
+[69/75] cxx: src/node_dtrace.cc -> build/default/src/node_dtrace_4.o
+[70/75] cxx: src/node_string.cc -> build/default/src/node_string_4.o
+[71/75] cxx: src/node_stdio.cc -> build/default/src/node_stdio_4.o
+[72/75] cxx: src/node_child_process.cc -> build/default/src/node_child_process_4.o
+[73/75] cxx: src/platform_linux.cc -> build/default/src/platform_linux_4.o
+[74/75] cxx: src/node_crypto.cc -> build/default/src/node_crypto_4.o
+[75/75] cxx_link: build/default/src/node_main_4.o build/default/src/node_4.o build/default/src/node_buffer_4.o build/default/src/node_javascript_4.o build/default/src/node_extensions_4.o build/default/src/node_http_parser_4.o build/default/src/node_net_4.o build/default/src/node_io_watcher_4.o build/default/src/node_constants_4.o build/default/src/node_cares_4.o build/default/src/node_events_4.o build/default/src/node_file_4.o build/default/src/node_signal_watcher_4.o build/default/src/node_stat_watcher_4.o build/default/src/node_timer_4.o build/default/src/node_script_4.o build/default/src/node_os_4.o build/default/src/node_dtrace_4.o build/default/src/node_string_4.o build/default/src/node_stdio_4.o build/default/src/node_child_process_4.o build/default/src/platform_linux_4.o build/default/src/node_crypto_4.o build/default/deps/libeio/eio_1.o build/default/deps/http_parser/http_parser_2.o build/default/deps/libev/ev_1.o build/default/deps/c-ares/ares_strcasecmp_1.o build/default/deps/c-ares/ares_free_string_1.o build/default/deps/c-ares/ares_options_1.o build/default/deps/c-ares/ares_send_1.o build/default/deps/c-ares/ares_parse_txt_reply_1.o build/default/deps/c-ares/ares_parse_ptr_reply_1.o build/default/deps/c-ares/ares_nowarn_1.o build/default/deps/c-ares/ares_search_1.o build/default/deps/c-ares/ares_gethostbyname_1.o build/default/deps/c-ares/ares_getsock_1.o build/default/deps/c-ares/ares__timeval_1.o build/default/deps/c-ares/inet_ntop_1.o build/default/deps/c-ares/ares_parse_a_reply_1.o build/default/deps/c-ares/ares_getopt_1.o build/default/deps/c-ares/ares__close_sockets_1.o build/default/deps/c-ares/ares_expand_string_1.o build/default/deps/c-ares/ares_destroy_1.o build/default/deps/c-ares/ares_cancel_1.o build/default/deps/c-ares/ares_parse_aaaa_reply_1.o build/default/deps/c-ares/ares_parse_ns_reply_1.o build/default/deps/c-ares/ares_version_1.o build/default/deps/c-ares/ares__get_hostent_1.o build/default/deps/c-ares/ares_writev_1.o build/default/deps/c-ares/ares_expand_name_1.o build/default/deps/c-ares/ares_free_hostent_1.o build/default/deps/c-ares/ares_parse_mx_reply_1.o build/default/deps/c-ares/ares_gethostbyaddr_1.o build/default/deps/c-ares/ares_llist_1.o build/default/deps/c-ares/ares_data_1.o build/default/deps/c-ares/ares_init_1.o build/default/deps/c-ares/ares_timeout_1.o build/default/deps/c-ares/ares_fds_1.o build/default/deps/c-ares/inet_net_pton_1.o build/default/deps/c-ares/ares_strerror_1.o build/default/deps/c-ares/bitncmp_1.o build/default/deps/c-ares/ares_getnameinfo_1.o build/default/deps/c-ares/ares_library_init_1.o build/default/deps/c-ares/ares_mkquery_1.o build/default/deps/c-ares/ares_process_1.o build/default/deps/c-ares/windows_port_1.o build/default/deps/c-ares/ares_parse_srv_reply_1.o build/default/deps/c-ares/ares_query_1.o build/default/deps/c-ares/ares__read_line_1.o build/default/deps/c-ares/ares_strdup_1.o -> build/default/node
+Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
+'build' finished successfully (3m45.589s)
+Waf: Entering directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
+* installing deps/libeio/eio.h as /home/enoki/local/include/node/eio.h
+* installing deps/v8/include/v8-profiler.h as /home/enoki/local/include/node/v8-profiler.h
+* installing deps/v8/include/v8stdint.h as /home/enoki/local/include/node/v8stdint.h
+* installing deps/v8/include/v8-preparser.h as /home/enoki/local/include/node/v8-preparser.h
+* installing deps/v8/include/v8.h as /home/enoki/local/include/node/v8.h
+* installing deps/v8/include/v8-debug.h as /home/enoki/local/include/node/v8-debug.h
+* installing deps/v8/include/v8-testing.h as /home/enoki/local/include/node/v8-testing.h
+* installing deps/libev/ev.h as /home/enoki/local/include/node/ev.h
+* installing build/default/config.h as /home/enoki/local/include/node/config.h
+* installing src/node.h as /home/enoki/local/include/node/node.h
+* installing src/node_object_wrap.h as /home/enoki/local/include/node/node_object_wrap.h
+* installing src/node_buffer.h as /home/enoki/local/include/node/node_buffer.h
+* installing src/node_events.h as /home/enoki/local/include/node/node_events.h
+* installing src/node_version.h as /home/enoki/local/include/node/node_version.h
+* installing doc/node.1 as /home/enoki/local/share/man/man1/node.1
+* installing tools/node-waf as /home/enoki/local/bin/node-waf
+* installing tools/wafadmin/pproc.py as /home/enoki/local/lib/node/wafadmin/pproc.py
+* installing tools/wafadmin/Build.py as /home/enoki/local/lib/node/wafadmin/Build.py
+* installing tools/wafadmin/Configure.py as /home/enoki/local/lib/node/wafadmin/Configure.py
+* installing tools/wafadmin/Utils.py as /home/enoki/local/lib/node/wafadmin/Utils.py
+* installing tools/wafadmin/py3kfixes.py as /home/enoki/local/lib/node/wafadmin/py3kfixes.py
+* installing tools/wafadmin/Node.py as /home/enoki/local/lib/node/wafadmin/Node.py
+* installing tools/wafadmin/Environment.py as /home/enoki/local/lib/node/wafadmin/Environment.py
+* installing tools/wafadmin/Task.py as /home/enoki/local/lib/node/wafadmin/Task.py
+* installing tools/wafadmin/TaskGen.py as /home/enoki/local/lib/node/wafadmin/TaskGen.py
+* installing tools/wafadmin/ansiterm.py as /home/enoki/local/lib/node/wafadmin/ansiterm.py
+* installing tools/wafadmin/__init__.py as /home/enoki/local/lib/node/wafadmin/__init__.py
+* installing tools/wafadmin/Scripting.py as /home/enoki/local/lib/node/wafadmin/Scripting.py
+* installing tools/wafadmin/Runner.py as /home/enoki/local/lib/node/wafadmin/Runner.py
+* installing tools/wafadmin/Constants.py as /home/enoki/local/lib/node/wafadmin/Constants.py
+* installing tools/wafadmin/Logs.py as /home/enoki/local/lib/node/wafadmin/Logs.py
+* installing tools/wafadmin/Options.py as /home/enoki/local/lib/node/wafadmin/Options.py
+* installing tools/wafadmin/Tools/icc.py as /home/enoki/local/lib/node/wafadmin/Tools/icc.py
+* installing tools/wafadmin/Tools/node_addon.py as /home/enoki/local/lib/node/wafadmin/Tools/node_addon.py
+* installing tools/wafadmin/Tools/gas.py as /home/enoki/local/lib/node/wafadmin/Tools/gas.py
+* installing tools/wafadmin/Tools/gnu_dirs.py as /home/enoki/local/lib/node/wafadmin/Tools/gnu_dirs.py
+* installing tools/wafadmin/Tools/ccroot.py as /home/enoki/local/lib/node/wafadmin/Tools/ccroot.py
+* installing tools/wafadmin/Tools/compiler_cc.py as /home/enoki/local/lib/node/wafadmin/Tools/compiler_cc.py
+* installing tools/wafadmin/Tools/python.py as /home/enoki/local/lib/node/wafadmin/Tools/python.py
+* installing tools/wafadmin/Tools/libtool.py as /home/enoki/local/lib/node/wafadmin/Tools/libtool.py
+* installing tools/wafadmin/Tools/dmd.py as /home/enoki/local/lib/node/wafadmin/Tools/dmd.py
+* installing tools/wafadmin/Tools/cc.py as /home/enoki/local/lib/node/wafadmin/Tools/cc.py
+* installing tools/wafadmin/Tools/suncxx.py as /home/enoki/local/lib/node/wafadmin/Tools/suncxx.py
+* installing tools/wafadmin/Tools/config_c.py as /home/enoki/local/lib/node/wafadmin/Tools/config_c.py
+* installing tools/wafadmin/Tools/preproc.py as /home/enoki/local/lib/node/wafadmin/Tools/preproc.py
+* installing tools/wafadmin/Tools/compiler_d.py as /home/enoki/local/lib/node/wafadmin/Tools/compiler_d.py
+* installing tools/wafadmin/Tools/__init__.py as /home/enoki/local/lib/node/wafadmin/Tools/__init__.py
+* installing tools/wafadmin/Tools/d.py as /home/enoki/local/lib/node/wafadmin/Tools/d.py
+* installing tools/wafadmin/Tools/gcc.py as /home/enoki/local/lib/node/wafadmin/Tools/gcc.py
+* installing tools/wafadmin/Tools/suncc.py as /home/enoki/local/lib/node/wafadmin/Tools/suncc.py
+* installing tools/wafadmin/Tools/unittestw.py as /home/enoki/local/lib/node/wafadmin/Tools/unittestw.py
+* installing tools/wafadmin/Tools/gxx.py as /home/enoki/local/lib/node/wafadmin/Tools/gxx.py
+* installing tools/wafadmin/Tools/compiler_cxx.py as /home/enoki/local/lib/node/wafadmin/Tools/compiler_cxx.py
+* installing tools/wafadmin/Tools/winres.py as /home/enoki/local/lib/node/wafadmin/Tools/winres.py
+* installing tools/wafadmin/Tools/xlc.py as /home/enoki/local/lib/node/wafadmin/Tools/xlc.py
+* installing tools/wafadmin/Tools/icpc.py as /home/enoki/local/lib/node/wafadmin/Tools/icpc.py
+* installing tools/wafadmin/Tools/nasm.py as /home/enoki/local/lib/node/wafadmin/Tools/nasm.py
+* installing tools/wafadmin/Tools/gdc.py as /home/enoki/local/lib/node/wafadmin/Tools/gdc.py
+* installing tools/wafadmin/Tools/misc.py as /home/enoki/local/lib/node/wafadmin/Tools/misc.py
+* installing tools/wafadmin/Tools/osx.py as /home/enoki/local/lib/node/wafadmin/Tools/osx.py
+* installing tools/wafadmin/Tools/cxx.py as /home/enoki/local/lib/node/wafadmin/Tools/cxx.py
+* installing tools/wafadmin/Tools/intltool.py as /home/enoki/local/lib/node/wafadmin/Tools/intltool.py
+* installing tools/wafadmin/Tools/xlcxx.py as /home/enoki/local/lib/node/wafadmin/Tools/xlcxx.py
+* installing tools/wafadmin/Tools/gob2.py as /home/enoki/local/lib/node/wafadmin/Tools/gob2.py
+* installing tools/wafadmin/Tools/ar.py as /home/enoki/local/lib/node/wafadmin/Tools/ar.py
+* installing build/default/tools/nodejs.pc as /home/enoki/local/lib/pkgconfig/nodejs.pc
+* installing build/default/node as /home/enoki/local/bin/node
+* installing build/default/src/node_config.h as /home/enoki/local/include/node/node_config.h
+Waf: Leaving directory `/home/enoki/dreamhost-install/downloads/node-v0.4.11/build'
+'install' finished successfully (0.277s)
+    Installing lessc (github)...
+git-remote-https: /home/enoki/local/lib/libcurl.so.4: no version information available (required by git-remote-https)
+    Installing inotify 3.14...
+curl: /home/enoki/local/lib/libcurl.so.4: no version information available (required by curl)
+aclocal.m4:16: warning: this file was generated for autoconf 2.64.
+You have another version of autoconf.  It may work, but is not guaranteed to.
+If you have problems, you may need to regenerate the build system entirely.
+To do so, use the procedure documented by the package, typically `autoreconf'.
+configure.ac:6: error: Autoconf version 2.62 or higher is required
+aclocal.m4:8399: AM_INIT_AUTOMAKE is expanded from...
+configure.ac:6: the top level
+autom4te: /usr/bin/m4 failed with exit status: 63
+autoheader: '/usr/bin/autom4te' failed with exit status: 63
+WARNING: `autoheader' is probably too old.  You should only need it if
+         you modified `acconfig.h' or `configure.ac'.  You might want
+         to install the `Autoconf' and `GNU m4' packages.  Grab them
+         from any GNU archive site.
+inotifytools.c: In function ‘event_compare’:
+inotifytools.c:2029: warning: cast from pointer to integer of different size
+inotifytools.c: In function ‘inotifytools_wd_sorted_by_event’:
+inotifytools.c:2050: warning: cast to pointer from integer of different size
+pyHost.sh completed the installation in 1541 seconds.
+
+Log out and log back in for the changes in your environment variables to take affect.
+(If you don't use bash, setup your shell so that your PATH includes your new /home/enoki/local/bin directory.)
+
