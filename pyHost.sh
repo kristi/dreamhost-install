@@ -142,6 +142,7 @@ function ph_init_vars {
     pH_pip="(via get-pip.py script)"
     pH_Mercurial="2.1.1" # Don't use pip to install Mercurial since it might not be updated
     pH_Git="1.7.10"
+    pH_Cgit="0.9.0.3"
     pH_Django="(via pip)" # installed via pip
     pH_VirtualEnv="(via pip)" # installed via pip
     #pH_HgGit="(via pip)" # installed via pip
@@ -576,6 +577,7 @@ function ph_git {
     cd "$pH_DL"
 }
 
+
 # Hg-Git
 function ph_hggit {
     log "    Installing hg-git $pH_HgGit..."
@@ -584,13 +586,6 @@ function ph_hggit {
     # dulwich required by hg-git
     $PIP install -q -U dulwich
 
-    #[ ! -e hg-git ] && mkdir hg-git
-    #cd hg-git
-    #$CURL http://github.com/schacon/hg-git/tarball/master
-    #tar -xzf *
-    #hg_git_dir=$(ls -dC */)
-    #cd $hg_git_dir
-    #python setup.py install
     $PIP install -q -U hg-git
     cd "$pH_DL"
     # Virtualenv to .bashrc
@@ -603,6 +598,84 @@ function ph_hggit {
 hggit =
 # End added by pyHost.sh
 
+DELIM
+}
+
+# Cgit (git web interface)
+function ph_cgit {
+    log "    Installing cgit $pH_Cgit..."
+    cd "$pH_DL"
+
+    $CURL "http://hjemli.net/git/cgit/snapshot/cgit-$pH_Cgit.tar.gz"
+    rm -rf "cgit-$pH_Cgit"
+    tar xzf "cgit-$pH_Cgit"
+    cd "cgit-$pH_Cgit"
+
+    cat >> cgit.conf <<DELIM
+    CGIT_CONFIG = $pH_install/cgit/cgitrc
+    CGIT_SCRIPT_PATH = $pH_install/cgit
+    CACHE_ROOT = $pH_install/var/cache/cgit
+    prefix = $pH_install
+DELIM
+
+    make get-git
+    make
+    make install
+
+    # cgitrc file
+    cat >> $pH_install/cgit/cgitrc <<DELIM
+# Global project settings
+
+remove-suffix=1
+
+clone-prefix=http://git.tsumego.me/git
+
+enable-commit-graph=1
+enable-index-links=1
+enable-log-filecount=1
+enable-log-linecount=1
+
+snapshots=zip  tar.gz
+
+readme=README
+
+# CGIT settings
+
+# scan-path needs to come after the global project settings!
+scan-path=$HOME/git_repos
+
+logo=cgit.png
+css=cgit.css
+
+virtual-root=/
+
+DELIM
+
+    # .htaccess file
+    cat >> $pH_install/cgit/htaccess <<DELIM
+Options +ExecCGI
+
+DirectoryIndex cgit.cgi
+
+SetEnv CGIT_CONFIG ./cgitrc
+DELIM
+    chmod 644 $pH_install/cgit/htaccess
+
+    cat >> $pH_install/cgit/README <<DELIM
+To get cgit working
+
+    cp $pH_install/cgit/* ~/git.example.com
+    cd ~/git.example.com
+    mv htaccess .htaccess
+    chmod 644 .htaccess
+
+To create a repo
+
+    cd
+    mkdir git_repos && cd git_repos
+    git init --bare repo.git
+
+Edit ~/git.example.com/cgitrc with your preferred settings
 DELIM
 }
 
@@ -702,6 +775,9 @@ function ph_install {
     fi
     if test "${pH_Git+set}" == set ; then
         ph_git
+    fi
+    if test "${pH_Cgit+set}" == set ; then
+        ph_cgit
     fi
     if test "${pH_HgGit+set}" == set ; then
         ph_hggit
