@@ -115,7 +115,7 @@
 # e.g. ./pyHost mercurial django
 DEBUG=true
 #TODO implement verbose/quiet output (use the log func below)
-verbose=true
+verbose=false
 
 function ph_init_vars {
     # Current directory
@@ -184,12 +184,17 @@ function ph_init_vars {
     export PATH="$pH_install/bin:$PATH"
     export PKG_CONFIG_PATH="$pH_install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
+    # Save stdout as fd #3
+    exec 3>&1
+    # If not verbose, just save output to the log file instead of printing to stdout
+    if [[ "$verbose" != "true" ]] && [[ "$verbose" -le 0 ]]  ; then
+        # redirect stdout and stderr to log file
+        exec >$pH_log 2>&1
+    fi
 }
 
-function log {
-    if [[ "$verbose" == "true" ]] || [[ "$verbose" -gt 0 ]]  ; then
-        echo "$@"
-    fi
+function status {
+        echo "$@" >&3
 }
 
 function ph_install_setup {
@@ -251,7 +256,7 @@ DELIM
 
 # OpenSSL
 function ph_openssl {
-    log "    Installing OpenSSL $pH_SSL..."
+    status "    Installing OpenSSL $pH_SSL..."
     cd "$pH_DL"
     if [[ ! -e "openssl-$pH_SSL" ]] ; then
         $CURL "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz"
@@ -275,7 +280,7 @@ function ph_openssl {
 
 # Readline
 function ph_readline {
-    log "    Installing Readline $pH_Readline..."
+    status "    Installing Readline $pH_Readline..."
     cd "$pH_DL"
     if [[ ! -e "readline-$pH_Readline" ]] ; then
         $CURL "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz"
@@ -305,7 +310,7 @@ function ph_readline {
 
 # Tcl
 function ph_tcl {
-    log "    Installing Tcl $pH_Tcl..."
+    status "    Installing Tcl $pH_Tcl..."
     cd "$pH_DL"
     if [[ ! -e "tcl$pH_Tcl-src" ]] ; then
         $CURL "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz"
@@ -321,7 +326,7 @@ function ph_tcl {
 
 # Tk
 function ph_tk {
-    log "    Installing Tk $pH_Tk..."
+    status "    Installing Tk $pH_Tk..."
     cd "$pH_DL"
     if [[ ! -e "tk$pH_Tcl-src" ]] ; then
         $CURL "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz"
@@ -337,7 +342,7 @@ function ph_tk {
 
 # Oracle Berkeley DB
 function ph_berkeley {
-    log "    Installing Berkeley DB $pH_Berkeley..."
+    status "    Installing Berkeley DB $pH_Berkeley..."
     cd "$pH_DL"
     if [[ ! -e "db-$pH_Berkeley" ]] ; then
         $CURL "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz"
@@ -357,7 +362,7 @@ function ph_berkeley {
 
 # Bzip
 function ph_bzip {
-    log "    Installing BZip $pH_BZip..."
+    status "    Installing BZip $pH_BZip..."
     cd "$pH_DL"
     if [[ ! -e "bzip2-$pH_BZip" ]] ; then
         $CURL "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz"
@@ -386,7 +391,7 @@ function ph_bzip {
 
 # SQLite
 function ph_sqlite {
-    log "    Installing SQLite $pH_SQLite..."
+    status "    Installing SQLite $pH_SQLite..."
     cd "$pH_DL"
     if [[ ! -e "sqlite-autoconf-$pH_SQLite" ]] ; then
         $CURL "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz"
@@ -403,7 +408,7 @@ function ph_sqlite {
 
 # Python
 function ph_python {
-    log "    Installing Python $pH_Python..."
+    status "    Installing Python $pH_Python..."
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
     export EPREFIX="$pH_install/lib:$EPREFIX"
     cd "$pH_DL"
@@ -444,7 +449,7 @@ function ph_python {
 # making setuptools obsolete.  This is here for reference only.
 # Python setuptools
 function ph_setuptools {
-    log "    Installing Python setuptools $pH_setuptools..."
+    status "    Installing Python setuptools $pH_setuptools..."
     cd "$pH_DL"
     $CURL "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
     sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
@@ -453,7 +458,7 @@ function ph_setuptools {
 
 # Python PIP (package manager)
 function ph_pip {
-    log "    Installing Python PIP $pH_pip..."
+    status "    Installing Python PIP $pH_pip..."
     cd "$pH_DL"
 
     # Install Distribute first
@@ -469,7 +474,7 @@ function ph_pip {
 
 # Mercurial
 function ph_mercurial {
-    log "    Installing Mercurial $pH_Mercurial..."
+    status "    Installing Mercurial $pH_Mercurial..."
     cd "$pH_DL"
     
     # docutils required by mercurial
@@ -520,7 +525,7 @@ DELIM
 
 # VirtualEnv
 function ph_virtualenv {
-    log "    Installing VirtualEnv $pH_VirtualEnv..."
+    status "    Installing VirtualEnv $pH_VirtualEnv..."
     cd "$pH_DL"
     #$CURL http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
     #rm -rf virtualenv-$pH_VirtualEnv
@@ -543,7 +548,7 @@ function ph_virtualenv {
 
 # Django framework
 function ph_django {
-    log "    Installing Django $pH_Django..."
+    status "    Installing Django $pH_Django..."
     cd "$pH_DL"
     #$CURL http://www.djangoproject.com/download/$pH_Django/tarball/
     #rm -rf Django-$pH_Django
@@ -556,7 +561,7 @@ function ph_django {
 
 # cURL (for Git to pull remote repos)
 function ph_curl {
-    log "    Installing cURL $pH_cURL..."
+    status "    Installing cURL $pH_cURL..."
     cd "$pH_DL"
     $CURL "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz"
     rm -rf "curl-$pH_cURL"
@@ -573,7 +578,7 @@ function ph_curl {
 # Git
 # NO_MMAP is needed to prevent Dreamhost killing git processes
 function ph_git {
-    log "    Installing Git $pH_Git..."
+    status "    Installing Git $pH_Git..."
     cd "$pH_DL"
     $CURL "http://git-core.googlecode.com/files/git-$pH_Git.tar.gz" 
     rm -rf "git-$pH_Git"
@@ -595,7 +600,7 @@ function ph_git {
 
 # Hg-Git
 function ph_hggit {
-    log "    Installing hg-git $pH_HgGit..."
+    status "    Installing hg-git $pH_HgGit..."
     cd "$pH_DL"
 
     # dulwich required by hg-git
@@ -618,7 +623,7 @@ DELIM
 
 # Cgit (git web interface)
 function ph_cgit {
-    log "    Installing cgit $pH_Cgit..."
+    status "    Installing cgit $pH_Cgit..."
     cd "$pH_DL"
 
     $CURL "http://hjemli.net/git/cgit/snapshot/cgit-$pH_Cgit.tar.gz"
@@ -696,7 +701,7 @@ DELIM
 
 # Node.js
 function ph_nodejs {
-    log "    Installing node.js $pH_NodeJS..."
+    status "    Installing node.js $pH_NodeJS..."
     cd "$pH_DL"
 
     if [[ ! -e "node-v$pH_NodeJS" ]] ; then
@@ -704,20 +709,14 @@ function ph_nodejs {
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
     cd "node-v$pH_NodeJS"
-set -x
-    sed -i '/log.setLevel/s/logging\.DEBUG/0/' tools/wafadmin/Logs.py
-    sed -i 's/sys.stderr/sys.stdout/' tools/wafadmin/Utils.py
-    rm -f tools/wafadmin/{Utils,Logs}.pyc
     ./configure --prefix="$pH_install" >/dev/null
-    # suppress output
     make --silent >/dev/null
     make install --silent >/dev/null
-set +x
 }
 
 # lesscss
 function ph_lesscss {
-    log "    Installing lessc $pH_LessCSS..."
+    status "    Installing lessc $pH_LessCSS..."
     cd "$pH_DL"
 
     if [[ ! -e "less.js" ]] ; then
@@ -734,7 +733,7 @@ function ph_lesscss {
 
 # m4
 function ph_m4 {
-    log "    Installing m4 $pH_M4..."
+    status "    Installing m4 $pH_M4..."
     cd "$pH_DL"
 
     if [[ ! -e "m4-$pH_M4" ]] ; then
@@ -750,7 +749,7 @@ function ph_m4 {
 
 # autoconf
 function ph_autoconf {
-    log "    Installing autoconf $pH_Autoconf..."
+    status "    Installing autoconf $pH_Autoconf..."
     cd "$pH_DL"
 
     if [[ ! -e "autoconf-$pH_Autoconf" ]] ; then
@@ -766,7 +765,7 @@ function ph_autoconf {
 
 # inotify
 function ph_inotify {
-    log "    Installing inotify $pH_Inotify..."
+    status "    Installing inotify $pH_Inotify..."
     cd "$pH_DL"
 
     if [[ ! -e "inotify-tools-$pH_Inotify" ]] ; then
@@ -852,27 +851,27 @@ function ph_install {
     
     cd ~
     finish_time=$(date +%s)
-    log ""
-    log "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
-    log ""
-    log "Log out and log back in for the changes in your environment variables to take affect."
-    log "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
-    log ""
+    status ""
+    status "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
+    status ""
+    status "Log out and log back in for the changes in your environment variables to take affect."
+    status "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
+    status ""
 }
 
 function ph_uninstall {
-    log "Removing $pH_install"
+    status "Removing $pH_install"
     rm -rf "$pH_install" 
 
     if [[ -e "pH_install.backup" ]] ; then
-        log "Restoring $pH_install.backup"
+        status "Restoring $pH_install.backup"
         mv "$pH_install.backup" "$pH_install"
     fi
 
-    log "Removing $pH_log"
+    status "Removing $pH_log"
     rm -f "$pH_log"
 
-    log ""
+    status ""
     read -p "Delete downloads at $pH_DL? [y,n] " choice 
     case ${choice:0:1} in  
       y|Y) echo "    Ok, removing $pH_DL"; rm -rf $pH_DL ;;
@@ -897,15 +896,15 @@ function ph_uninstall {
       y|Y) echo "    Ok, removing $HOME/.hgrc"; rm -rf $HOME/.hgrc ;;
     esac
 
-    log ""
-    log "Done."
-    log ""
-    log "Please log out and log back in so that environment variables will be reset."
-    log ""
+    status ""
+    status "Done."
+    status ""
+    status "Please log out and log back in so that environment variables will be reset."
+    status ""
 }
 
 function ph_create_uninstall {
-    log "    Creating uninstall script at $pH_uninstall_script"
+    status "    Creating uninstall script at $pH_uninstall_script"
     # Copy function definitions
     declare -f ph_init_vars >  $pH_uninstall_script
     declare -f log          >> $pH_uninstall_script
@@ -922,15 +921,14 @@ if [ "$1" == "uninstall" ] ; then
     ph_uninstall
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
     ph_init_vars
-    log "Installing programs into $pH_install"
+    status "Installing programs into $pH_install"
     {
         ph_create_uninstall
         ph_install_setup
         ph_install
-    } 2>&1 | tee $pH_log
-elif [ "$DEBUG" == "true" ] || [ "$DEBUG" -gt 0 ] ; then
-    # DEBUG HACK
-    # run individual install functions
+    }
+else
+    # Run individual install functions
     # Ex to run ph_python and ph_mercurial
     #    ./pyHost.sh python mercurial
     ph_init_vars
@@ -938,7 +936,5 @@ elif [ "$DEBUG" == "true" ] || [ "$DEBUG" -gt 0 ] ; then
     for x in "$@" ; do
         "ph_$x"
     done
-else
-    echo "Unrecognized option '$1'" >&2
 fi
 
