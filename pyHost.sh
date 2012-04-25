@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+# for debugging, use -e to stop on error
+#!/bin/bash #-e
 # =================================================
 # pyHost version 2.2 beta
 # 
@@ -91,7 +93,6 @@
 # TODO: auto-detect latest versions of stuff  (hard to do?)
 # TODO: add flag/option for /opt style install  (Put python, mercurial, and git into their own install directories)
 # TODO: more sophisticated argument parsing
-# TODO: add silent/verbose flag
 # 
 # Ignore these errors:
 # * Openssl
@@ -110,12 +111,8 @@
 # =================================================
 #
 
-# Set DEBUG=true to allow running individual install functions by
-# passing input arguments
-# e.g. ./pyHost mercurial django
-DEBUG=true
-#TODO implement verbose/quiet output (use the log func below)
-verbose=false
+# Try to reduce console output
+quiet=false
 
 function ph_init_vars {
     # Current directory
@@ -177,24 +174,54 @@ function ph_init_vars {
         pH_Berkeley=$pH_Berkeley_50x
     fi
 
+    # Quietly download files
     CURL="curl -O -s --show-error --fail --location --retry 1"
+
+    # Use local versions
     PYTHON="$pH_install/bin/python"
     PIP="$pH_install/bin/pip"
 
     export PATH="$pH_install/bin:$PATH"
     export PKG_CONFIG_PATH="$pH_install/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export LD_LIBRARY_PATH="$pH_install/lib"
+    export LD_RUN_PATH="$LD_LIBRARY_PATH"
 
     # Save stdout as fd #3
     exec 3>&1
-    # If not verbose, just save output to the log file instead of printing to stdout
-    if [[ "$verbose" != "true" ]] && [[ "$verbose" -le 0 ]]  ; then
+    # Save stderr as fd #4
+    exec 4>&2
+
+    MAKE="make"
+    QUIET=""
+    if [[ "$quiet" == "true" ]] ; then
+        # Reduce console output
         # redirect stdout and stderr to log file
-        exec >$pH_log 2>&1
+        exec &>$pH_log 
+        #exec 2>&1
+
+        MAKE="make --silent"
+        QUIET="--quiet"
     fi
 }
 
 function status {
-        echo "$@" >&3
+    # Print to stdout and to log file
+
+    echo "$@" >&3
+
+    echo "====================================" >> $pH_log
+    echo "$@" >> $pH_log
+    echo "====================================" >> $pH_log
+}
+
+function err {
+    # Print in red to stderr and exit
+
+    echo -en '\e[1;31m' >&4
+    echo -en "ERROR: $@" >&4
+    echo -e '\e[0m' >&4
+
+    exit
 }
 
 function ph_install_setup {
@@ -228,20 +255,24 @@ function ph_install_setup {
     mkdir --parents --mode=775 "$pH_install/lib"
     
     # Backup and modify .bashrc
-    if [[ ! -e ~/.bashrc-pHbackup ]] ; then
-        cp ~/.bashrc ~/.bashrc-pHbackup
-        cat >> ~/.bashrc <<DELIM
+    cd
+    if [[ ! -e .bashrc.dreamhost-install.sh.backup ]] ; then
+        cp .bashrc .bashrc.dreamhost-install.backup
+        cat >> .bashrc <<DELIM
 
-
-######################################################################
-# The following lines were added by the script pyHost.sh from:
+########   BEGIN DREAMHOST-INSTALL.SH SECTION   ########
+# The following lines were added by the script dreamhost-install.sh from:
 # $pH_script_url
 # on $(date -u)
-######################################################################
 
 export PATH=$pH_install/bin:\$PATH
 
+########   END DREAMHOST-INSTALL.SH SECTION   ########
 DELIM
+        
+        # Create a patch so we can undo our changes if we uninstall
+        # (Undo by doing "patch .bashrc < .bashrc.dreamhost-install.undo.patch" )
+        diff -u .bashrc.dreamhost-install.backup .bashrc > .bashrc.dreamhost-install.undo.patch
 
     fi
 
@@ -265,17 +296,27 @@ function ph_openssl {
         cd "openssl-$pH_SSL"
     else
         cd "openssl-$pH_SSL"
-        make --silent clean >/dev/null
+        $MAKE clean
     fi
     
     # Fix warning messages
     sed -i '/^AR=/s/ r/ rc/' Makefile.org
     sed -i 's/size_t tkeylen;$/size_t tkeylen = 0;/' crypto/cms/cms_enc.c
     sed -i 's/^my \$output  = shift;/my $output  = shift || "";/' crypto/md5/asm/md5-x86_64.pl
-    ./config --prefix="$pH_install" --openssldir="$pH_install/openssl" shared > /dev/null
-    make --silent >/dev/null
-    make install --silent >/dev/null
+
+    ./config --prefix="$pH_install" --openssldir="$pH_install/openssl" shared
+    $MAKE
+    $MAKE install
     cd "$pH_DL"
+
+    # Verify
+    [[ -e "$pH_install/lib/libssl.so" ]] || err "OpenSSL install failed"
+    [[ -e "$pH_install/lib/libcrypto.so" ]] || err "OpenSSL install failed"
+    $pH_install/bin/openssl version | grep -q "$pH_SSL" || err "OpenSSL install failed"
+}
+
+function ph_err {
+    err "Test err function"
 }
 
 # Readline
@@ -288,24 +329,27 @@ function ph_readline {
         tar -xzf "readline-$pH_Readline.tar.gz"
     else
         cd "$pH_DL/readline-$pH_Readline"
-        make --silent clean
+        $MAKE clean
         # Directory exists, clean up after old build
         rm -f "$pH_install/lib/libreadline.so.$pH_Readline"
         rm -f "$pH_install/lib/libreadline.so.6"
         rm -f "$pH_install/lib/libreadline.so"
     fi
     cd "$pH_DL/readline-$pH_Readline"
-    ./configure --prefix="$pH_install" --quiet >/dev/null
-    make --silent
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
     # Remove install error message:
     # mv: cannot stat `/home/enoki/local/lib/libreadline.a': No such file or directory
     # mv: cannot stat `/home/enoki/local/lib/libhistory.a': No such file or directory
     touch "$pH_install/lib/libreadline.a"
     touch "$pH_install/lib/libhistory.a"
-    make install --silent >/dev/null
+    $MAKE install
     rm -f "$pH_install/lib/libreadline.old"
     rm -f "$pH_install/lib/libhistory.old"
-    cd "$pH_DL"
+
+    # Verify
+    [[ -e "$pH_install/lib/libreadline.so" ]] || err "Readline install failed"
+    [[ -e "$pH_install/lib/libreadline.a" ]] || err "Readline install failed"
 }
 
 # Tcl
@@ -318,10 +362,13 @@ function ph_tcl {
         tar -xzf "tcl$pH_Tcl-src.tar.gz"
     fi
     cd "tcl$pH_Tcl/unix"
-    ./configure --prefix="$pH_install" --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    [[ -e "$pH_install/lib/libtcl${pH_Tcl:0:3}.so" ]] || err "TCL install failed"
 }
 
 # Tk
@@ -334,10 +381,13 @@ function ph_tk {
         tar -xzf "tk$pH_Tk-src.tar.gz"
     fi
     cd "tk$pH_Tk/unix"
-    ./configure --prefix="$pH_install" --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    [[ -e "$pH_install/lib/libtk${pH_Tk:0:3}.so" ]] || err "Tk install failed"
 }
 
 # Oracle Berkeley DB
@@ -350,14 +400,15 @@ function ph_berkeley {
         tar -xzf "db-$pH_Berkeley.tar.gz"
     fi
     cd db-$pH_Berkeley/build_unix
-    ../dist/configure  --quiet\
-    --prefix="$pH_install" \
-    --enable-cxx \
-    --enable-tcl \
-    --with-tcl="$pH_install/lib"
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+    ../dist/configure  --prefix="$pH_install" $QUIET \
+        --enable-cxx \
+        --enable-tcl \
+        --with-tcl="$pH_install/lib"
+    $MAKE
+    $MAKE install
+
+    # Verify
+    [[ -e "$pH_install/lib/libdb.so" ]] || err "Berkeley DB install failed"
 }
 
 # Bzip
@@ -371,22 +422,25 @@ function ph_bzip {
     else
         cd "$pH_DL/bzip2-$pH_BZip"
         # Directory exists, clean up after old build
-        make --silent clean
+        $MAKE clean
         rm -f "$pH_install/lib/libbz2.so.$pH_BZip"
         rm -f "$pH_install/lib/libbz2.so.1.0"
     fi
     cd "$pH_DL/bzip2-$pH_BZip"
+
     # Shared library
     # Hide "Warning: inlining failed" messages
     sed -i '/^CFLAGS=/s/-Winline //' Makefile-libbz2_so
-    make -f Makefile-libbz2_so --silent >/dev/null
+    $MAKE -f Makefile-libbz2_so
     # Static library
-    make --silent >/dev/null
-    make install PREFIX="$pH_install" --silent >/dev/null
+    $MAKE
+    $MAKE install PREFIX="$pH_install"
     cp "libbz2.so.$pH_BZip" "$pH_install/lib"
     ln -s "$pH_install/lib/libbz2.so.$pH_BZip" "$pH_install/lib/libbz2.so.1.0"
 
-    cd "$pH_DL"
+    # Verify
+    [[ -e "$pH_install/lib/libbz2.so.$pH_BZip" ]] || err "BZip install failed"
+    $pH_install/bin/bzip2 --help 2>&1 | grep -q $pH_BZip || err "BZip install failed"
 }
 
 # SQLite
@@ -399,10 +453,14 @@ function ph_sqlite {
         tar -xzf "sqlite-autoconf-$pH_SQLite.tar.gz"
     fi
     cd "sqlite-autoconf-$pH_SQLite"
-    ./configure --prefix="$pH_install" --quiet >/dev/null
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    [[ -e "$pH_install/lib/libsqlite3.so" ]] || err "SQLite install failed"
+    $pH_install/bin/sqlite3 --version >/dev/null || err "SQLite install failed"
 }
 
 
@@ -436,25 +494,30 @@ function ph_python {
     # abort: repository . not found!
     export HAS_HG="false"
 
-    ./configure --prefix="$pH_install" --quiet >/dev/null
-    make --silent >/dev/null
-    make install --silent >/dev/null
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
 
     # Unset EPREFIX. Used by Python setup.py
     unset EPREFIX
     cd "$pH_DL"
+
+    # Verify
+    [[ -e "$pH_install/lib/libpython${pH_Python:0:3}.a" ]] || err "Python install failed"
+    $pH_install/bin/python --version 2>&1 | grep -q $pH_Python || err "Python install failed"
 }
 
+# DEPRECATED
 # Pip is now installed using Distribute, instead of setuptools,
 # making setuptools obsolete.  This is here for reference only.
-# Python setuptools
-function ph_setuptools {
-    status "    Installing Python setuptools $pH_setuptools..."
-    cd "$pH_DL"
-    $CURL "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
-    sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
-    easy_install -q pip
-}
+## Python setuptools
+#function ph_setuptools {
+#    status "    Installing Python setuptools $pH_setuptools..."
+#    cd "$pH_DL"
+#    $CURL "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
+#    sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
+#    easy_install -q pip
+#}
 
 # Python PIP (package manager)
 function ph_pip {
@@ -465,11 +528,14 @@ function ph_pip {
     # http://www.pip-installer.org/en/latest/installing.html
     $CURL http://python-distribute.org/distribute_setup.py
     sed -i 's/log\.warn/log.debug/g' distribute_setup.py
-    $PYTHON distribute_setup.py >/dev/null
+    $PYTHON distribute_setup.py
 
     # Install PIP
     $CURL https://raw.github.com/pypa/pip/master/contrib/get-pip.py
-    $PYTHON get-pip.py >/dev/null
+    $PYTHON get-pip.py
+
+    # Verify
+    $pH_install/bin/pip --version >/dev/null || err "Python install failed"
 }
 
 # Mercurial
@@ -478,7 +544,7 @@ function ph_mercurial {
     cd "$pH_DL"
     
     # docutils required by mercurial
-    $PIP install -q -U docutils >/dev/null
+    $PIP install -q -U docutils
 
     $CURL "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
     rm -rf "mercurial-$pH_Mercurial"
@@ -486,7 +552,7 @@ function ph_mercurial {
     cd "mercurial-$pH_Mercurial"
     # Remove translation messages from error output
     sed -i "/^\s*cmd = \['msgfmt'/s/'-v', //" setup.py
-    make install PREFIX="$pH_install" --silent >/dev/null
+    $MAKE install PREFIX="$pH_install"
     cd "$pH_DL"
     cat >> ~/.hgrc <<DELIM
 
@@ -521,18 +587,17 @@ preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 # End added by pyHost.sh
 
 DELIM
+
+    # Verify
+    [[ -e "$pH_install/lib/libpython${pH_Python:0:3}.a" ]] || err "Python install failed"
+    $pH_install/bin/python --version 2>&1 | grep -q $pH_Python || err "Python install failed"
 }
 
 # VirtualEnv
 function ph_virtualenv {
     status "    Installing VirtualEnv $pH_VirtualEnv..."
     cd "$pH_DL"
-    #$CURL http://pypi.python.org/packages/source/v/virtualenv/virtualenv-$pH_VirtualEnv.tar.gz
-    #rm -rf virtualenv-$pH_VirtualEnv
-    #tar -xzf virtualenv-$pH_VirtualEnv.tar.gz
-    #cd virtualenv-$pH_VirtualEnv
-    ## Create a virtualenv
-    #python virtualenv.py $pH_virtualenv_dir
+
     $PIP install -q -U virtualenv 
 
     #$PIP install -q -U virtualenvwrapper
@@ -544,19 +609,20 @@ function ph_virtualenv {
 #source virtualenvwrapper.sh
 #DELIM
     #source ~/.bashrc
+
+    # Verify
+    $pH_install/bin/virtualenv --version >/dev/null || err "VirtualEnv install failed"
 }
 
 # Django framework
 function ph_django {
     status "    Installing Django $pH_Django..."
-    cd "$pH_DL"
-    #$CURL http://www.djangoproject.com/download/$pH_Django/tarball/
-    #rm -rf Django-$pH_Django
-    #tar -xzf Django-$pH_Django.tar.gz
-    #cd Django-$pH_Django
-    #python setup.py install
+
     $PIP install -q -U django
-    cd "$pH_DL"
+
+    # Verify
+    $pH_install/bin/django-admin.py --version || err "Django install failed"
+    $pH_install/bin/python -c "import django" 2>/dev/null || err "Django install failed"
 }
 
 # cURL (for Git to pull remote repos)
@@ -567,12 +633,15 @@ function ph_curl {
     rm -rf "curl-$pH_cURL"
     tar -xzf "curl-$pH_cURL.tar.gz"
     cd "curl-$pH_cURL"
-    ./configure --prefix="$pH_install" --quiet \
+    ./configure --prefix="$pH_install" $QUIET \
         --with-ssl=${pH_install} \
         --enable-ipv6 --enable-cookies --enable-crypto-auth
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/curl --version | grep $pH_cURL || err "Curl install failed"
+    [[ -e "$pH_install/lib/libcurl.so" ]] || err "Curl install failed"
 }
 
 # Git
@@ -584,7 +653,7 @@ function ph_git {
     rm -rf "git-$pH_Git"
     tar -xzf "git-$pH_Git.tar.gz"
     cd "git-$pH_Git"
-    ./configure --prefix="$pH_install" NO_MMAP=1 --quiet
+    ./configure --prefix="$pH_install" NO_MMAP=1 $QUIET
     # Remove translation messages from error output
     sed -i "/MSGFMT/s/--statistics//" Makefile
     sed -i "/new build flags or prefix/s/1>&2//" Makefile
@@ -592,9 +661,11 @@ function ph_git {
     sed -i "/new locations or Tcl\/Tk interpreter/s/1>&2//" git-gui/Makefile
     sed -i "/MSGFMT/s/--statistics//" git-gui/Makefile
     sed -i "/MSGFMT/s/--statistics//" gitk-git/Makefile
-    make --silent >/dev/null
-    make install --silent >/dev/null
-    cd "$pH_DL"
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/git --version | grep $pH_Git || err "Git install failed"
 }
 
 
@@ -638,9 +709,9 @@ function ph_cgit {
     prefix = $pH_install
 DELIM
 
-    make get-git
-    make
-    make install
+    $MAKE get-git
+    $MAKE
+    $MAKE install
 
     # cgitrc file
     cat >> $pH_install/cgit/cgitrc <<DELIM
@@ -697,6 +768,9 @@ To create a repo
 
 Edit ~/git.example.com/cgitrc with your preferred settings
 DELIM
+
+    # Verify
+    [[ -e "$pH_install/cgit/cgit.cgi" ]] || err "CGit install failed"
 }
 
 # Node.js
@@ -709,9 +783,12 @@ function ph_nodejs {
         tar -xzf "node-v$pH_NodeJS.tar.gz"
     fi
     cd "node-v$pH_NodeJS"
-    ./configure --prefix="$pH_install" >/dev/null
-    make --silent >/dev/null
-    make install --silent >/dev/null
+    ./configure --prefix="$pH_install"
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/node --version | grep $pH_NodeJS || err "NodeJS install failed"
 }
 
 # lesscss
@@ -728,7 +805,10 @@ function ph_lesscss {
     fi
     cd "less.js"
     cp "bin/lessc" "$pH_install/bin"
-    cp -a "lib/less" "$pH_install/lib"
+    cp -a "lib/less" "$pH_install/lesscss"
+
+    # Verify
+    [[ -e "$pH_install/bin/lessc" ]] || err "LessCSS install failed"
 }
 
 # m4
@@ -742,9 +822,12 @@ function ph_m4 {
         tar -xzf "m4-$pH_M4.tar.gz"
     fi
     cd "m4-$pH_M4"
-    ./configure --prefix="$pH_install" --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/m4 --version | grep $pH_M4 || err "M4 install failed"
 }
 
 # autoconf
@@ -758,9 +841,12 @@ function ph_autoconf {
         tar -xzf "autoconf-$pH_Autoconf.tar.gz"
     fi
     cd "autoconf-$pH_Autoconf"
-    ./configure --prefix="$pH_install" --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/autoconf --version | grep $pH_Autoconf || err "Autoconf install failed"
 }
 
 # inotify
@@ -774,9 +860,13 @@ function ph_inotify {
         tar -xzf "inotify-tools-$pH_Inotify.tar.gz"
     fi
     cd "inotify-tools-$pH_Inotify"
-    ./configure --prefix="$pH_install" --quiet
-    make --silent >/dev/null
-    make install --silent >/dev/null
+    ./configure --prefix="$pH_install" $QUIET
+    $MAKE
+    $MAKE install
+
+    # Verify
+    $pH_install/bin/inotifywait --help | grep -q $pH_Inotify || err "Inotify install failed"
+    $pH_install/bin/inotifywatch --help | grep -q $pH_Inotify || err "Inotify install failed"
 }
 
 function ph_install {
@@ -907,7 +997,8 @@ function ph_create_uninstall {
     status "    Creating uninstall script at $pH_uninstall_script"
     # Copy function definitions
     declare -f ph_init_vars >  $pH_uninstall_script
-    declare -f log          >> $pH_uninstall_script
+    declare -f status       >> $pH_uninstall_script
+    declare -f err          >> $pH_uninstall_script
     declare -f ph_uninstall >> $pH_uninstall_script
     echo "" >> $pH_uninstall_script
     echo "ph_init_vars" >> $pH_uninstall_script
@@ -915,12 +1006,12 @@ function ph_create_uninstall {
     chmod +x $pH_uninstall_script
 }
 
+ph_init_vars
+
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
-    ph_init_vars
     ph_uninstall
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
-    ph_init_vars
     status "Installing programs into $pH_install"
     {
         ph_create_uninstall
@@ -931,7 +1022,6 @@ else
     # Run individual install functions
     # Ex to run ph_python and ph_mercurial
     #    ./pyHost.sh python mercurial
-    ph_init_vars
     ph_install_setup
     for x in "$@" ; do
         "ph_$x"
