@@ -1,15 +1,15 @@
 #!/bin/bash
 # for debugging, use -e to stop on error
-#!/bin/bash #-e
+# use -x to echo each line before running
+#!/bin/bash -ex
 # =================================================
-# install-dreamhost version 2.2 beta
+# install-dreamhost version 3
 # 
-# This script automates a the download, compiling, and local 
-# installation of Python, Mercurial, Git in the home folder.
+# Installs updated versions of Python, Mercurial, Git in the home folder.
 # It includes a number of dependencies 
 # (berkeley db, bzip, curl, openssl, readline, sqlite, tcl, tk)
-# and installs some additional plugins 
-# (django, pip, virtualenv).
+# and installs some additional programs
+# (django, pip, virtualenv, cgit, lesscss, inotify).
 # It has been tested on Dreamhost on a shared server running Debian.
 # It should work with other hosts, but it hasn't been tested.
 #
@@ -17,16 +17,13 @@
 #
 #   ./install-dreamhost.sh
 # 
-# With default settings, this command will install 
-# Python, Mercurial, and Git (with dependencies and specified plugins)
-# into ~/local.  It will add ~/local/bin to your PATH
-# in your ~/.bashrc file. (If you use a different shell, you
-# will need to add ~/local/bin to your PATH in your shell's
-# init script.)
+# Binaries are at ~/local/bin
 #
 # After installing, source .bashrc 
 #     source ~/.bashrc
-# OR simply log out and log back in.  Then test that
+# OR simply log out and log back in.  
+#
+# To test if everything worked, make sure that
 #     which python
 # returns "~/local/bin/python" and verify the python version
 #     python --version
@@ -43,11 +40,7 @@
 #
 # Uninstallation:
 #
-# Pass the uninstall parameter
-#
-#     ./install-dreamhost.sh uninstall
-#
-# OR run the uninstall script which the installation generated
+# Run the uninstall script
 #
 #     ./uninstall-dreamhost.sh
 #
@@ -69,6 +62,11 @@
 # =================================================
 # 
 # Changelog
+# April 24 2012 - Kristi Tsukida <kristi.dev@gmail.com>
+# * Add verification tests
+# * Cleanup program output
+# * Rename script
+#
 # April 17 2012 - Kristi Tsukida <kristi.dev@gmail.com>
 # * Update to latest versions
 # * Silence unnecessary output
@@ -112,78 +110,75 @@
 #
 
 # Try to reduce console output
-quiet=false
+quiet=true
 
 function ph_init_vars {
-    # Current directory
-    pH_PWD="$PWD"
-    
     # Directory to install these packages
-    pH_install="$HOME/local"
+    prefix="$HOME/local"
     
     # Directory to store the source archives
-    pH_DL="$PWD/downloads"
+    download_dir="$PWD/downloads"
     
     # Uninstall script
-    pH_uninstall_script="$PWD/uninstall-dreamhost.sh"
+    uninstall_script="$PWD/uninstall-dreamhost.sh"
     
-    pH_log="log.txt"
+    log_file="log.txt"
     
-    pH_script_url="https://github.com/kristi/dreamhost-install/blob/master/install-dreamhost.sh"
+    script_url="https://github.com/kristi/dreamhost-install/blob/master/install-dreamhost.sh"
     
     # Package versions
     #
     # Comment out anything you don't want to install...
     
-    pH_Python="2.7.2"
-    pH_pip="(via get-pip.py script)"
-    pH_Mercurial="2.1.1" # Don't use pip to install Mercurial since it might not be updated
-    pH_Git="1.7.10"
-    pH_Cgit="0.9.0.3"
-    pH_Django="(via pip)" # installed via pip
-    pH_VirtualEnv="(via pip)" # installed via pip
-    #pH_HgGit="(via pip)" # installed via pip
-    pH_NodeJS="0.6.15"
-    pH_LessCSS="(github)"
-    pH_Inotify="3.14"
+    python_ver="2.7.2"
+    pip_ver="(via get-pip.py script)"
+    mercurial_ver="2.1.1" # Don't use pip to install Mercurial since it might not be updated
+    git_ver="1.7.10"
+    cgit_ver="0.9.0.3"
+    django_ver="(via pip)" # installed via pip
+    virtualenv_ver="(via pip)" # installed via pip
+    #hggit_ver="(via pip)" # installed via pip
+    nodejs_ver="0.6.15"
+    lesscss_ver="(github)"
+    inotify_ver="3.14"
     # === Python dependencies ===
-    pH_SSL="1.0.1" # for python
-    pH_Readline="6.2" # for python
-    pH_Tcl="8.5.11" # for python
-    pH_Tk="8.5.11" # for python
-    pH_Berkeley_47x="4.7.25" # for python 2.6
-    pH_Berkeley_48x="4.8.30" # for python 2.7
-    pH_Berkeley_50x="5.3.15" # for python 3
-    pH_BZip="1.0.6" # for python
-    pH_SQLite="3071100" # 3.7.11 for python
+    ssl_ver="1.0.1" # for python
+    readline_ver="6.2" # for python
+    tcl_ver="8.5.11" # for python
+    tk_ver="8.5.11" # for python
+    berkeley_47x_ver="4.7.25" # for python 2.6
+    berkeley_48x_ver="4.8.30" # for python 2.7
+    berkeley_50x_ver="5.3.15" # for python 3
+    bzip_ver="1.0.6" # for python
+    sqlite_ver="3071100" # 3.7.11 for python
     # === Git dependencies ===
-    pH_cURL="7.25.0" # for git
+    curl_ver="7.25.0" # for git
     # === Inotify dependencies ===
-    pH_M4="1.4.16" # for inotify
-    pH_Autoconf="2.68" # for inotify
+    m4_ver="1.4.16" # for inotify
+    autoconf_ver="2.68" # for inotify
 
 
 
     # Sets the correct version of Berkeley DB to use and download
     # by looking at the Python version number
-    if [[ "${pH_Python:0:3}" == "2.6" ]]; then
-        pH_Berkeley=$pH_Berkeley_47x
-    elif [[ "${pH_Python:0:3}" == "2.7" ]]; then
-        pH_Berkeley=$pH_Berkeley_48x
-    elif [[ "${pH_Python:0:1}" == "3" ]]; then
-        pH_Berkeley=$pH_Berkeley_50x
+    if [[ "${python_ver:0:3}" == "2.6" ]]; then
+        berkeley_ver=$berkeley_47x_ver
+    elif [[ "${python_ver:0:3}" == "2.7" ]]; then
+        berkeley_ver=$berkeley_48x_ver
+    elif [[ "${python_ver:0:1}" == "3" ]]; then
+        berkeley_ver=$berkeley_50x_ver
     fi
 
     # Quietly download files
     CURL="curl -O -s --show-error --fail --location --retry 1"
 
     # Use local versions
-    PYTHON="$pH_install/bin/python"
-    PIP="$pH_install/bin/pip"
+    PYTHON="$prefix/bin/python"
+    PIP="$prefix/bin/pip"
 
-    export PATH="$pH_install/bin:$PATH"
-    export PKG_CONFIG_PATH="$pH_install/lib/pkgconfig:$PKG_CONFIG_PATH"
-    export LD_LIBRARY_PATH="$pH_install/lib"
+    export PATH="$prefix/bin:$PATH"
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export LD_LIBRARY_PATH="$prefix/lib"
     export LD_RUN_PATH="$LD_LIBRARY_PATH"
 
     # Save stdout as fd #3
@@ -196,7 +191,7 @@ function ph_init_vars {
     if [[ "$quiet" == "true" ]] ; then
         # Reduce console output
         # redirect stdout and stderr to log file
-        exec &>$pH_log 
+        exec >$log_file 
         #exec 2>&1
 
         MAKE="make --silent"
@@ -209,9 +204,9 @@ function status {
 
     echo "$@" >&3
 
-    echo "====================================" >> $pH_log
-    echo "$@" >> $pH_log
-    echo "====================================" >> $pH_log
+    echo "====================================" >> $log_file
+    echo "$@" >> $log_file
+    echo "====================================" >> $log_file
 }
 
 function err {
@@ -231,41 +226,41 @@ function ph_install_setup {
     PH_OLD_PATH="$PATH"
     PH_OLD_PYTHONPATH="$PYTHONPATH"
     
-    # Make a backup copy of the current $pH_install folder if it exists.
-    if [[ -e "$pH_install" ]]; then
-        #echo "Warning: existing '$pH_install' directory found."
-        if [[ ! -e $pH_install.backup ]] ; then
-            #read -p "Create a backup copy at $pH_install.backup and continue? [y,n] " choice 
+    # Make a backup copy of the current $prefix folder if it exists.
+    if [[ -e "$prefix" ]]; then
+        #echo "Warning: existing '$prefix' directory found."
+        if [[ ! -e $prefix.backup ]] ; then
+            #read -p "Create a backup copy at $prefix.backup and continue? [y,n] " choice 
             #case ${choice:0:1} in  
             #  y|Y) echo "    ok" ;;
-            #  *) echo "Exiting"; rm $pH_uninstall_script; exit ;;
+            #  *) echo "Exiting"; rm $uninstall_script; exit ;;
             #esac
-            echo "    Creating a backup of '$pH_install' at '$pH_install.backup'"
-            cp --archive "$pH_install" "$pH_install.backup"
+            echo "    Creating a backup of '$prefix' at '$prefix.backup'"
+            cp --archive "$prefix" "$prefix.backup"
         else
-            echo "    Existing backup of '$pH_install' found at '$pH_install.backup'.  No new backup will be created."
-            #read -p "Existing backup copy found at $pH_install.backup.  No new backup will be created.  Continue installing? [y,n] " choice 
+            echo "    Existing backup of '$prefix' found at '$prefix.backup'.  No new backup will be created."
+            #read -p "Existing backup copy found at $prefix.backup.  No new backup will be created.  Continue installing? [y,n] " choice 
             #case ${choice:0:1} in  
             #  y|Y) echo "    ok" ;;
             #  *) echo "Exiting"; exit ;;
             #esac
         fi
     fi
-    mkdir --parents "$pH_install" "$pH_DL"
-    mkdir --parents --mode=775 "$pH_install/lib"
+    mkdir --parents "$prefix" "$download_dir"
+    mkdir --parents --mode=775 "$prefix/lib"
     
     # Backup and modify .bashrc
     cd
-    if [[ ! -e .bashrc.dreamhost-install.sh.backup ]] ; then
+    if [[ ! -e .bashrc.dreamhost-install.backup ]] ; then
         cp .bashrc .bashrc.dreamhost-install.backup
         cat >> .bashrc <<DELIM
 
 ########   BEGIN DREAMHOST-INSTALL.SH SECTION   ########
 # The following lines were added by the script dreamhost-install.sh from:
-# $pH_script_url
+# $script_url
 # on $(date -u)
 
-export PATH=$pH_install/bin:\$PATH
+export PATH=$prefix/bin:\$PATH
 
 ########   END DREAMHOST-INSTALL.SH SECTION   ########
 DELIM
@@ -286,16 +281,16 @@ DELIM
 ##############################
 
 # OpenSSL
-function ph_openssl {
-    status "    Installing OpenSSL $pH_SSL..."
-    cd "$pH_DL"
-    if [[ ! -e "openssl-$pH_SSL" ]] ; then
-        $CURL "http://www.openssl.org/source/openssl-$pH_SSL.tar.gz"
-        rm -rf "openssl-$pH_SSL"
-        tar -xzf "openssl-$pH_SSL.tar.gz"
-        cd "openssl-$pH_SSL"
+function install_openssl {
+    status "    Installing OpenSSL $ssl_ver..."
+    cd "$download_dir"
+    if [[ ! -e "openssl-$ssl_ver" ]] ; then
+        $CURL "http://www.openssl.org/source/openssl-$ssl_ver.tar.gz"
+        rm -rf "openssl-$ssl_ver"
+        tar -xzf "openssl-$ssl_ver.tar.gz"
+        cd "openssl-$ssl_ver"
     else
-        cd "openssl-$pH_SSL"
+        cd "openssl-$ssl_ver"
         $MAKE clean
     fi
     
@@ -304,129 +299,129 @@ function ph_openssl {
     sed -i 's/size_t tkeylen;$/size_t tkeylen = 0;/' crypto/cms/cms_enc.c
     sed -i 's/^my \$output  = shift;/my $output  = shift || "";/' crypto/md5/asm/md5-x86_64.pl
 
-    ./config --prefix="$pH_install" --openssldir="$pH_install/openssl" shared
+    ./config --prefix="$prefix" --openssldir="$prefix/openssl" shared
     $MAKE
     $MAKE install
-    cd "$pH_DL"
+    cd "$download_dir"
 
     # Verify
-    [[ -e "$pH_install/lib/libssl.so" ]] || err "OpenSSL install failed"
-    [[ -e "$pH_install/lib/libcrypto.so" ]] || err "OpenSSL install failed"
-    $pH_install/bin/openssl version | grep -q "$pH_SSL" || err "OpenSSL install failed"
+    [[ -e "$prefix/lib/libssl.so" ]] || err "OpenSSL install failed"
+    [[ -e "$prefix/lib/libcrypto.so" ]] || err "OpenSSL install failed"
+    $prefix/bin/openssl version | grep -q "$ssl_ver" || err "OpenSSL install failed"
 }
 
-function ph_err {
+function install_err {
     err "Test err function"
 }
 
 # Readline
-function ph_readline {
-    status "    Installing Readline $pH_Readline..."
-    cd "$pH_DL"
-    if [[ ! -e "readline-$pH_Readline" ]] ; then
-        $CURL "ftp://ftp.gnu.org/gnu/readline/readline-$pH_Readline.tar.gz"
-        rm -rf "readline-$pH_Readline"
-        tar -xzf "readline-$pH_Readline.tar.gz"
+function install_readline {
+    status "    Installing Readline $readline_ver..."
+    cd "$download_dir"
+    if [[ ! -e "readline-$readline_ver" ]] ; then
+        $CURL "ftp://ftp.gnu.org/gnu/readline/readline-$readline_ver.tar.gz"
+        rm -rf "readline-$readline_ver"
+        tar -xzf "readline-$readline_ver.tar.gz"
     else
-        cd "$pH_DL/readline-$pH_Readline"
+        cd "$download_dir/readline-$readline_ver"
         $MAKE clean
         # Directory exists, clean up after old build
-        rm -f "$pH_install/lib/libreadline.so.$pH_Readline"
-        rm -f "$pH_install/lib/libreadline.so.6"
-        rm -f "$pH_install/lib/libreadline.so"
+        rm -f "$prefix/lib/libreadline.so.$readline_ver"
+        rm -f "$prefix/lib/libreadline.so.6"
+        rm -f "$prefix/lib/libreadline.so"
     fi
-    cd "$pH_DL/readline-$pH_Readline"
-    ./configure --prefix="$pH_install" $QUIET
+    cd "$download_dir/readline-$readline_ver"
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     # Remove install error message:
     # mv: cannot stat `/home/enoki/local/lib/libreadline.a': No such file or directory
     # mv: cannot stat `/home/enoki/local/lib/libhistory.a': No such file or directory
-    touch "$pH_install/lib/libreadline.a"
-    touch "$pH_install/lib/libhistory.a"
+    touch "$prefix/lib/libreadline.a"
+    touch "$prefix/lib/libhistory.a"
     $MAKE install
-    rm -f "$pH_install/lib/libreadline.old"
-    rm -f "$pH_install/lib/libhistory.old"
+    rm -f "$prefix/lib/libreadline.old"
+    rm -f "$prefix/lib/libhistory.old"
 
     # Verify
-    [[ -e "$pH_install/lib/libreadline.so" ]] || err "Readline install failed"
-    [[ -e "$pH_install/lib/libreadline.a" ]] || err "Readline install failed"
+    [[ -e "$prefix/lib/libreadline.so" ]] || err "Readline install failed"
+    [[ -e "$prefix/lib/libreadline.a" ]] || err "Readline install failed"
 }
 
 # Tcl
-function ph_tcl {
-    status "    Installing Tcl $pH_Tcl..."
-    cd "$pH_DL"
-    if [[ ! -e "tcl$pH_Tcl-src" ]] ; then
-        $CURL "http://prdownloads.sourceforge.net/tcl/tcl$pH_Tcl-src.tar.gz"
-        rm -rf "tcl$pH_Tcl-src"
-        tar -xzf "tcl$pH_Tcl-src.tar.gz"
+function install_tcl {
+    status "    Installing Tcl $tcl_ver..."
+    cd "$download_dir"
+    if [[ ! -e "tcl$tcl_ver-src" ]] ; then
+        $CURL "http://prdownloads.sourceforge.net/tcl/tcl$tcl_ver-src.tar.gz"
+        rm -rf "tcl$tcl_ver-src"
+        tar -xzf "tcl$tcl_ver-src.tar.gz"
     fi
-    cd "tcl$pH_Tcl/unix"
+    cd "tcl$tcl_ver/unix"
 
-    ./configure --prefix="$pH_install" $QUIET
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    [[ -e "$pH_install/lib/libtcl${pH_Tcl:0:3}.so" ]] || err "TCL install failed"
+    [[ -e "$prefix/lib/libtcl${tcl_ver:0:3}.so" ]] || err "TCL install failed"
 }
 
 # Tk
-function ph_tk {
-    status "    Installing Tk $pH_Tk..."
-    cd "$pH_DL"
-    if [[ ! -e "tk$pH_Tcl-src" ]] ; then
-        $CURL "http://prdownloads.sourceforge.net/tcl/tk$pH_Tk-src.tar.gz"
-        rm -rf "tk$pH_Tk-src"
-        tar -xzf "tk$pH_Tk-src.tar.gz"
+function install_tk {
+    status "    Installing Tk $tk_ver..."
+    cd "$download_dir"
+    if [[ ! -e "tk$tcl_ver-src" ]] ; then
+        $CURL "http://prdownloads.sourceforge.net/tcl/tk$tk_ver-src.tar.gz"
+        rm -rf "tk$tk_ver-src"
+        tar -xzf "tk$tk_ver-src.tar.gz"
     fi
-    cd "tk$pH_Tk/unix"
+    cd "tk$tk_ver/unix"
 
-    ./configure --prefix="$pH_install" $QUIET
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    [[ -e "$pH_install/lib/libtk${pH_Tk:0:3}.so" ]] || err "Tk install failed"
+    [[ -e "$prefix/lib/libtk${tk_ver:0:3}.so" ]] || err "Tk install failed"
 }
 
 # Oracle Berkeley DB
-function ph_berkeley {
-    status "    Installing Berkeley DB $pH_Berkeley..."
-    cd "$pH_DL"
-    if [[ ! -e "db-$pH_Berkeley" ]] ; then
-        $CURL "http://download.oracle.com/berkeley-db/db-$pH_Berkeley.tar.gz"
-        rm -rf "db-$pH_Berkeley"
-        tar -xzf "db-$pH_Berkeley.tar.gz"
+function install_berkeley {
+    status "    Installing Berkeley DB $berkeley_ver..."
+    cd "$download_dir"
+    if [[ ! -e "db-$berkeley_ver" ]] ; then
+        $CURL "http://download.oracle.com/berkeley-db/db-$berkeley_ver.tar.gz"
+        rm -rf "db-$berkeley_ver"
+        tar -xzf "db-$berkeley_ver.tar.gz"
     fi
-    cd db-$pH_Berkeley/build_unix
-    ../dist/configure  --prefix="$pH_install" $QUIET \
+    cd db-$berkeley_ver/build_unix
+    ../dist/configure  --prefix="$prefix" $QUIET \
         --enable-cxx \
         --enable-tcl \
-        --with-tcl="$pH_install/lib"
+        --with-tcl="$prefix/lib"
     $MAKE
     $MAKE install
 
     # Verify
-    [[ -e "$pH_install/lib/libdb.so" ]] || err "Berkeley DB install failed"
+    [[ -e "$prefix/lib/libdb.so" ]] || err "Berkeley DB install failed"
 }
 
 # Bzip
-function ph_bzip {
-    status "    Installing BZip $pH_BZip..."
-    cd "$pH_DL"
-    if [[ ! -e "bzip2-$pH_BZip" ]] ; then
-        $CURL "http://www.bzip.org/$pH_BZip/bzip2-$pH_BZip.tar.gz"
-        rm -rf "bzip2-$pH_BZip"
-        tar -xzf "bzip2-$pH_BZip.tar.gz"
+function install_bzip {
+    status "    Installing BZip $bzip_ver..."
+    cd "$download_dir"
+    if [[ ! -e "bzip2-$bzip_ver" ]] ; then
+        $CURL "http://www.bzip.org/$bzip_ver/bzip2-$bzip_ver.tar.gz"
+        rm -rf "bzip2-$bzip_ver"
+        tar -xzf "bzip2-$bzip_ver.tar.gz"
     else
-        cd "$pH_DL/bzip2-$pH_BZip"
+        cd "$download_dir/bzip2-$bzip_ver"
         # Directory exists, clean up after old build
         $MAKE clean
-        rm -f "$pH_install/lib/libbz2.so.$pH_BZip"
-        rm -f "$pH_install/lib/libbz2.so.1.0"
+        rm -f "$prefix/lib/libbz2.so.$bzip_ver"
+        rm -f "$prefix/lib/libbz2.so.1.0"
     fi
-    cd "$pH_DL/bzip2-$pH_BZip"
+    cd "$download_dir/bzip2-$bzip_ver"
 
     # Shared library
     # Hide "Warning: inlining failed" messages
@@ -434,56 +429,56 @@ function ph_bzip {
     $MAKE -f Makefile-libbz2_so
     # Static library
     $MAKE
-    $MAKE install PREFIX="$pH_install"
-    cp "libbz2.so.$pH_BZip" "$pH_install/lib"
-    ln -s "$pH_install/lib/libbz2.so.$pH_BZip" "$pH_install/lib/libbz2.so.1.0"
+    $MAKE install PREFIX="$prefix"
+    cp "libbz2.so.$bzip_ver" "$prefix/lib"
+    ln -s "$prefix/lib/libbz2.so.$bzip_ver" "$prefix/lib/libbz2.so.1.0"
 
     # Verify
-    [[ -e "$pH_install/lib/libbz2.so.$pH_BZip" ]] || err "BZip install failed"
-    $pH_install/bin/bzip2 --help 2>&1 | grep -q $pH_BZip || err "BZip install failed"
+    [[ -e "$prefix/lib/libbz2.so.$bzip_ver" ]] || err "BZip install failed"
+    $prefix/bin/bzip2 --help 2>&1 | grep -q $bzip_ver || err "BZip install failed"
 }
 
 # SQLite
-function ph_sqlite {
-    status "    Installing SQLite $pH_SQLite..."
-    cd "$pH_DL"
-    if [[ ! -e "sqlite-autoconf-$pH_SQLite" ]] ; then
-        $CURL "http://www.sqlite.org/sqlite-autoconf-$pH_SQLite.tar.gz"
-        rm -rf "sqlite-autoconf-$pH_SQLite"
-        tar -xzf "sqlite-autoconf-$pH_SQLite.tar.gz"
+function install_sqlite {
+    status "    Installing SQLite $sqlite_ver..."
+    cd "$download_dir"
+    if [[ ! -e "sqlite-autoconf-$sqlite_ver" ]] ; then
+        $CURL "http://www.sqlite.org/sqlite-autoconf-$sqlite_ver.tar.gz"
+        rm -rf "sqlite-autoconf-$sqlite_ver"
+        tar -xzf "sqlite-autoconf-$sqlite_ver.tar.gz"
     fi
-    cd "sqlite-autoconf-$pH_SQLite"
+    cd "sqlite-autoconf-$sqlite_ver"
 
-    ./configure --prefix="$pH_install" $QUIET
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    [[ -e "$pH_install/lib/libsqlite3.so" ]] || err "SQLite install failed"
-    $pH_install/bin/sqlite3 --version >/dev/null || err "SQLite install failed"
+    [[ -e "$prefix/lib/libsqlite3.so" ]] || err "SQLite install failed"
+    $prefix/bin/sqlite3 --version >/dev/null || err "SQLite install failed"
 }
 
 
 # Python
-function ph_python {
-    status "    Installing Python $pH_Python..."
+function install_python {
+    status "    Installing Python $python_ver..."
     # Append Berkeley DB to EPREFIX. Used by Python setup.py
-    export EPREFIX="$pH_install/lib:$EPREFIX"
-    cd "$pH_DL"
-    $CURL "http://python.org/ftp/python/$pH_Python/Python-$pH_Python.tgz"
-    rm -rf "Python-$pH_Python"
-    tar -xzf "Python-$pH_Python.tgz"
-    cd "Python-$pH_Python"
-    export LD_LIBRARY_PATH="$pH_install/lib"
+    export EPREFIX="$prefix/lib:$EPREFIX"
+    cd "$download_dir"
+    $CURL "http://python.org/ftp/python/$python_ver/Python-$python_ver.tgz"
+    rm -rf "Python-$python_ver"
+    tar -xzf "Python-$python_ver.tgz"
+    cd "Python-$python_ver"
+    export LD_LIBRARY_PATH="$prefix/lib"
     export LD_RUN_PATH="$LD_LIBRARY_PATH"
     export LDFLAGS="\
--L$pH_install/lib \
+-L$prefix/lib \
 -lpthread"
     
     export CPPFLAGS="\
--I$pH_install/include \
--I$pH_install/include/openssl \
--I$pH_install/include/readline"
+-I$prefix/include \
+-I$prefix/include/openssl \
+-I$prefix/include/readline"
     
     export CXXFLAGS="$CPPFLAGS"
     export CFLAGS="$CPPFLAGS"
@@ -494,35 +489,35 @@ function ph_python {
     # abort: repository . not found!
     export HAS_HG="false"
 
-    ./configure --prefix="$pH_install" $QUIET
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Unset EPREFIX. Used by Python setup.py
     unset EPREFIX
-    cd "$pH_DL"
+    cd "$download_dir"
 
     # Verify
-    [[ -e "$pH_install/lib/libpython${pH_Python:0:3}.a" ]] || err "Python install failed"
-    $pH_install/bin/python --version 2>&1 | grep -q $pH_Python || err "Python install failed"
+    [[ -e "$prefix/lib/libpython${python_ver:0:3}.a" ]] || err "Python install failed"
+    $prefix/bin/python --version 2>&1 | grep -q $python_ver || err "Python install failed"
 }
 
 # DEPRECATED
 # Pip is now installed using Distribute, instead of setuptools,
 # making setuptools obsolete.  This is here for reference only.
 ## Python setuptools
-#function ph_setuptools {
-#    status "    Installing Python setuptools $pH_setuptools..."
-#    cd "$pH_DL"
-#    $CURL "http://pypi.python.org/packages/${pH_Python:0:3}/s/setuptools/setuptools-$pH_setuptools-py${pH_Python:0:3}.egg"
-#    sh "setuptools-$pH_setuptools-py${pH_Python:0:3}.egg" -q
+#function install_setuptools {
+#    status "    Installing Python setuptools $setuptools_ver..."
+#    cd "$download_dir"
+#    $CURL "http://pypi.python.org/packages/${python_ver:0:3}/s/setuptools/setuptools-$setuptools_ver-py${python_ver:0:3}.egg"
+#    sh "setuptools-$setuptools_ver-py${python_ver:0:3}.egg" -q
 #    easy_install -q pip
 #}
 
-# Python PIP (package manager)
-function ph_pip {
-    status "    Installing Python PIP $pH_pip..."
-    cd "$pH_DL"
+# PIP (package manager)
+function install_pip {
+    status "    Installing Pip $pip_ver..."
+    cd "$download_dir"
 
     # Install Distribute first
     # http://www.pip-installer.org/en/latest/installing.html
@@ -535,25 +530,25 @@ function ph_pip {
     $PYTHON get-pip.py
 
     # Verify
-    $pH_install/bin/pip --version >/dev/null || err "Python install failed"
+    $prefix/bin/pip --version >/dev/null || err "Pip install failed"
 }
 
 # Mercurial
-function ph_mercurial {
-    status "    Installing Mercurial $pH_Mercurial..."
-    cd "$pH_DL"
+function install_mercurial {
+    status "    Installing Mercurial $mercurial_ver..."
+    cd "$download_dir"
     
     # docutils required by mercurial
     $PIP install -q -U docutils
 
-    $CURL "http://mercurial.selenic.com/release/mercurial-$pH_Mercurial.tar.gz"
-    rm -rf "mercurial-$pH_Mercurial"
-    tar -xzf "mercurial-$pH_Mercurial.tar.gz"
-    cd "mercurial-$pH_Mercurial"
+    $CURL "http://mercurial.selenic.com/release/mercurial-$mercurial_ver.tar.gz"
+    rm -rf "mercurial-$mercurial_ver"
+    tar -xzf "mercurial-$mercurial_ver.tar.gz"
+    cd "mercurial-$mercurial_ver"
     # Remove translation messages from error output
     sed -i "/^\s*cmd = \['msgfmt'/s/'-v', //" setup.py
-    $MAKE install PREFIX="$pH_install"
-    cd "$pH_DL"
+    $MAKE install PREFIX="$prefix"
+    cd "$download_dir"
     cat >> ~/.hgrc <<DELIM
 
 # Added by install-dreamhost.sh from:
@@ -589,14 +584,14 @@ preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 DELIM
 
     # Verify
-    [[ -e "$pH_install/lib/libpython${pH_Python:0:3}.a" ]] || err "Python install failed"
-    $pH_install/bin/python --version 2>&1 | grep -q $pH_Python || err "Python install failed"
+    [[ -e "$prefix/lib/libpython${python_ver:0:3}.a" ]] || err "Python install failed"
+    $prefix/bin/python --version 2>&1 | grep -q $python_ver || err "Python install failed"
 }
 
 # VirtualEnv
-function ph_virtualenv {
-    status "    Installing VirtualEnv $pH_VirtualEnv..."
-    cd "$pH_DL"
+function install_virtualenv {
+    status "    Installing VirtualEnv $virtualenv_ver..."
+    cd "$download_dir"
 
     $PIP install -q -U virtualenv 
 
@@ -611,49 +606,49 @@ function ph_virtualenv {
     #source ~/.bashrc
 
     # Verify
-    $pH_install/bin/virtualenv --version >/dev/null || err "VirtualEnv install failed"
+    $prefix/bin/virtualenv --version >/dev/null || err "VirtualEnv install failed"
 }
 
 # Django framework
-function ph_django {
-    status "    Installing Django $pH_Django..."
+function install_django {
+    status "    Installing Django $django_ver..."
 
     $PIP install -q -U django
 
     # Verify
-    $pH_install/bin/django-admin.py --version || err "Django install failed"
-    $pH_install/bin/python -c "import django" 2>/dev/null || err "Django install failed"
+    $prefix/bin/django-admin.py --version || err "Django install failed"
+    $prefix/bin/python -c "import django" 2>/dev/null || err "Django install failed"
 }
 
 # cURL (for Git to pull remote repos)
-function ph_curl {
-    status "    Installing cURL $pH_cURL..."
-    cd "$pH_DL"
-    $CURL "http://curl.haxx.se/download/curl-$pH_cURL.tar.gz"
-    rm -rf "curl-$pH_cURL"
-    tar -xzf "curl-$pH_cURL.tar.gz"
-    cd "curl-$pH_cURL"
-    ./configure --prefix="$pH_install" $QUIET \
-        --with-ssl=${pH_install} \
+function install_curl {
+    status "    Installing cURL $curl_ver..."
+    cd "$download_dir"
+    $CURL "http://curl.haxx.se/download/curl-$curl_ver.tar.gz"
+    rm -rf "curl-$curl_ver"
+    tar -xzf "curl-$curl_ver.tar.gz"
+    cd "curl-$curl_ver"
+    ./configure --prefix="$prefix" $QUIET \
+        --with-ssl=${prefix} \
         --enable-ipv6 --enable-cookies --enable-crypto-auth
     $MAKE
     $MAKE install
 
     # Verify
-    $pH_install/bin/curl --version | grep $pH_cURL || err "Curl install failed"
-    [[ -e "$pH_install/lib/libcurl.so" ]] || err "Curl install failed"
+    $prefix/bin/curl --version | grep $curl_ver || err "Curl install failed"
+    [[ -e "$prefix/lib/libcurl.so" ]] || err "Curl install failed"
 }
 
 # Git
 # NO_MMAP is needed to prevent Dreamhost killing git processes
-function ph_git {
-    status "    Installing Git $pH_Git..."
-    cd "$pH_DL"
-    $CURL "http://git-core.googlecode.com/files/git-$pH_Git.tar.gz" 
-    rm -rf "git-$pH_Git"
-    tar -xzf "git-$pH_Git.tar.gz"
-    cd "git-$pH_Git"
-    ./configure --prefix="$pH_install" NO_MMAP=1 $QUIET
+function install_git {
+    status "    Installing Git $git_ver..."
+    cd "$download_dir"
+    $CURL "http://git-core.googlecode.com/files/git-$git_ver.tar.gz" 
+    rm -rf "git-$git_ver"
+    tar -xzf "git-$git_ver.tar.gz"
+    cd "git-$git_ver"
+    ./configure --prefix="$prefix" NO_MMAP=1 $QUIET
     # Remove translation messages from error output
     sed -i "/MSGFMT/s/--statistics//" Makefile
     sed -i "/new build flags or prefix/s/1>&2//" Makefile
@@ -665,25 +660,25 @@ function ph_git {
     $MAKE install
 
     # Verify
-    $pH_install/bin/git --version | grep $pH_Git || err "Git install failed"
+    $prefix/bin/git --version | grep $git_ver || err "Git install failed"
 }
 
 
 # Hg-Git
-function ph_hggit {
-    status "    Installing hg-git $pH_HgGit..."
-    cd "$pH_DL"
+function install_hggit {
+    status "    Installing hg-git $hggit_ver..."
+    cd "$download_dir"
 
     # dulwich required by hg-git
     $PIP install -q -U dulwich
 
     $PIP install -q -U hg-git
-    cd "$pH_DL"
+    cd "$download_dir"
     # Virtualenv to .bashrc
     cat >> ~/.hgrc <<DELIM
     
 # Added by install-dreamhost.sh from:
-# $pH_script_url
+# $script_url
 # on $(date -u)
 [extensions]
 hggit =
@@ -693,20 +688,20 @@ DELIM
 }
 
 # Cgit (git web interface)
-function ph_cgit {
-    status "    Installing cgit $pH_Cgit..."
-    cd "$pH_DL"
+function install_cgit {
+    status "    Installing cgit $cgit_ver..."
+    cd "$download_dir"
 
-    $CURL "http://hjemli.net/git/cgit/snapshot/cgit-$pH_Cgit.tar.gz"
-    rm -rf "cgit-$pH_Cgit"
-    tar xzf "cgit-$pH_Cgit.tar.gz"
-    cd "cgit-$pH_Cgit"
+    $CURL "http://hjemli.net/git/cgit/snapshot/cgit-$cgit_ver.tar.gz"
+    rm -rf "cgit-$cgit_ver"
+    tar xzf "cgit-$cgit_ver.tar.gz"
+    cd "cgit-$cgit_ver"
 
     cat >> cgit.conf <<DELIM
-    CGIT_CONFIG = $pH_install/cgit/cgitrc
-    CGIT_SCRIPT_PATH = $pH_install/cgit
-    CACHE_ROOT = $pH_install/var/cache/cgit
-    prefix = $pH_install
+    CGIT_CONFIG = $prefix/cgit/cgitrc
+    CGIT_SCRIPT_PATH = $prefix/cgit
+    CACHE_ROOT = $prefix/var/cache/cgit
+    prefix = $prefix
 DELIM
 
     $MAKE get-git
@@ -714,7 +709,7 @@ DELIM
     $MAKE install
 
     # cgitrc file
-    cat >> $pH_install/cgit/cgitrc <<DELIM
+    cat >> $prefix/cgit/cgitrc <<DELIM
 # Global project settings
 
 remove-suffix=1
@@ -743,19 +738,19 @@ virtual-root=/
 DELIM
 
     # .htaccess file
-    cat >> $pH_install/cgit/htaccess <<DELIM
+    cat >> $prefix/cgit/htaccess <<DELIM
 Options +ExecCGI
 
 DirectoryIndex cgit.cgi
 
 SetEnv CGIT_CONFIG ./cgitrc
 DELIM
-    chmod 644 $pH_install/cgit/htaccess
+    chmod 644 $prefix/cgit/htaccess
 
-    cat >> $pH_install/cgit/README <<DELIM
+    cat >> $prefix/cgit/README <<DELIM
 To get cgit working
 
-    cp $pH_install/cgit/* ~/git.example.com
+    cp $prefix/cgit/* ~/git.example.com
     cd ~/git.example.com
     mv htaccess .htaccess
     chmod 644 .htaccess
@@ -770,173 +765,173 @@ Edit ~/git.example.com/cgitrc with your preferred settings
 DELIM
 
     # Verify
-    [[ -e "$pH_install/cgit/cgit.cgi" ]] || err "CGit install failed"
+    [[ -e "$prefix/cgit/cgit.cgi" ]] || err "CGit install failed"
 }
 
 # Node.js
-function ph_nodejs {
-    status "    Installing node.js $pH_NodeJS..."
-    cd "$pH_DL"
+function install_nodejs {
+    status "    Installing node.js $nodejs_ver..."
+    cd "$download_dir"
 
-    if [[ ! -e "node-v$pH_NodeJS" ]] ; then
-        $CURL "http://nodejs.org/dist/v$pH_NodeJS/node-v$pH_NodeJS.tar.gz"
-        tar -xzf "node-v$pH_NodeJS.tar.gz"
+    if [[ ! -e "node-v$nodejs_ver" ]] ; then
+        $CURL "http://nodejs.org/dist/v$nodejs_ver/node-v$nodejs_ver.tar.gz"
+        tar -xzf "node-v$nodejs_ver.tar.gz"
     fi
-    cd "node-v$pH_NodeJS"
-    ./configure --prefix="$pH_install"
+    cd "node-v$nodejs_ver"
+    ./configure --prefix="$prefix"
     $MAKE
     $MAKE install
 
     # Verify
-    $pH_install/bin/node --version | grep $pH_NodeJS || err "NodeJS install failed"
+    $prefix/bin/node --version | grep $nodejs_ver || err "NodeJS install failed"
 }
 
 # lesscss
-function ph_lesscss {
-    status "    Installing lessc $pH_LessCSS..."
-    cd "$pH_DL"
+function install_lesscss {
+    status "    Installing lessc $lesscss_ver..."
+    cd "$download_dir"
 
     if [[ ! -e "less.js" ]] ; then
         rm -rf "less.js"
         git clone -q "https://github.com/cloudhead/less.js.git"
         cd "less.js"
-        #git checkout "v$pH_LessCSS"
-        cd "$pH_DL"
+        #git checkout "v$lesscss_ver"
+        cd "$download_dir"
     fi
     cd "less.js"
-    cp "bin/lessc" "$pH_install/bin"
-    cp -a "lib/less" "$pH_install/lesscss"
+    cp "bin/lessc" "$prefix/bin"
+    cp -a "lib/less" "$prefix/lesscss"
 
     # Verify
-    [[ -e "$pH_install/bin/lessc" ]] || err "LessCSS install failed"
+    [[ -e "$prefix/bin/lessc" ]] || err "LessCSS install failed"
 }
 
 # m4
-function ph_m4 {
-    status "    Installing m4 $pH_M4..."
-    cd "$pH_DL"
+function install_m4 {
+    status "    Installing m4 $m4_ver..."
+    cd "$download_dir"
 
-    if [[ ! -e "m4-$pH_M4" ]] ; then
-        $CURL "http://ftp.gnu.org/gnu/m4/m4-$pH_M4.tar.gz"
-        rm -rf "m4-$pH_M4"
-        tar -xzf "m4-$pH_M4.tar.gz"
+    if [[ ! -e "m4-$m4_ver" ]] ; then
+        $CURL "http://ftp.gnu.org/gnu/m4/m4-$m4_ver.tar.gz"
+        rm -rf "m4-$m4_ver"
+        tar -xzf "m4-$m4_ver.tar.gz"
     fi
-    cd "m4-$pH_M4"
-    ./configure --prefix="$pH_install" $QUIET
+    cd "m4-$m4_ver"
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    $pH_install/bin/m4 --version | grep $pH_M4 || err "M4 install failed"
+    $prefix/bin/m4 --version | grep $m4_ver || err "M4 install failed"
 }
 
 # autoconf
-function ph_autoconf {
-    status "    Installing autoconf $pH_Autoconf..."
-    cd "$pH_DL"
+function install_autoconf {
+    status "    Installing autoconf $autoconf_ver..."
+    cd "$download_dir"
 
-    if [[ ! -e "autoconf-$pH_Autoconf" ]] ; then
-        $CURL "http://ftp.gnu.org/gnu/autoconf/autoconf-$pH_Autoconf.tar.gz"
-        rm -rf "autoconf-$pH_Autoconf"
-        tar -xzf "autoconf-$pH_Autoconf.tar.gz"
+    if [[ ! -e "autoconf-$autoconf_ver" ]] ; then
+        $CURL "http://ftp.gnu.org/gnu/autoconf/autoconf-$autoconf_ver.tar.gz"
+        rm -rf "autoconf-$autoconf_ver"
+        tar -xzf "autoconf-$autoconf_ver.tar.gz"
     fi
-    cd "autoconf-$pH_Autoconf"
-    ./configure --prefix="$pH_install" $QUIET
+    cd "autoconf-$autoconf_ver"
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    $pH_install/bin/autoconf --version | grep $pH_Autoconf || err "Autoconf install failed"
+    $prefix/bin/autoconf --version | grep $autoconf_ver || err "Autoconf install failed"
 }
 
 # inotify
-function ph_inotify {
-    status "    Installing inotify $pH_Inotify..."
-    cd "$pH_DL"
+function install_inotify {
+    status "    Installing inotify $inotify_ver..."
+    cd "$download_dir"
 
-    if [[ ! -e "inotify-tools-$pH_Inotify" ]] ; then
-        $CURL "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$pH_Inotify.tar.gz"
-        rm -rf "inotify-tools-$pH_Inotify"
-        tar -xzf "inotify-tools-$pH_Inotify.tar.gz"
+    if [[ ! -e "inotify-tools-$inotify_ver" ]] ; then
+        $CURL "http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-$inotify_ver.tar.gz"
+        rm -rf "inotify-tools-$inotify_ver"
+        tar -xzf "inotify-tools-$inotify_ver.tar.gz"
     fi
-    cd "inotify-tools-$pH_Inotify"
-    ./configure --prefix="$pH_install" $QUIET
+    cd "inotify-tools-$inotify_ver"
+    ./configure --prefix="$prefix" $QUIET
     $MAKE
     $MAKE install
 
     # Verify
-    $pH_install/bin/inotifywait --help | grep -q $pH_Inotify || err "Inotify install failed"
-    $pH_install/bin/inotifywatch --help | grep -q $pH_Inotify || err "Inotify install failed"
+    $prefix/bin/inotifywait --help | grep -q $inotify_ver || err "Inotify install failed"
+    $prefix/bin/inotifywatch --help | grep -q $inotify_ver || err "Inotify install failed"
 }
 
 function ph_install {
 
     # Download and install
-    if test "${pH_SSL+set}" == set ; then
-        ph_openssl
+    if test "${ssl_ver+set}" == set ; then
+        install_openssl
     fi
-    if test "${pH_Readline+set}" == set ; then
-        ph_readline
+    if test "${readline_ver+set}" == set ; then
+        install_readline
     fi
-    if test "${pH_Tcl+set}" == set ; then
-        ph_tcl
+    if test "${tcl_ver+set}" == set ; then
+        install_tcl
     fi
-    if test "${pH_Tk+set}" == set ; then
-        ph_tk
+    if test "${tk_ver+set}" == set ; then
+        install_tk
     fi
-    if test "${pH_Berkeley+set}" == set ; then
-        ph_berkeley
+    if test "${berkeley_ver+set}" == set ; then
+        install_berkeley
     fi
-    if test "${pH_BZip+set}" == set ; then
-        ph_bzip
+    if test "${bzip_ver+set}" == set ; then
+        install_bzip
     fi
-    if test "${pH_SQLite+set}" == set ; then
-        ph_sqlite
+    if test "${sqlite_ver+set}" == set ; then
+        install_sqlite
     fi
-    if test "${pH_Python+set}" == set ; then
-        ph_python
+    if test "${python_ver+set}" == set ; then
+        install_python
     fi
-    if test "${pH_setuptools+set}" == set ; then
-        ph_setuptools
+    #if test "${setuptools_ver+set}" == set ; then
+    #    install_setuptools
+    #fi
+    if test "${pip_ver+set}" == set ; then
+        install_pip
     fi
-    if test "${pH_pip+set}" == set ; then
-        ph_pip
+    if test "${mercurial_ver+set}" == set ; then
+        install_mercurial
     fi
-    if test "${pH_Mercurial+set}" == set ; then
-        ph_mercurial
+    if test "${virtualenv_ver+set}" == set ; then
+        install_virtualenv
     fi
-    if test "${pH_VirtualEnv+set}" == set ; then
-        ph_virtualenv
+    if test "${django_ver+set}" == set ; then
+        install_django
     fi
-    if test "${pH_Django+set}" == set ; then
-        ph_django
+    if test "${curl_ver+set}" == set ; then
+        install_curl
     fi
-    if test "${pH_cURL+set}" == set ; then
-        ph_curl
+    if test "${git_ver+set}" == set ; then
+        install_git
     fi
-    if test "${pH_Git+set}" == set ; then
-        ph_git
+    if test "${cgit_ver+set}" == set ; then
+        install_cgit
     fi
-    if test "${pH_Cgit+set}" == set ; then
-        ph_cgit
+    if test "${hggit_ver+set}" == set ; then
+        install_hggit
     fi
-    if test "${pH_HgGit+set}" == set ; then
-        ph_hggit
+    if test "${nodejs_ver+set}" == set ; then
+        install_nodejs
     fi
-    if test "${pH_NodeJS+set}" == set ; then
-        ph_nodejs
+    if test "${lesscss_ver+set}" == set ; then
+        install_lesscss
     fi
-    if test "${pH_LessCSS+set}" == set ; then
-        ph_lesscss
+    if test "${m4_ver+set}" == set ; then
+        install_m4
     fi
-    if test "${pH_M4+set}" == set ; then
-        ph_m4
+    if test "${autoconf_ver+set}" == set ; then
+        install_autoconf
     fi
-    if test "${pH_Autoconf+set}" == set ; then
-        ph_autoconf
-    fi
-    if test "${pH_Inotify+set}" == set ; then
-        ph_inotify
+    if test "${inotify_ver+set}" == set ; then
+        install_inotify
     fi
     
     cd ~
@@ -945,26 +940,26 @@ function ph_install {
     status "install-dreamhost.sh completed the installation in $((finish_time - start_time)) seconds."
     status ""
     status "Log out and log back in for the changes in your environment variables to take affect."
-    status "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
+    status "(If you don't use bash, setup your shell so that your PATH includes your new $prefix/bin directory.)"
     status ""
 }
 
 function ph_uninstall {
-    status "Removing $pH_install"
-    rm -rf "$pH_install" 
+    status "Removing $prefix"
+    rm -rf "$prefix" 
 
-    if [[ -e "pH_install.backup" ]] ; then
-        status "Restoring $pH_install.backup"
-        mv "$pH_install.backup" "$pH_install"
+    if [[ -e "prefix.backup" ]] ; then
+        status "Restoring $prefix.backup"
+        mv "$prefix.backup" "$prefix"
     fi
 
-    status "Removing $pH_log"
-    rm -f "$pH_log"
+    status "Removing $log_file"
+    rm -f "$log_file"
 
     status ""
-    read -p "Delete downloads at $pH_DL? [y,n] " choice 
+    read -p "Delete downloads at $download_dir? [y,n] " choice 
     case ${choice:0:1} in  
-      y|Y) echo "    Ok, removing $pH_DL"; rm -rf $pH_DL ;;
+      y|Y) echo "    Ok, removing $download_dir"; rm -rf $download_dir ;;
     esac
     echo ""
 
@@ -994,16 +989,16 @@ function ph_uninstall {
 }
 
 function ph_create_uninstall {
-    status "    Creating uninstall script at $pH_uninstall_script"
+    status "    Creating uninstall script at $uninstall_script"
     # Copy function definitions
-    declare -f ph_init_vars >  $pH_uninstall_script
-    declare -f status       >> $pH_uninstall_script
-    declare -f err          >> $pH_uninstall_script
-    declare -f ph_uninstall >> $pH_uninstall_script
-    echo "" >> $pH_uninstall_script
-    echo "ph_init_vars" >> $pH_uninstall_script
-    echo "ph_uninstall" >> $pH_uninstall_script
-    chmod +x $pH_uninstall_script
+    declare -f ph_init_vars >  $uninstall_script
+    declare -f status       >> $uninstall_script
+    declare -f err          >> $uninstall_script
+    declare -f ph_uninstall >> $uninstall_script
+    echo "" >> $uninstall_script
+    echo "ph_init_vars" >> $uninstall_script
+    echo "ph_uninstall" >> $uninstall_script
+    chmod +x $uninstall_script
 }
 
 ph_init_vars
@@ -1012,7 +1007,7 @@ ph_init_vars
 if [ "$1" == "uninstall" ] ; then
     ph_uninstall
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
-    status "Installing programs into $pH_install"
+    status "Installing programs into $prefix"
     {
         ph_create_uninstall
         ph_install_setup
@@ -1020,11 +1015,11 @@ elif [ -z "$1" ] || [ "$1" == "install" ] ; then
     }
 else
     # Run individual install functions
-    # Ex to run ph_python and ph_mercurial
+    # Ex to run install_python and install_mercurial
     #    ./install-dreamhost.sh python mercurial
     ph_install_setup
     for x in "$@" ; do
-        "ph_$x"
+        "install_$x"
     done
 fi
 
