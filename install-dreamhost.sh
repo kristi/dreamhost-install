@@ -112,7 +112,7 @@
 # Try to reduce console output
 quiet=true
 
-function ph_init_vars {
+function init_vars {
     # Directory to install these packages
     prefix="$HOME/local"
     
@@ -219,7 +219,7 @@ function err {
     exit
 }
 
-function ph_install_setup {
+function install_setup {
     # Let's see how long it takes to finish;
     start_time=$(date +%s)
 
@@ -864,7 +864,7 @@ function install_inotify {
     $prefix/bin/inotifywatch --help | grep -q $inotify_ver || err "Inotify install failed"
 }
 
-function ph_install {
+function install_programs {
 
     # Download and install
     if test "${ssl_ver+set}" == set ; then
@@ -944,7 +944,7 @@ function ph_install {
     status ""
 }
 
-function ph_uninstall {
+function uninstall_programs {
     status "Removing $prefix"
     rm -rf "$prefix" 
 
@@ -963,9 +963,10 @@ function ph_uninstall {
     esac
     echo ""
 
-    if [[ -e $HOME/.bashrc-pHbackup ]] ; then
+    if [[ -e $HOME/.bashrc.dreamhost-install.backup ]] ; then
         echo "Restoring old ~/.bashrc"
-        mv $HOME/.bashrc-pHbackup $HOME/.bashrc
+        mv $HOME/.bashrc $HOME/.bashrc.bak
+        mv $HOME/.bashrc.dreamhost-install.backup $HOME/.bashrc
     fi
 
 
@@ -988,36 +989,36 @@ function ph_uninstall {
     status ""
 }
 
-function ph_create_uninstall {
+function create_uninstall {
     status "    Creating uninstall script at $uninstall_script"
     # Copy function definitions
-    declare -f ph_init_vars >  $uninstall_script
+    declare -f init_vars >  $uninstall_script
     declare -f status       >> $uninstall_script
     declare -f err          >> $uninstall_script
-    declare -f ph_uninstall >> $uninstall_script
+    declare -f uninstall_programs >> $uninstall_script
     echo "" >> $uninstall_script
-    echo "ph_init_vars" >> $uninstall_script
-    echo "ph_uninstall" >> $uninstall_script
+    echo "init_vars" >> $uninstall_script
+    echo "uninstall_programs" >> $uninstall_script
     chmod +x $uninstall_script
 }
 
-ph_init_vars
+init_vars
 
 # Parse input arguments
 if [ "$1" == "uninstall" ] ; then
-    ph_uninstall
+    uninstall_programs
 elif [ -z "$1" ] || [ "$1" == "install" ] ; then
     status "Installing programs into $prefix"
     {
-        ph_create_uninstall
-        ph_install_setup
-        ph_install
+        create_uninstall
+        install_setup
+        install_programs
     }
 else
     # Run individual install functions
     # Ex to run install_python and install_mercurial
     #    ./install-dreamhost.sh python mercurial
-    ph_install_setup
+    install_setup
     for x in "$@" ; do
         "install_$x"
     done
