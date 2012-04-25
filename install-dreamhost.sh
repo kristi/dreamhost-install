@@ -2,7 +2,7 @@
 # for debugging, use -e to stop on error
 #!/bin/bash #-e
 # =================================================
-# pyHost version 2.2 beta
+# install-dreamhost version 2.2 beta
 # 
 # This script automates a the download, compiling, and local 
 # installation of Python, Mercurial, Git in the home folder.
@@ -15,7 +15,7 @@
 #
 # Usage:
 #
-#   ./pyHost.sh
+#   ./install-dreamhost.sh
 # 
 # With default settings, this command will install 
 # Python, Mercurial, and Git (with dependencies and specified plugins)
@@ -45,17 +45,17 @@
 #
 # Pass the uninstall parameter
 #
-#     ./pyHost.sh uninstall
+#     ./install-dreamhost.sh uninstall
 #
 # OR run the uninstall script which the installation generated
 #
-#     ./uninstall_pyHost
+#     ./uninstall-dreamhost.sh
 #
 # This will remove the ~/local directory and attempt to revert
 # changes made by this script.
 #
 # Note you can manually uninstall by deleting the ~/local directory
-# and delete the pyHost generated entries in ~/.bashrc and ~/.hgrc.
+# and delete the entries in ~/.bashrc and ~/.hgrc.
 #
 # Originally created by Tommaso Lanza, under the influence
 # of the guide published by Andrew Watts at:
@@ -125,11 +125,11 @@ function ph_init_vars {
     pH_DL="$PWD/downloads"
     
     # Uninstall script
-    pH_uninstall_script="$PWD/uninstall_pyHost"
+    pH_uninstall_script="$PWD/uninstall-dreamhost.sh"
     
     pH_log="log.txt"
     
-    pH_script_url="https://github.com/kristi/dreamhost-install/blob/master/pyHost.sh"
+    pH_script_url="https://github.com/kristi/dreamhost-install/blob/master/install-dreamhost.sh"
     
     # Package versions
     #
@@ -556,7 +556,7 @@ function ph_mercurial {
     cd "$pH_DL"
     cat >> ~/.hgrc <<DELIM
 
-# Added by pyHost.sh from:
+# Added by install-dreamhost.sh from:
 # https://github.com/kristi/dreamhost-install 
 # on $(date -u)
 [ui]
@@ -584,7 +584,7 @@ status.ignored = black bold
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
 # Prevent "hg push" if MQ patches are applied.
 preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
-# End added by pyHost.sh
+# End added by install-dreamhost.sh
 
 DELIM
 
@@ -682,12 +682,12 @@ function ph_hggit {
     # Virtualenv to .bashrc
     cat >> ~/.hgrc <<DELIM
     
-# Added by pyHost.sh from:
+# Added by install-dreamhost.sh from:
 # $pH_script_url
 # on $(date -u)
 [extensions]
 hggit =
-# End added by pyHost.sh
+# End added by install-dreamhost.sh
 
 DELIM
 }
@@ -942,7 +942,7 @@ function ph_install {
     cd ~
     finish_time=$(date +%s)
     status ""
-    status "pyHost.sh completed the installation in $((finish_time - start_time)) seconds."
+    status "install-dreamhost.sh completed the installation in $((finish_time - start_time)) seconds."
     status ""
     status "Log out and log back in for the changes in your environment variables to take affect."
     status "(If you don't use bash, setup your shell so that your PATH includes your new $pH_install/bin directory.)"
@@ -1021,7 +1021,7 @@ elif [ -z "$1" ] || [ "$1" == "install" ] ; then
 else
     # Run individual install functions
     # Ex to run ph_python and ph_mercurial
-    #    ./pyHost.sh python mercurial
+    #    ./install-dreamhost.sh python mercurial
     ph_install_setup
     for x in "$@" ; do
         "ph_$x"
