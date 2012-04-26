@@ -130,9 +130,9 @@ function init_vars {
     #
     # Comment out anything you don't want to install...
     
-    python_ver="2.7.2"
+    python_ver="2.7.3"
     pip_ver="(via get-pip.py script)"
-    mercurial_ver="2.1.1" # Don't use pip to install Mercurial since it might not be updated
+    mercurial_ver="2.1.2" # Don't use pip to install Mercurial since it might not be updated
     git_ver="1.7.10"
     cgit_ver="0.9.0.3"
     django_ver="(via pip)" # installed via pip
@@ -142,7 +142,7 @@ function init_vars {
     lesscss_ver="(github)"
     inotify_ver="3.14"
     # === Python dependencies ===
-    ssl_ver="1.0.1" # for python
+    ssl_ver="1.0.1a" # for python
     readline_ver="6.2" # for python
     tcl_ver="8.5.11" # for python
     tk_ver="8.5.11" # for python
