@@ -130,6 +130,8 @@ function init_vars {
     #
     # Comment out anything you don't want to install...
     
+    ruby_ver="1.9.3"
+    rvm_ver="(via rvm-installer script)"
     python_ver="2.7.3"
     pip_ver="(via get-pip.py script)"
     mercurial_ver="2.1.2" # Don't use pip to install Mercurial since it might not be updated
@@ -180,6 +182,7 @@ function init_vars {
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
     export LD_LIBRARY_PATH="$prefix/lib"
     export LD_RUN_PATH="$LD_LIBRARY_PATH"
+    export rvm_path="$prefix"
 
     # Save stdout as fd #3
     exec 3>&1
@@ -261,6 +264,7 @@ function install_setup {
 # on $(date -u)
 
 export PATH=$prefix/bin:\$PATH
+export rvm_path="$prefix"
 
 ########   END DREAMHOST-INSTALL.SH SECTION   ########
 DELIM
@@ -865,6 +869,30 @@ function install_inotify {
     $prefix/bin/inotifywatch --help | grep -q $inotify_ver || err "Inotify install failed"
 }
 
+# rvm
+function install_rvm {
+    status "    Installing RVM $rvm_ver..."
+    cd "$download_dir"
+
+    $CURL "https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"
+    chmod +x rvm-installer
+    ./rvm-installer --path $prefix stable
+
+    # Verify
+    $prefix/bin/rvm --version >/dev/null || err "RVM install failed"
+}
+
+# ruby
+function install_ruby {
+    status "    Installing Ruby $ruby_ver..."
+    cd "$download_dir"
+
+    $prefix/bin/rvm install "$ruby_ver"
+
+    # Verify
+    $prefix/bin/ruby --version | grep -q "$ruby_ver" || err "Ruby install failed"
+}
+
 function install_programs {
 
     # Download and install
@@ -918,6 +946,12 @@ function install_programs {
     fi
     if test "${hggit_ver+set}" == set ; then
         install_hggit
+    fi
+    if test "${rvm_ver+set}" == set ; then
+        install_rvm
+    fi
+    if test "${ruby_ver+set}" == set ; then
+        install_ruby
     fi
     if test "${nodejs_ver+set}" == set ; then
         install_nodejs
