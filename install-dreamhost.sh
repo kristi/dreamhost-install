@@ -275,7 +275,10 @@ DELIM
 
     fi
 
-    # TODO: Make sure .bashrc is called by .bash_profile
+    # Make sure .bashrc is called by .bash_profile
+    if ! grep -q "\.bashrc" ~/.bash_profile then
+        echo "source ~/.bashrc" >> ~/.bash_profile
+    fi
 
 }
 
