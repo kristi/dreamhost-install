@@ -714,7 +714,7 @@ DELIM
 
 remove-suffix=1
 
-clone-prefix=http://git.tsumego.me/git
+clone-prefix=ssh://user@example.com:git_repos
 
 enable-commit-graph=1
 enable-index-links=1
@@ -728,6 +728,7 @@ readme=README
 # CGIT settings
 
 # scan-path needs to come after the global project settings!
+# Put your git repos in this folder
 scan-path=$HOME/git_repos
 
 logo=cgit.png
