@@ -17,11 +17,15 @@
 #
 #   ./install-dreamhost.sh
 # 
-# Binaries are at ~/local/bin
+# Installation Notes
+#-----------------
+# Binaries are at ~/local/bin  (You will need to add this to your
+# PATH if you are not using bash for your shell)
 #
-# After installing, restart bash
+# After installing, log out and log back in to setup your environment.
+# (You may also try running
 #     exec bash -login
-# OR simply log out and log back in.  
+# instead of relogging)
 #
 # To test if everything worked, make sure that
 #     which python
@@ -33,12 +37,13 @@
 #     source ~/.bashrc
 # or else .bashrc will not be read when you log in, so your 
 # PATH may not be setup correctly for your newly installed tools.
-# http://wiki.dreamhost.com/Environment_Setup
+# Ref:  http://wiki.dreamhost.com/Environment_Setup
 #
 # You may delete the downloads directory after installation is complete.
 #     rm -rf downloads
 #
-# Uninstallation:
+# Uninstallation
+#-----------------
 #
 # Run the uninstall script
 #
@@ -987,8 +992,8 @@ function install_programs {
     status ""
     status "install-dreamhost.sh completed the installation in $((finish_time - start_time)) seconds."
     status ""
-    status "Please reset your bash environment by running"
-    status "    exec bash -login"
+    status "Please reset your environment by logging out and logging back in"
+    status "    exit"
     status ""
 }
 
@@ -1038,8 +1043,7 @@ function uninstall_programs {
     status ""
     status "Done."
     status ""
-    status "Please reset your bash environment by running"
-    status "    exec bash -login"
+    status "Please reset your environment by logging out and logging back in"
     status ""
 }
 
