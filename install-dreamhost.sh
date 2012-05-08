@@ -503,7 +503,7 @@ function install_python {
     # abort: repository . not found!
     export HAS_HG="false"
 
-    ./configure --prefix="$prefix" $QUIET
+    ./configure --prefix="$prefix" --enable-shared $QUIET
     $MAKE
     $MAKE install
 
@@ -512,7 +512,7 @@ function install_python {
     cd "$download_dir"
 
     # Verify
-    [[ -e "$prefix/lib/libpython${python_ver:0:3}.a" ]] || err "Python install failed"
+    [[ -e "$prefix/lib/libpython${python_ver:0:3}.so" ]] || err "Python install failed"
     $prefix/bin/python --version 2>&1 | grep -q $python_ver || err "Python install failed"
 }
 
