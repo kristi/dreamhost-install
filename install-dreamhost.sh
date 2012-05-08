@@ -3,7 +3,7 @@
 # use -x to echo each line before running
 #!/bin/bash -ex
 # =================================================
-# install-dreamhost version 3
+# install-dreamhost version 3.0
 # 
 # Installs updated versions of Python, Mercurial, Git in the home folder.
 # It includes a number of dependencies 
@@ -19,8 +19,8 @@
 # 
 # Binaries are at ~/local/bin
 #
-# After installing, source .bashrc 
-#     source ~/.bashrc
+# After installing, restart bash
+#     exec bash -login
 # OR simply log out and log back in.  
 #
 # To test if everything worked, make sure that
@@ -36,7 +36,7 @@
 # http://wiki.dreamhost.com/Environment_Setup
 #
 # You may delete the downloads directory after installation is complete.
-#     rm -r downloads
+#     rm -rf downloads
 #
 # Uninstallation:
 #
@@ -62,6 +62,10 @@
 # =================================================
 # 
 # Changelog
+# April 26 2012 - Kristi Tsukida <kristi.dev@gmail.com>
+# * v3.0
+# * Add ruby and rvm
+#
 # April 24 2012 - Kristi Tsukida <kristi.dev@gmail.com>
 # * Add verification tests
 # * Cleanup program output
@@ -109,8 +113,8 @@
 # =================================================
 #
 
-# Try to reduce console output
-quiet=true
+# Show line num and func name when debugging with 'set -x'
+export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
 
 function init_vars {
     # Directory to install these packages
@@ -136,7 +140,7 @@ function init_vars {
     pip_ver="(via get-pip.py script)"
     mercurial_ver="2.1.2" # Don't use pip to install Mercurial since it might not be updated
     git_ver="1.7.10"
-    cgit_ver="0.9.0.3"
+    cgit_ver="0.9.0.3" # installed into ~/local/cgit
     django_ver="(via pip)" # installed via pip
     virtualenv_ver="(via pip)" # installed via pip
     #hggit_ver="(via pip)" # installed via pip
@@ -182,7 +186,6 @@ function init_vars {
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
     export LD_LIBRARY_PATH="$prefix/lib"
     export LD_RUN_PATH="$LD_LIBRARY_PATH"
-    export rvm_path="$prefix"
 
     # Save stdout as fd #3
     exec 3>&1
@@ -191,11 +194,10 @@ function init_vars {
 
     MAKE="make"
     QUIET=""
-    if [[ "$quiet" == "true" ]] ; then
+    if [[ -z "$verbose" || "$verbose" != "true" ]] ; then
         # Reduce console output
-        # redirect stdout and stderr to log file
+        # redirect stdout to log file
         exec >$log_file 
-        #exec 2>&1
 
         MAKE="make --silent"
         QUIET="--quiet"
@@ -264,7 +266,7 @@ function install_setup {
 # on $(date -u)
 
 export PATH=$prefix/bin:\$PATH
-export rvm_path="$prefix"
+export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 ########   END DREAMHOST-INSTALL.SH SECTION   ########
 DELIM
@@ -276,7 +278,7 @@ DELIM
     fi
 
     # Make sure .bashrc is called by .bash_profile
-    if ! grep -q "\.bashrc" ~/.bash_profile then
+    if ! grep -q "\.bashrc" ~/.bash_profile ; then
         echo "source ~/.bashrc" >> ~/.bash_profile
     fi
 
@@ -319,6 +321,11 @@ function install_openssl {
 
 function install_err {
     err "Test err function"
+}
+
+# Kind of a hack to make "./install-dreamhost noverbose" work
+function install_verbose {
+    verbose="true"
 }
 
 # Readline
@@ -879,10 +886,11 @@ function install_rvm {
 
     $CURL "https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"
     chmod +x rvm-installer
-    ./rvm-installer --path $prefix stable
+    ./rvm-installer stable
+    source ~/.rvm/scripts/'rvm'
 
     # Verify
-    $prefix/bin/rvm --version >/dev/null || err "RVM install failed"
+    rvm --version >/dev/null || err "RVM install failed"
 }
 
 # ruby
@@ -890,10 +898,12 @@ function install_ruby {
     status "    Installing Ruby $ruby_ver..."
     cd "$download_dir"
 
-    $prefix/bin/rvm install "$ruby_ver"
+    source ~/.rvm/scripts/'rvm'
+    rvm install "$ruby_ver"
+    rvm --default use "$ruby_ver"
 
     # Verify
-    $prefix/bin/ruby --version | grep -q "$ruby_ver" || err "Ruby install failed"
+    ruby --version | grep -q "$ruby_ver" || err "Ruby install failed"
 }
 
 function install_programs {
@@ -977,8 +987,8 @@ function install_programs {
     status ""
     status "install-dreamhost.sh completed the installation in $((finish_time - start_time)) seconds."
     status ""
-    status "Log out and log back in for the changes in your environment variables to take affect."
-    status "(If you don't use bash, setup your shell so that your PATH includes your new $prefix/bin directory.)"
+    status "Please reset your bash environment by running"
+    status "    exec bash -login"
     status ""
 }
 
@@ -991,13 +1001,18 @@ function uninstall_programs {
         mv "$prefix.backup" "$prefix"
     fi
 
+    if [[ -e "$HOME/.rvm" ]] ; then
+        status "Removing ~/.rvm"
+        rm -rf "$HOME/.rvm" 
+    fi
+
     status "Removing $log_file"
     rm -f "$log_file"
 
     status ""
     read -p "Delete downloads at $download_dir? [y,n] " choice 
     case ${choice:0:1} in  
-      y|Y) echo "    Ok, removing $download_dir"; rm -rf $download_dir ;;
+      y|Y) echo "Removing $download_dir"; rm -rf $download_dir ;;
     esac
     echo ""
 
@@ -1011,19 +1026,20 @@ function uninstall_programs {
     choice='n'
     [[ -e $HOME/.virtualenvs ]] && echo "" && read -p "Delete $HOME/.virtualenvs? [y,n] " choice 
     case ${choice:0:1} in  
-      y|Y) echo "    Ok, removing $HOME/.virtualenvs"; rm -rf $HOME/.virtualenvs ;;
+      y|Y) echo "Removing $HOME/.virtualenvs"; rm -rf $HOME/.virtualenvs ;;
     esac
 
     choice='n'
     [[ -e $HOME/.hgrc ]] && echo "" && read -p "Delete $HOME/.hgrc? [y,n] " choice 
     case ${choice:0:1} in  
-      y|Y) echo "    Ok, removing $HOME/.hgrc"; rm -rf $HOME/.hgrc ;;
+      y|Y) echo "Removing $HOME/.hgrc"; rm -rf $HOME/.hgrc ;;
     esac
 
     status ""
     status "Done."
     status ""
-    status "Please log out and log back in so that environment variables will be reset."
+    status "Please reset your bash environment by running"
+    status "    exec bash -login"
     status ""
 }
 
@@ -1040,6 +1056,14 @@ function create_uninstall {
     chmod +x $uninstall_script
 }
 
+# Process flags
+while [[ "${1:0:1}" == "-" ]] ; do
+    if [[ "$1" == "--verbose" || "$1" == "-v" ]]; then
+        verbose=true
+    fi
+    shift
+done
+
 init_vars
 
 # Parse input arguments
@@ -1051,14 +1075,18 @@ elif [ -z "$1" ] || [ "$1" == "install" ] ; then
         create_uninstall
         install_setup
         install_programs
-    }
+    } 2>&1 | tee -a $log_file
 else
     # Run individual install functions
     # Ex to run install_python and install_mercurial
     #    ./install-dreamhost.sh python mercurial
     install_setup
     for x in "$@" ; do
-        "install_$x"
+        if [[ "${x:0:1}" == "-" ]]; then
+            continue
+        fi
+
+        "install_$x" 2>&1 | tee -a $log_file
     done
 fi
 
