@@ -143,7 +143,7 @@ function init_vars {
     rvm_ver="(via rvm-installer script)"
     python_ver="2.7.3"
     pip_ver="(via get-pip.py script)"
-    mercurial_ver="2.1.2" # Don't use pip to install Mercurial since it might not be updated
+    mercurial_ver="2.2.1" # Don't use pip to install Mercurial since it might not be updated
     git_ver="1.7.10"
     cgit_ver="0.9.0.3" # installed into ~/local/cgit
     django_ver="(via pip)" # installed via pip
@@ -558,7 +558,7 @@ function install_mercurial {
     cd "$download_dir"
     
     # docutils required by mercurial
-    $PIP install -q -U docutils
+    $PIP install -q -U --force-reinstall docutils
 
     $CURL "http://mercurial.selenic.com/release/mercurial-$mercurial_ver.tar.gz"
     rm -rf "mercurial-$mercurial_ver"
@@ -566,12 +566,13 @@ function install_mercurial {
     cd "mercurial-$mercurial_ver"
     # Remove translation messages from error output
     sed -i "/^\s*cmd = \['msgfmt'/s/'-v', //" setup.py
+    sed -i "s/import roman/from docutils.utils import roman/" doc/hgmanpage.py
     $MAKE install PREFIX="$prefix"
     cd "$download_dir"
     cat >> ~/.hgrc <<DELIM
 
 # Added by install-dreamhost.sh from:
-# https://github.com/kristi/dreamhost-install 
+# $script_url
 # on $(date -u)
 [ui]
 editor = vim
@@ -603,8 +604,7 @@ preoutgoing.mq-no-push = ! hg qtop > /dev/null 2>&1
 DELIM
 
     # Verify
-    [[ -e "$prefix/lib/libpython${python_ver:0:3}.a" ]] || err "Python install failed"
-    $prefix/bin/python --version 2>&1 | grep -q $python_ver || err "Python install failed"
+    $prefix/bin/hg --version 2>&1 | grep -q "$mercurial_ver" || err "Mercurial install failed"
 }
 
 # VirtualEnv
