@@ -678,6 +678,12 @@ function install_git {
     $MAKE
     $MAKE install
 
+    # Limit git memory usage so Dreamhost doesn't kill git
+    # when clonging large repositories
+    git config --global pack.windowMemory "100m"
+    git config --global pack.SizeLimit "100m"
+    git config --global pack.threads "1"
+
     # Verify
     $prefix/bin/git --version | grep $git_ver || err "Git install failed"
 }
