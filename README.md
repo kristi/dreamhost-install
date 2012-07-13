@@ -18,7 +18,7 @@ It should work with other hosts, but it hasn't been tested.
 
 ## Usage:
 
-  ./install-dreamhost.sh
+    ./install-dreamhost.sh
 
 ### Installation Notes
 Binaries installed into `~/local/bin`.  `~/local/bin` is added to your
