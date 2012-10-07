@@ -67,6 +67,7 @@
 # =================================================
 # 
 # Changelog
+#
 # April 26 2012 - Kristi Tsukida <kristi.dev@gmail.com>
 # * v3.0
 # * Add ruby and rvm
@@ -96,7 +97,6 @@
 # * /usr/local style install instead of /opt style install (I prefer the simplerPATH manipulations)
 # * Default the install into ~/local
 #
-# TODO: add virtualenvwrapper?
 # TODO: auto-detect latest versions of stuff  (hard to do?)
 # TODO: add flag/option for /opt style install  (Put python, mercurial, and git into their own install directories)
 # TODO: more sophisticated argument parsing
@@ -146,10 +146,11 @@ function init_vars {
     mercurial_ver="2.2.1" # Don't use pip to install Mercurial since it might not be updated
     git_ver="1.7.10"
     cgit_ver="0.9.0.3" # installed into ~/local/cgit
-    django_ver="(via pip)" # installed via pip
+    #django_ver="(via pip)" # installed via pip
     virtualenv_ver="(via pip)" # installed via pip
+    virtualenvwrapper_ver="(via pip)" # installed via pip
     #hggit_ver="(via pip)" # installed via pip
-    nodejs_ver="0.6.15"
+    #nodejs_ver="0.6.15"
     lesscss_ver="(github)"
     inotify_ver="3.14"
     # === Python dependencies ===
@@ -612,20 +613,24 @@ function install_virtualenv {
     status "    Installing VirtualEnv $virtualenv_ver..."
     cd "$download_dir"
 
-    $PIP install -q -U virtualenv 
-
-    #$PIP install -q -U virtualenvwrapper
-    
-    # Add Virtualenvwrapper settings to .bashrc
-    #cat >> ~/.bashrc <<DELIM
-## Virtualenv wrapper script
-#export WORKON_HOME=\$HOME/.virtualenvs
-#source virtualenvwrapper.sh
-#DELIM
-    #source ~/.bashrc
+    $PIP install -q -U virtualenv
 
     # Verify
     $prefix/bin/virtualenv --version >/dev/null || err "VirtualEnv install failed"
+}
+
+function install_virtualenvwrapper {
+    $PIP install -q -U virtualenvwrapper
+    
+    # Add Virtualenvwrapper settings to .bashrc
+    cat >> ~/.bashrc <<DELIM
+# Virtualenv wrapper script
+export WORKON_HOME=\$HOME/.virtualenvs
+source $prefix/bin/virtualenvwrapper.sh
+DELIM
+
+    # Verify
+    [[ -e "$prefix/bin/virtualenvwrapper.sh" ]] || err "VirtualEnv Wrapper install failed"
 }
 
 # Django framework
@@ -955,6 +960,9 @@ function install_programs {
     fi
     if test "${virtualenv_ver+set}" == set ; then
         install_virtualenv
+    fi
+    if test "${virtualenvwrapper_ver+set}" == set ; then
+        install_virtualenvwrapper
     fi
     if test "${django_ver+set}" == set ; then
         install_django
